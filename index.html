@@ -4,16 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Radio Bargain Bot</title>
-  <meta name="description" content="Monitors 30+ ham radio classifieds worldwide. Publishes verified bargains (≥5% below market) to regional Telegram channels — automatically, every 2 hours.">
+  <meta name="description" content="Monitors 98 ham radio classifieds across 15 geo-clusters worldwide. Publishes verified bargains to 12 regional Telegram channels — automatically, every 2 hours.">
 
   <!-- Open Graph -->
   <meta property="og:title" content="Radio Bargain Bot">
-  <meta property="og:description" content="Monitors 30+ ham radio classifieds worldwide. Publishes verified bargains (≥5% below market) to regional Telegram channels — automatically, every 2 hours.">
+  <meta property="og:description" content="Monitors 98 ham radio classifieds across 15 geo-clusters worldwide. Publishes verified bargains to 12 regional Telegram channels — automatically, every 2 hours.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://r2bpw.github.io/radio_bargain_bot_v2/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Radio Bargain Bot">
-  <meta name="twitter:description" content="Monitors 30+ ham radio classifieds worldwide. Publishes verified bargains to regional Telegram channels.">
+  <meta name="twitter:description" content="Monitors 98 ham radio classifieds across 15 geo-clusters. Publishes verified bargains to 12 regional Telegram channels.">
 
   <!-- Pixel art favicon: radar/signal globe -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%231a1814' rx='3'/><rect x='7' y='7' width='2' height='2' fill='%23f9f7f4'/><rect x='6' y='5' width='4' height='1' fill='%232e5fa3'/><rect x='6' y='10' width='4' height='1' fill='%232e5fa3'/><rect x='5' y='6' width='1' height='4' fill='%232e5fa3'/><rect x='10' y='6' width='1' height='4' fill='%232e5fa3'/><rect x='5' y='3' width='6' height='1' fill='%237a756d'/><rect x='5' y='12' width='6' height='1' fill='%237a756d'/><rect x='3' y='5' width='1' height='6' fill='%237a756d'/><rect x='12' y='5' width='1' height='6' fill='%237a756d'/><rect x='4' y='4' width='1' height='1' fill='%237a756d'/><rect x='11' y='4' width='1' height='1' fill='%237a756d'/><rect x='4' y='11' width='1' height='1' fill='%237a756d'/><rect x='11' y='11' width='1' height='1' fill='%237a756d'/></svg>">
@@ -299,26 +299,26 @@
 </head>
 <body>
 <main>
-  <div class="eyebrow">Ham radio · Worldwide · v1.0</div>
+  <div class="eyebrow">Ham radio · Worldwide · v2.0</div>
   <h1>Radio Bargain Bot</h1>
-  <p class="tagline">Monitors 30+ ham radio classifieds across 8 geo-clusters. Only verified bargains reach the channel — automatically, every 2 hours.</p>
+  <p class="tagline">Monitors 98 ham radio classifieds across 15 geo-clusters. Only verified bargains reach the channel — automatically, every 2 hours.</p>
 
   <div class="flow">
     <div class="flow-step">
       <span class="flow-n">01</span>
-      <div class="flow-text"><strong>Collects listings</strong> <span>— 30+ niche platforms: kleinanzeigen, bazos, allegro, Rakuma, QRZ, URE Mercadillo and more</span></div>
+      <div class="flow-text"><strong>Collects listings</strong> <span>— 98 collectors across 50+ countries: Marktplaats, Allegro, Tradera, Yahoo Auctions JP, eBay AU, Haraj, URE Mercadillo and more</span></div>
     </div>
     <div class="flow-step">
       <span class="flow-n">02</span>
-      <div class="flow-text"><strong>Benchmarks prices</strong> <span>— compares against eBay Sold data and regional asking-price medians via IQR-filtered statistics</span></div>
+      <div class="flow-text"><strong>Benchmarks prices</strong> <span>— compares against regional asking-price medians via IQR-filtered statistics; converts all prices to USD via live FX rates</span></div>
     </div>
     <div class="flow-step">
       <span class="flow-n">03</span>
-      <div class="flow-text"><strong>Filters ruthlessly</strong> <span>— passes only ham radio listings with confirmed discount ≥5%, live links, and no duplicates</span></div>
+      <div class="flow-text"><strong>Filters ruthlessly</strong> <span>— ham radio keywords in 8 languages, no WTB posts, age ≤ 90 days, price ≥ $10, live link check, no duplicates</span></div>
     </div>
     <div class="flow-step">
       <span class="flow-n">04</span>
-      <div class="flow-text"><strong>Publishes to channels</strong> <span>— in the region's language with source country flag and a one-line explanation of why it's a deal</span></div>
+      <div class="flow-text"><strong>Publishes to channels</strong> <span>— top 3 deals per cluster every 2 hours, with source country flag and discount explanation; max 3 clusters run concurrently</span></div>
     </div>
   </div>
 
@@ -328,32 +328,32 @@
     <div class="ex-post">
       <div class="title">🇩🇪 YAESU FTDX-101D</div>
       <div><span class="price">€ 2 350 · ~$2 540</span> &nbsp;<span class="discount">🔥 −14% vs avg</span></div>
-      <div class="dim">📦 used · kleinanzeigen</div>
-      <div class="why">💡 14% below market median according to eBay (23 sold listings)</div>
+      <div class="dim">📦 used · kleinanzeigen.de</div>
+      <div class="why">💡 14% below regional median (IQR benchmark, 47 active listings)</div>
     </div>
   </div>
 
   <div class="facts">
     <div class="fact">
-      <span class="fact-value">30+</span>
-      <span class="fact-label">Platforms</span>
+      <span class="fact-value">98</span>
+      <span class="fact-label">Collectors</span>
     </div>
     <div class="fact">
-      <span class="fact-value">8</span>
+      <span class="fact-value">15</span>
       <span class="fact-label">Geo-clusters</span>
     </div>
     <div class="fact">
-      <span class="fact-value">29+</span>
+      <span class="fact-value">50+</span>
       <span class="fact-label">Countries</span>
     </div>
   </div>
 
   <!-- Regional channels -->
   <div class="channels">
-    <div class="channels-title">Regional channels</div>
+    <div class="channels-title">Active regional channels (12 of 15)</div>
     <div class="channel-grid">
       <a class="channel-row" href="https://t.me/hamradiobargain" target="_blank" rel="noopener">
-        <span class="channel-name">🇷🇺 Russia and CIS</span>
+        <span class="channel-name">🇷🇺 Russia &amp; CIS</span>
         <span class="channel-handle">@hamradiobargain</span>
       </a>
       <a class="channel-row" href="https://t.me/funksachen" target="_blank" rel="noopener">
@@ -364,25 +364,41 @@
         <span class="channel-name">🇸🇪 Scandinavia</span>
         <span class="channel-handle">@radioamatoren</span>
       </a>
+      <a class="channel-row" href="https://t.me/hamradio_uk_deals" target="_blank" rel="noopener">
+        <span class="channel-name">🇬🇧 UK &amp; Ireland</span>
+        <span class="channel-handle">@hamradio_uk_deals</span>
+      </a>
       <a class="channel-row" href="https://t.me/krotkofalowiec" target="_blank" rel="noopener">
-        <span class="channel-name">🇵🇱 Eastern Europe</span>
+        <span class="channel-name">🇵🇱 Central &amp; Eastern Europe</span>
         <span class="channel-handle">@krotkofalowiec</span>
       </a>
       <a class="channel-row" href="https://t.me/hamradio_deals" target="_blank" rel="noopener">
-        <span class="channel-name">🇺🇸 USA and Canada</span>
+        <span class="channel-name">🇺🇸 USA &amp; Canada</span>
         <span class="channel-handle">@hamradio_deals</span>
       </a>
       <a class="channel-row" href="https://t.me/radioaficionado_deals" target="_blank" rel="noopener">
-        <span class="channel-name">🌎 South America</span>
+        <span class="channel-name">🌎 Spain &amp; Latin America</span>
         <span class="channel-handle">@radioaficionado_deals</span>
       </a>
       <a class="channel-row" href="https://t.me/musen_deals" target="_blank" rel="noopener">
         <span class="channel-name">🇯🇵 Japan</span>
         <span class="channel-handle">@musen_deals</span>
       </a>
+      <a class="channel-row" href="https://t.me/hamradio_au_deals" target="_blank" rel="noopener">
+        <span class="channel-name">🇦🇺 Australia &amp; New Zealand</span>
+        <span class="channel-handle">@hamradio_au_deals</span>
+      </a>
+      <a class="channel-row" href="https://t.me/radioamatir_deals" target="_blank" rel="noopener">
+        <span class="channel-name">🌏 Southeast Asia</span>
+        <span class="channel-handle">@radioamatir_deals</span>
+      </a>
       <a class="channel-row" href="https://t.me/radiohawi" target="_blank" rel="noopener">
-        <span class="channel-name">🇸🇦 Middle East</span>
+        <span class="channel-name">🇸🇦 Middle East &amp; North Africa</span>
         <span class="channel-handle">@radiohawi</span>
+      </a>
+      <a class="channel-row" href="https://t.me/radioamador_br" target="_blank" rel="noopener">
+        <span class="channel-name">🇧🇷 Brazil</span>
+        <span class="channel-handle">@radioamador_br</span>
       </a>
     </div>
   </div>
@@ -416,11 +432,11 @@
     <a href="https://github.com/R2BPW/radio_bargain_bot_v2" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
       Source
-      <span class="badge">v1.0</span>
+      <span class="badge">v2.0</span>
     </a>
   </div>
 
-  <footer>Built by R2BPW · 8 clusters · 30+ platforms · publishes every 2 hours</footer>
+  <footer>Built by R2BPW · 15 clusters · 98 collectors · 12 active channels · publishes every 2 hours</footer>
 </main>
 </body>
 </html>
