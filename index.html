@@ -1,442 +1,407 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Radio Bargain Bot</title>
-  <meta name="description" content="Monitors 98 ham radio classifieds across 15 geo-clusters worldwide. Publishes verified bargains to 12 regional Telegram channels — automatically, every 2 hours.">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Radio Bargain Bot">
-  <meta property="og:description" content="Monitors 98 ham radio classifieds across 15 geo-clusters worldwide. Publishes verified bargains to 12 regional Telegram channels — automatically, every 2 hours.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://r2bpw.github.io/radio_bargain_bot_v2/">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Radio Bargain Bot">
-  <meta name="twitter:description" content="Monitors 98 ham radio classifieds across 15 geo-clusters. Publishes verified bargains to 12 regional Telegram channels.">
-
-  <!-- Pixel art favicon: radar/signal globe -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%231a1814' rx='3'/><rect x='7' y='7' width='2' height='2' fill='%23f9f7f4'/><rect x='6' y='5' width='4' height='1' fill='%232e5fa3'/><rect x='6' y='10' width='4' height='1' fill='%232e5fa3'/><rect x='5' y='6' width='1' height='4' fill='%232e5fa3'/><rect x='10' y='6' width='1' height='4' fill='%232e5fa3'/><rect x='5' y='3' width='6' height='1' fill='%237a756d'/><rect x='5' y='12' width='6' height='1' fill='%237a756d'/><rect x='3' y='5' width='1' height='6' fill='%237a756d'/><rect x='12' y='5' width='1' height='6' fill='%237a756d'/><rect x='4' y='4' width='1' height='1' fill='%237a756d'/><rect x='11' y='4' width='1' height='1' fill='%237a756d'/><rect x='4' y='11' width='1' height='1' fill='%237a756d'/><rect x='11' y='11' width='1' height='1' fill='%237a756d'/></svg>">
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg: #f9f7f4;
-      --surface: #f0ede8;
-      --text: #1a1814;
-      --muted: #7a756d;
-      --accent: #2e5fa3;
-      --green: #2a7a4b;
-      --border: #e0dbd2;
-      --font: -apple-system, 'Segoe UI', system-ui, sans-serif;
-      --font-serif: 'Iowan Old Style', 'Apple Garamond', Baskerville, 'Times New Roman', serif;
-      --font-mono: 'SF Mono', 'Fira Code', 'Cascadia Mono', Consolas, monospace;
-    }
-
-    body {
-      font-family: var(--font);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 3rem 2rem;
-    }
-
-    main {
-      max-width: 580px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.875rem;
-    }
-
-    h1 {
-      font-family: var(--font-serif);
-      font-size: 2rem;
-      font-weight: 400;
-      letter-spacing: -0.01em;
-      line-height: 1.2;
-      margin-bottom: 0.875rem;
-    }
-
-    .tagline {
-      font-size: 1rem;
-      color: var(--muted);
-      margin-bottom: 2rem;
-      max-width: 480px;
-    }
-
-    /* ─── HOW IT WORKS ─── */
-    .flow {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin-bottom: 2rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .flow-step {
-      display: grid;
-      grid-template-columns: 2rem 1fr;
-      gap: 0.75rem;
-      align-items: start;
-      padding: 0.875rem 1rem;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      font-size: 0.875rem;
-    }
-
-    .flow-step:last-child { border-bottom: none; }
-
-    .flow-n {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      color: var(--muted);
-      padding-top: 0.15rem;
-    }
-
-    .flow-text strong { font-weight: 500; }
-    .flow-text span { color: var(--muted); }
-
-    /* ─── EXAMPLE POST ─── */
-    .example {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 1rem;
-      margin-bottom: 2rem;
-      font-size: 0.82rem;
-    }
-
-    .ex-label {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
-    }
-
-    .ex-post {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 0.75rem 0.875rem;
-      font-size: 0.82rem;
-      line-height: 1.55;
-    }
-
-    .ex-post .title { font-weight: 600; margin-bottom: 0.25rem; }
-    .ex-post .price { color: var(--accent); }
-    .ex-post .discount { color: var(--green); font-weight: 500; }
-    .ex-post .dim { color: var(--muted); }
-    .ex-post .why { color: var(--muted); font-size: 0.78rem; margin-top: 0.35rem; }
-
-    /* ─── FACTS ─── */
-    .facts {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-      margin-bottom: 2rem;
-    }
-
-    .fact {
-      background: var(--surface);
-      padding: 1rem;
-      text-align: center;
-    }
-
-    .fact-value {
-      font-family: var(--font-serif);
-      font-size: 1.5rem;
-      color: var(--accent);
-      display: block;
-    }
-
-    .fact-label {
-      font-size: 0.68rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-top: 0.2rem;
-    }
-
-    /* ─── CHANNELS ─── */
-    .channels { margin-bottom: 2rem; }
-
-    .channels-title {
-      font-size: 0.68rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.6rem;
-    }
-
-    .channel-grid {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .channel-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.6rem 1rem;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      font-size: 0.82rem;
-      text-decoration: none;
-      color: var(--text);
-      transition: opacity 0.15s;
-    }
-
-    .channel-row:last-child { border-bottom: none; }
-    .channel-row:hover { opacity: 0.7; }
-
-    .channel-name { font-weight: 500; }
-    .channel-handle {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--accent);
-    }
-
-    /* ─── PIPELINE ─── */
-    .pipeline { margin-bottom: 2rem; }
-
-    .pipeline-title {
-      font-size: 0.68rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 0.6rem;
-    }
-
-    .pipe-steps {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.78rem;
-    }
-
-    .pipe-step {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 0.2rem 0.5rem;
-      color: var(--text);
-    }
-
-    .pipe-arrow { color: var(--muted); font-size: 0.7rem; }
-
-    /* ─── LINKS ─── */
-    .links {
-      display: flex;
-      gap: 1.25rem;
-      margin-bottom: 2.5rem;
-      align-items: center;
-    }
-
-    .links a {
-      font-size: 0.875rem;
-      color: var(--accent);
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      transition: opacity 0.15s;
-    }
-
-    .links a:hover { opacity: 0.65; }
-    .links svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
-    .links .dot { color: var(--border); }
-
-    .badge {
-      display: inline-block;
-      font-family: var(--font-mono);
-      font-size: 0.65rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 0.1rem 0.4rem;
-      color: var(--muted);
-      vertical-align: middle;
-      margin-left: 0.3rem;
-    }
-
-    footer {
-      font-size: 0.75rem;
-      color: var(--muted);
-      border-top: 1px solid var(--border);
-      padding-top: 1.25rem;
-    }
-
-    @media (max-width: 480px) {
-      .facts { grid-template-columns: repeat(3, 1fr); }
-      .links { flex-wrap: wrap; }
-      .links .dot { display: none; }
-    }
-  </style>
+<title>IR Bridge: Ericsson MC218 &mdash; Flipper Zero &mdash; LLM</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="keywords" content="Ericsson MC218, Psion 5mx, Flipper Zero, infrared, IrDA, LLM, EPOC, OPL, ESP32, IR bridge, palmtop, large language model">
+<meta name="description" content="A bidirectional infrared bridge between the Ericsson MC218 palmtop (EPOC R5, 1999) and large language models, via Flipper Zero and ESP32.">
 </head>
-<body>
-<main>
-  <div class="eyebrow">Ham radio · Worldwide · v2.0</div>
-  <h1>Radio Bargain Bot</h1>
-  <p class="tagline">Monitors 98 ham radio classifieds across 15 geo-clusters. Only verified bargains reach the channel — automatically, every 2 hours.</p>
+<body bgcolor="#FFFFFF" text="#333333" link="#003366" vlink="#666666" alink="#990000">
 
-  <div class="flow">
-    <div class="flow-step">
-      <span class="flow-n">01</span>
-      <div class="flow-text"><strong>Collects listings</strong> <span>— 98 collectors across 50+ countries: 🇫🇮 Huuto, 🇩🇰 DBA, 🇭🇺 Hardverapro, 🇸🇦 Haraj, 🇷🇸 KPJ, 🇸🇮 Bolha, 🇱🇹 Skelbiu, 🇯🇵 Rakuma</span></div>
-    </div>
-    <div class="flow-step">
-      <span class="flow-n">02</span>
-      <div class="flow-text"><strong>Benchmarks prices</strong> <span>— compares against regional asking-price medians via IQR-filtered statistics; converts all prices to USD via live FX rates</span></div>
-    </div>
-    <div class="flow-step">
-      <span class="flow-n">03</span>
-      <div class="flow-text"><strong>Filters ruthlessly</strong> <span>— ham radio keywords in 8 languages, no WTB posts, age ≤ 90 days, price ≥ $10, live link check, no duplicates</span></div>
-    </div>
-    <div class="flow-step">
-      <span class="flow-n">04</span>
-      <div class="flow-text"><strong>Publishes to channels</strong> <span>— top 3 deals per cluster every 2 hours, with source country flag and discount explanation; max 3 clusters run concurrently</span></div>
-    </div>
-  </div>
+<table width="540" border="0" cellpadding="0" cellspacing="0" align="center">
 
-  <!-- Example post -->
-  <div class="example">
-    <div class="ex-label">Example channel post</div>
-    <div class="ex-post">
-      <div class="title">🇩🇪 YAESU FTDX-101D</div>
-      <div><span class="price">€ 2 350 · ~$2 540</span> &nbsp;<span class="discount">🔥 −14% vs avg</span></div>
-      <div class="dim">📦 used · kleinanzeigen.de</div>
-      <div class="why">💡 14% below regional median (IQR benchmark, 47 active listings)</div>
-    </div>
-  </div>
+<tr><td colspan="3" height="24"></td></tr>
+<tr><td colspan="3" bgcolor="#999999" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td colspan="3" height="14"></td></tr>
 
-  <div class="facts">
-    <div class="fact">
-      <span class="fact-value">98</span>
-      <span class="fact-label">Collectors</span>
-    </div>
-    <div class="fact">
-      <span class="fact-value">15</span>
-      <span class="fact-label">Geo-clusters</span>
-    </div>
-    <div class="fact">
-      <span class="fact-value">50+</span>
-      <span class="fact-label">Countries</span>
-    </div>
-  </div>
+<!-- HEADER -->
+<tr>
+<td>
+<font face="Georgia, Times New Roman, serif" size="5" color="#222222"><b>IR Bridge</b></font><br>
+<font face="Georgia, Times New Roman, serif" size="2" color="#888888"><i>Ericsson MC218 &harr; Flipper Zero &harr; LLM</i></font>
+</td>
+</tr>
 
-  <!-- Regional channels -->
-  <div class="channels">
-    <div class="channels-title">Active regional channels (12 of 15)</div>
-    <div class="channel-grid">
-      <a class="channel-row" href="https://t.me/hamradiobargain" target="_blank" rel="noopener">
-        <span class="channel-name">🇷🇺 Russia &amp; CIS</span>
-        <span class="channel-handle">@hamradiobargain</span>
-      </a>
-      <a class="channel-row" href="https://t.me/funksachen" target="_blank" rel="noopener">
-        <span class="channel-name">🇩🇪 Western Europe</span>
-        <span class="channel-handle">@funksachen</span>
-      </a>
-      <a class="channel-row" href="https://t.me/radioamatoren" target="_blank" rel="noopener">
-        <span class="channel-name">🇸🇪 Scandinavia</span>
-        <span class="channel-handle">@radioamatoren</span>
-      </a>
-      <a class="channel-row" href="https://t.me/hamradio_uk_deals" target="_blank" rel="noopener">
-        <span class="channel-name">🇬🇧 UK &amp; Ireland</span>
-        <span class="channel-handle">@hamradio_uk_deals</span>
-      </a>
-      <a class="channel-row" href="https://t.me/krotkofalowiec" target="_blank" rel="noopener">
-        <span class="channel-name">🇵🇱 Central &amp; Eastern Europe</span>
-        <span class="channel-handle">@krotkofalowiec</span>
-      </a>
-      <a class="channel-row" href="https://t.me/hamradio_deals" target="_blank" rel="noopener">
-        <span class="channel-name">🇺🇸 USA &amp; Canada</span>
-        <span class="channel-handle">@hamradio_deals</span>
-      </a>
-      <a class="channel-row" href="https://t.me/radioaficionado_deals" target="_blank" rel="noopener">
-        <span class="channel-name">🌎 Spain &amp; Latin America</span>
-        <span class="channel-handle">@radioaficionado_deals</span>
-      </a>
-      <a class="channel-row" href="https://t.me/musen_deals" target="_blank" rel="noopener">
-        <span class="channel-name">🇯🇵 Japan</span>
-        <span class="channel-handle">@musen_deals</span>
-      </a>
-      <a class="channel-row" href="https://t.me/hamradio_au_deals" target="_blank" rel="noopener">
-        <span class="channel-name">🇦🇺 Australia &amp; New Zealand</span>
-        <span class="channel-handle">@hamradio_au_deals</span>
-      </a>
-      <a class="channel-row" href="https://t.me/radioamatir_deals" target="_blank" rel="noopener">
-        <span class="channel-name">🌏 Southeast Asia</span>
-        <span class="channel-handle">@radioamatir_deals</span>
-      </a>
-      <a class="channel-row" href="https://t.me/radiohawi" target="_blank" rel="noopener">
-        <span class="channel-name">🇸🇦 Middle East &amp; North Africa</span>
-        <span class="channel-handle">@radiohawi</span>
-      </a>
-      <a class="channel-row" href="https://t.me/radioamador_br" target="_blank" rel="noopener">
-        <span class="channel-name">🇧🇷 Brazil</span>
-        <span class="channel-handle">@radioamador_br</span>
-      </a>
-    </div>
-  </div>
+<tr><td height="6"></td></tr>
+<tr><td bgcolor="#CCCCCC" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
 
-  <!-- Filter pipeline -->
-  <div class="pipeline">
-    <div class="pipeline-title">Filter pipeline</div>
-    <div class="pipe-steps">
-      <span class="pipe-step">HAM keywords</span>
-      <span class="pipe-arrow">→</span>
-      <span class="pipe-step">No WTB</span>
-      <span class="pipe-arrow">→</span>
-      <span class="pipe-step">Age ≤ 90d</span>
-      <span class="pipe-arrow">→</span>
-      <span class="pipe-step">Price ≥ $10</span>
-      <span class="pipe-arrow">→</span>
-      <span class="pipe-step">Discount ≥ 5%</span>
-      <span class="pipe-arrow">→</span>
-      <span class="pipe-step">Link alive</span>
-      <span class="pipe-arrow">→</span>
-      <span class="pipe-step">Dedup Redis + PG</span>
-    </div>
-  </div>
+<!-- NAVIGATION -->
+<tr>
+<td height="28" valign="middle">
+<font face="Verdana, Arial, sans-serif" size="1">
+<a href="#overview">Overview</a> &middot;
+<a href="#architecture">Architecture</a> &middot;
+<a href="#protocol">Protocol</a> &middot;
+<a href="#hardware">Hardware</a> &middot;
+<a href="#building">Building</a> &middot;
+<a href="#usage">Usage</a> &middot;
+<a href="#limitations">Limitations</a> &middot;
+<a href="#repository">Repository</a>
+&nbsp;<font color="#CCCCCC">|</font>&nbsp;
+<a href="/radio_bargain_bot_v2/"><font color="#999999">Radio&nbsp;Bargain</font></a>
+</font>
+</td>
+</tr>
 
-  <div class="links">
-    <a href="https://t.me/R2BPW" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-      Telegram @R2BPW
-    </a>
-    <span class="dot">·</span>
-    <a href="https://github.com/R2BPW/radio_bargain_bot_v2" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-      Source
-      <span class="badge">v2.0</span>
-    </a>
-  </div>
+<tr><td bgcolor="#CCCCCC" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td height="20"></td></tr>
 
-  <footer>Built by R2BPW · 15 clusters · 98 collectors · 12 active channels · publishes every 2 hours</footer>
-</main>
+<!-- ======================== OVERVIEW ======================== -->
+
+<tr><td>
+<a name="overview"></a>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+A working bridge that allows an <b>Ericsson MC218</b> &mdash; a 1999 palmtop running EPOC Release&nbsp;5 &mdash; to converse with a large language model via its built-in infrared port. The user types a question on the Psion keyboard; the message travels by IR to a Flipper Zero, which relays it over UART to an ESP32; the ESP32 queries an LLM over WiFi; and the response returns along the same path to appear on the palmtop's screen.
+</font></p>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+The MC218 uses a proprietary serial connector that has been out of production for twenty-five years. This project eliminates the need for any cable by using IrDA for bidirectional communication with modern infrastructure. No additional IR hardware is required: the Psion's built-in IrDA transceiver and the Flipper's TSOP receiver and IR LED are used directly, pointed at one another at a distance of ten to thirty centimetres.
+</font></p>
+</td></tr>
+
+<tr><td height="8"></td></tr>
+<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td height="16"></td></tr>
+
+<!-- ======================== ARCHITECTURE ======================== -->
+
+<tr><td>
+<a name="architecture"></a>
+<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Architecture</b></font>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+The signal chain is as follows:
+</font></p>
+
+<table width="400" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
+<tr><td>
+<font face="Courier New, Courier, monospace" size="2" color="#333333">
+Ericsson MC218<br>
+&nbsp;&nbsp;|&nbsp; IR (5-bit PWM, IrDA connect bursts)<br>
+&nbsp;&nbsp;v<br>
+Flipper Zero&nbsp;&nbsp;(IR Bridge FAP)<br>
+&nbsp;&nbsp;|&nbsp; UART 115200 baud<br>
+&nbsp;&nbsp;v<br>
+ESP32-S2 WiFi Devboard<br>
+&nbsp;&nbsp;|&nbsp; HTTPS / OpenRouter API<br>
+&nbsp;&nbsp;v<br>
+LLM (OpenRouter)<br>
+&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;v&nbsp; response returns same path<br>
+Ericsson MC218
+</font>
+</td></tr>
+</table>
+
+<br>
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+The Psion transmits using a 5-bit pulse-width modulation scheme built on top of IrDA connection attempt bursts. The Flipper decodes these pulses, assembles the message, and forwards it to the ESP32 as a simple newline-terminated ASCII frame. The ESP32 queries the LLM and returns the response over the same UART link. The Flipper then re-encodes the text as pulse-width IR at 36&nbsp;kHz carrier and transmits it back; the Psion reads this on its IrDA serial port (TTY:B) at 4800&nbsp;baud.
+</font></p>
+</td></tr>
+
+<tr><td height="8"></td></tr>
+<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td height="16"></td></tr>
+
+<!-- ======================== PROTOCOL ======================== -->
+
+<tr><td>
+<a name="protocol"></a>
+<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Protocol</b></font>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+<b>Psion &rarr; Flipper</b> (5-bit PWM). &nbsp;Each character is encoded as seven IrDA connection attempt bursts. The inter-burst gap encodes the data: a start space of approximately 1955&nbsp;ms, followed by five data bits (A=0 through Z=25, space=26, MSB first) where a short gap (~1205&nbsp;ms) represents 0 and a longer gap (~1505&nbsp;ms) represents 1, and a sixth parity bit (even). End of message is signalled by an extra flash followed by a two-second silence.
+</font></p>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+Why IrDA connect attempts rather than ordinary serial data? The Psion's TSOP-like receiver cannot decode SIR protocol from non-EPOC devices, but it can detect IrDA connection attempt bursts as IR activity. Each call to <font face="Courier New" size="2">IrDAConnectToSend&amp;:</font> in OPL produces a detectable flash. This is, in effect, an abuse of the IrDA handshake mechanism as a low-bandwidth data channel.
+</font></p>
+
+<br>
+<table width="440" border="0" cellpadding="3" cellspacing="0" align="center">
+<tr bgcolor="#888888">
+<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Component</b></font></td>
+<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>OPL PAUSE</b></font></td>
+<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Actual gap</b></font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">Start space</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">PAUSE 20 (1000 ms)</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">~1955 ms</font></td>
+</tr>
+<tr>
+<td><font face="Verdana, Arial" size="1">Bit = 0</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">PAUSE 5 (250 ms)</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">~1205 ms</font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">Bit = 1</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">PAUSE 11 (550 ms)</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">~1505 ms</font></td>
+</tr>
+<tr>
+<td><font face="Verdana, Arial" size="1">Parity space</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">PAUSE 5 or 11</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">~1205 or ~1505 ms</font></td>
+</tr>
+</table>
+
+<br>
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+Flipper-side thresholds: bit&nbsp;1 &ge; 1350&nbsp;ms, start &ge; 1730&nbsp;ms, timeout = 4000&nbsp;ms.
+</font></p>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+<b>Flipper &rarr; Psion</b> (pulse-width IR + EOT). &nbsp;Each ASCII byte is encoded as eight mark/space pairs at 36&nbsp;kHz carrier. A start mark of 50&nbsp;ms, data marks of 10&nbsp;ms (for 0) or 26&nbsp;ms (for 1), and an end mark of 75&nbsp;ms, with 5&nbsp;ms spaces between all marks. The Psion's SIR decoder on TTY:B at 4800&nbsp;baud interprets the resulting byte values: &ge; <font face="Courier New" size="2">$E0</font> = bit&nbsp;1, &le; <font face="Courier New" size="2">$90</font> = bit&nbsp;0. End of message is byte <font face="Courier New" size="2">0x04</font> (ASCII EOT). Data is sent in chunks of 63 bytes. Maximum response length: 200 characters.
+</font></p>
+
+<br>
+<table width="320" border="0" cellpadding="3" cellspacing="0" align="center">
+<tr bgcolor="#888888">
+<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Symbol</b></font></td>
+<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Mark duration</b></font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">Start</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">50 ms</font></td>
+</tr>
+<tr>
+<td><font face="Verdana, Arial" size="1">Bit 0</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">10 ms</font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">Bit 1</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">26 ms</font></td>
+</tr>
+<tr>
+<td><font face="Verdana, Arial" size="1">End</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">75 ms</font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">Space between marks</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">5 ms</font></td>
+</tr>
+</table>
+
+<br>
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+<b>Flipper &harr; ESP32</b> (UART). &nbsp;115200 baud, newline-terminated ASCII. The Flipper sends <font face="Courier New" size="2">Q:&lt;text&gt;\n</font> for queries and <font face="Courier New" size="2">PING\n</font> for heartbeats. The ESP32 replies with <font face="Courier New" size="2">R:&lt;text&gt;\n</font> for responses, <font face="Courier New" size="2">S:&lt;status&gt;\n</font> for status, and <font face="Courier New" size="2">E:&lt;reason&gt;\n</font> for errors. The advanced bridge sketch supports an RPC opcode table via <font face="Courier New" size="2">OP:HH:params\n</font> frames.
+</font></p>
+</td></tr>
+
+<tr><td height="8"></td></tr>
+<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td height="16"></td></tr>
+
+<!-- ======================== HARDWARE ======================== -->
+
+<tr><td>
+<a name="hardware"></a>
+<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Hardware</b></font>
+
+<br><br>
+<table width="460" border="0" cellpadding="3" cellspacing="0" align="center">
+<tr bgcolor="#888888">
+<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Component</b></font></td>
+<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Notes</b></font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">Ericsson MC218</font></td>
+<td><font face="Verdana, Arial" size="1">EPOC Release 5, OPL. Built-in IrDA port.</font></td>
+</tr>
+<tr>
+<td><font face="Verdana, Arial" size="1">Flipper Zero</font></td>
+<td><font face="Verdana, Arial" size="1">Stock firmware with IR subsystem.</font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">Flipper WiFi Devboard</font></td>
+<td><font face="Verdana, Arial" size="1">Official ESP32-S2-WROVER. Plugs into Flipper header.</font></td>
+</tr>
+</table>
+
+<br>
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+No additional IR hardware is needed. Point the Psion's IrDA window at the Flipper's IR transceiver, ten to thirty centimetres apart.
+</font></p>
+</td></tr>
+
+<tr><td height="8"></td></tr>
+<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td height="16"></td></tr>
+
+<!-- ======================== BUILDING ======================== -->
+
+<tr><td>
+<a name="building"></a>
+<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Building</b></font>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+<b>Flipper application.</b>
+</font></p>
+
+<table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
+<tr><td>
+<font face="Courier New, Courier, monospace" size="2" color="#333333">
+cd flipper/ir_bridge<br>
+ufbt<br>
+# copy dist/ir_bridge.fap to<br>
+# SD: /ext/apps/Infrared/
+</font>
+</td></tr>
+</table>
+
+<br>
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+<b>ESP32 sketch.</b> &nbsp;Edit <font face="Courier New" size="2">esp32/simple_bridge/simple_bridge.ino</font> and set WiFi credentials and OpenRouter API key. Then:
+</font></p>
+
+<table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
+<tr><td>
+<font face="Courier New, Courier, monospace" size="2" color="#333333">
+arduino-cli compile \<br>
+&nbsp;&nbsp;--fqbn "esp32:esp32:esp32s2:CDCOnBoot=cdc" \<br>
+&nbsp;&nbsp;esp32/simple_bridge/ \<br>
+&nbsp;&nbsp;--output-dir build
+</font>
+</td></tr>
+</table>
+
+<br>
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+Flash: hold BOOT on devboard, press RESET, flash with esptool, power-cycle.
+</font></p>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+<b>Psion OPL programme.</b> &nbsp;Requires the EPOC SDK with OPLTRAN.EXE (runs under Wine on macOS and Linux):
+</font></p>
+
+<table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
+<tr><td>
+<font face="Courier New, Courier, monospace" size="2" color="#333333">
+unix2dos psion/irchat.opl<br>
+wine path/to/OPLTRAN.EXE "C:\\irchat.opl"<br>
+# copy irchat.opo to Psion via<br>
+# IR, cable, or CF card
+</font>
+</td></tr>
+</table>
+
+<br>
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+The OPL source uses <font face="Courier New" size="2">INCLUDE "SYSTEM.OXH"</font> for IrDA functions.
+</font></p>
+</td></tr>
+
+<tr><td height="8"></td></tr>
+<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td height="16"></td></tr>
+
+<!-- ======================== USAGE ======================== -->
+
+<tr><td>
+<a name="usage"></a>
+<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Usage</b></font>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+Flash the IR Bridge FAP to the Flipper and launch it from the Infrared category. Power the ESP32 devboard; it will connect to WiFi and report <font face="Courier New" size="2">S:WIFI_OK</font>. On the Psion, run <font face="Courier New" size="2">irchat.opo</font>, type a message (A&ndash;Z and spaces), and press Enter. The Psion transmits via IR &mdash; the Flipper's screen shows a callback counter &mdash; then enters listening mode. The Flipper dispatches the query to the ESP32, which queries the LLM; the response arrives back on the Psion's screen. The programme then prompts for the next message.
+</font></p>
+
+<br>
+<table width="300" border="0" cellpadding="3" cellspacing="0" align="center">
+<tr bgcolor="#888888">
+<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Button</b></font></td>
+<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Action</b></font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">OK</font></td>
+<td><font face="Verdana, Arial" size="1">Send received message to LLM</font></td>
+</tr>
+<tr>
+<td><font face="Verdana, Arial" size="1">Left</font></td>
+<td><font face="Verdana, Arial" size="1">Clear display / reset state</font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">Right</font></td>
+<td><font face="Verdana, Arial" size="1">Ping ESP32</font></td>
+</tr>
+<tr>
+<td><font face="Verdana, Arial" size="1">Back</font></td>
+<td><font face="Verdana, Arial" size="1">Exit application</font></td>
+</tr>
+</table>
+<br>
+</td></tr>
+
+<tr><td height="8"></td></tr>
+<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td height="16"></td></tr>
+
+<!-- ======================== LIMITATIONS ======================== -->
+
+<tr><td>
+<a name="limitations"></a>
+<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Known Limitations</b></font>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+The Psion transmit alphabet is restricted to A&ndash;Z and space; there are no numerals or punctuation. IrDA connect overhead of approximately 955&nbsp;ms per burst results in a throughput of roughly 3.5 seconds per character. LLM responses are capped at 200 characters by the IR transmit buffer constraint (<font face="Courier New" size="2">MAX_TIMINGS_AMOUNT=1024</font>). The Psion receives only the first burst of a multi-burst response owing to blocking I/O in OPL with no asynchronous timeout. The <font face="Courier New" size="2">infrared_send_raw_ext</font> timing is approximate; long transmissions may drift. TTY:B may be busy after IrDA TX; the Psion retries up to fifteen times over seventy-five seconds.
+</font></p>
+</td></tr>
+
+<tr><td height="8"></td></tr>
+<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td height="16"></td></tr>
+
+<!-- ======================== REPOSITORY ======================== -->
+
+<tr><td>
+<a name="repository"></a>
+<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Repository</b></font>
+
+<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
+Source code and documentation are at<br>
+<a href="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</a>.
+</font></p>
+
+<table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
+<tr><td>
+<font face="Courier New, Courier, monospace" size="2" color="#333333">
+psion/<br>
+&nbsp;&nbsp;irchat.opl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPL chat programme<br>
+<br>
+flipper/ir_bridge/<br>
+&nbsp;&nbsp;ir_bridge.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flipper Zero FAP source<br>
+&nbsp;&nbsp;application.fam&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;app manifest<br>
+<br>
+esp32/<br>
+&nbsp;&nbsp;llm_bridge/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advanced bridge (RPC)<br>
+&nbsp;&nbsp;simple_bridge/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimal bridge<br>
+<br>
+docs/<br>
+&nbsp;&nbsp;PROTOCOL.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol specification<br>
+&nbsp;&nbsp;HARDWARE.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wiring notes<br>
+&nbsp;&nbsp;OPL_NOTES.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EPOC OPL compilation
+</font>
+</td></tr>
+</table>
+<br>
+</td></tr>
+
+<tr><td height="8"></td></tr>
+<tr><td bgcolor="#999999" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+<tr><td height="14"></td></tr>
+
+<!-- ======================== FOOTER ======================== -->
+
+<tr><td>
+<font face="Verdana, Arial, sans-serif" size="1" color="#999999">
+<a href="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</a>
+</font>
+</td></tr>
+
+<tr><td height="30"></td></tr>
+
+</table>
+
 </body>
 </html>
