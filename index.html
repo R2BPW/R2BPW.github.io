@@ -98,7 +98,7 @@ A working bridge that allows an <b>Ericsson MC218</b> &mdash; a 1999 palmtop run
 </font></p>
 
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-The MC218 uses a proprietary serial connector that has been out of production for twenty-five years. This project eliminates the need for any cable by using IrDA for bidirectional communication with modern infrastructure. No additional IR hardware is required: the Psion's built-in IrDA transceiver and the Flipper's TSOP receiver and IR LED are used directly, pointed at one another at a distance of ten to thirty centimetres.
+The MC218 uses a proprietary serial connector that has been out of production for twenty-five years. This project eliminates the need for any cable by re-purposing the Psion's built-in IrDA transceiver hardware for a custom infrared protocol. No IrDA software stack is involved on the transmit side; instead, a native OPX drives the SIR modulator at a baud rate chosen so that the resulting pulse train is indistinguishable from a 38&nbsp;kHz consumer-IR carrier. No additional IR hardware is required: the Psion's IrDA LED and the Flipper's TSOP receiver are used directly, pointed at one another at a distance of ten to thirty centimetres.
 </font></p>
 </td></tr>
 
@@ -139,7 +139,7 @@ The Psion transmits using a native OPX (C++ DLL) that drives the IrDA UART at 38
 </font></p>
 
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-Why 38400&nbsp;baud? The Flipper's TSOP infrared receiver has a bandpass filter tuned to 38&nbsp;kHz. Ordinary IrDA at 4800 or 9600&nbsp;baud produces SIR pulses at the wrong repetition rate; the TSOP detects them unreliably, if at all. At 38400&nbsp;baud, the pulse repetition rate matches the TSOP's design frequency, so the receiver locks on cleanly &mdash; turning the IrDA port into a standard 38&nbsp;kHz IR transmitter. The native OPX (C++ DLL for EPOC) handles the encoding and UART access via the <font face="Courier New" size="2">RBusDevComm</font> device driver.
+Why 38400&nbsp;baud? The Flipper's TSOP infrared receiver has a bandpass filter tuned to 38&nbsp;kHz. Ordinary IrDA at 4800 or 9600&nbsp;baud produces SIR pulses at the wrong repetition rate; the TSOP detects them unreliably, if at all. At 38400&nbsp;baud, the pulse repetition rate matches the TSOP's design frequency, so the receiver locks on cleanly &mdash; turning the IrDA port into a standard 38&nbsp;kHz IR transmitter. This is <i>not</i> IrDA communication: the project uses only the IrDA transceiver <i>hardware</i> (LED and SIR pulse shaper), while the protocol above it is entirely custom. In OSI terms, the OPX implements a bespoke physical layer (Layer&nbsp;1) that re-purposes the SIR modulator as a 38&nbsp;kHz carrier generator, and a minimal data-link layer (Layer&nbsp;2) with its own header and ternary framing. The native OPX (C++ DLL for EPOC) handles the encoding and UART access via the <font face="Courier New" size="2">RBusDevComm</font> device driver.
 </font></p>
 
 <br>
@@ -374,7 +374,7 @@ Flash the IR Bridge FAP to the Flipper and launch it from the Infrared category.
 <font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Known Limitations</b></font>
 
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-The Psion transmit alphabet is restricted to A&ndash;Z and space; there are no numerals or punctuation. IrDA connect overhead of approximately 955&nbsp;ms per burst results in a throughput of roughly 3.5 seconds per character. LLM responses are capped at 200 characters by the IR transmit buffer constraint (<font face="Courier New" size="2">MAX_TIMINGS_AMOUNT=1024</font>). The Psion receives only the first burst of a multi-burst response owing to blocking I/O in OPL with no asynchronous timeout. The <font face="Courier New" size="2">infrared_send_raw_ext</font> timing is approximate; long transmissions may drift. TTY:B may be busy after IrDA TX; the Psion retries up to fifteen times over seventy-five seconds.
+The Psion transmit alphabet is restricted to A&ndash;Z and space; there are no numerals or punctuation. LLM responses are capped at 200 characters by the IR transmit buffer constraint (<font face="Courier New" size="2">MAX_TIMINGS_AMOUNT=1024</font>). The Psion receives only the first burst of a multi-burst response owing to blocking I/O in OPL with no asynchronous timeout. The <font face="Courier New" size="2">infrared_send_raw_ext</font> timing is approximate; long transmissions may drift. TTY:B may be busy after the OPX releases the port; the Psion retries up to fifteen times over seventy-five seconds. The OPX uses the IrDA UART hardware but does not implement the IrDA protocol &mdash; once the OPX has opened the port, standard OPL serial I/O (<font face="Courier New" size="2">LPRINT</font>) will not function until the device is rebooted.
 </font></p>
 </td></tr>
 
