@@ -5,15 +5,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IR Bridge: Ericsson MC218 — Flipper Zero — LLM</title>
-<meta name="description" content="A bidirectional infrared bridge between the Ericsson MC218 palmtop (EPOC R5, 1999) and large language models, via Flipper Zero and ESP32. A project by Artemy Urodovskikh (R2BPW).">
-<meta name="keywords" content="Ericsson MC218, Psion 5mx, Flipper Zero, infrared, IrDA, LLM, EPOC, OPL, ESP32, IR bridge, palmtop, large language model, Artemy Urodovskikh, R2BPW">
+<meta name="description" content="A bidirectional infrared bridge between the Ericsson MC218 palmtop (EPOC R5, 1999) and large language models, via Flipper Zero and Raspberry Pi. Uses 38kHz carrier trick at 38400 baud for reliable TSOP reception. A project by Artemy Urodovskikh (R2BPW).">
+<meta name="keywords" content="Ericsson MC218, Psion 5mx, Flipper Zero, infrared, IrDA, LLM, EPOC, OPL, OPX, 38kHz, Raspberry Pi, IR bridge, palmtop, large language model, Artemy Urodovskikh, R2BPW">
 <meta name="author" content="Artemy Urodovskikh (R2BPW)">
 <link rel="canonical" href="https://r2bpw.works/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
 <meta property="og:title" content="IR Bridge: Ericsson MC218 → Flipper Zero → LLM">
-<meta property="og:description" content="A 1999 Psion palmtop talks to a large language model via infrared — through Flipper Zero and ESP32, no cables needed.">
+<meta property="og:description" content="A 1999 Psion palmtop talks to a large language model via infrared — through Flipper Zero and Raspberry Pi. 38kHz carrier protocol sends HELLO in ~100ms.">
 <meta property="og:url" content="https://r2bpw.works/">
 <meta property="og:image" content="https://raw.githubusercontent.com/R2BPW/psion-flipper-bridge/refs/heads/main/media/photo_2026-03-22%2019.26.51_square.jpeg">
 <meta property="og:image:width" content="1280">
@@ -24,7 +24,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="IR Bridge: Ericsson MC218 → Flipper Zero → LLM">
-<meta name="twitter:description" content="A 1999 Psion palmtop talks to a large language model via infrared — through Flipper Zero and ESP32, no cables needed.">
+<meta name="twitter:description" content="A 1999 Psion palmtop talks to a large language model via infrared — through Flipper Zero and Raspberry Pi. 38kHz carrier protocol sends HELLO in ~100ms.">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/R2BPW/psion-flipper-bridge/refs/heads/main/media/photo_2026-03-22%2019.26.51_square.jpeg">
 
 <!-- JSON-LD structured data -->
@@ -33,7 +33,7 @@
   "@context": "https://schema.org",
   "@type": "SoftwareSourceCode",
   "name": "IR Bridge: Ericsson MC218 — Flipper Zero — LLM",
-  "description": "A bidirectional infrared bridge between the Ericsson MC218 palmtop (EPOC R5, 1999) and large language models, via Flipper Zero and ESP32.",
+  "description": "A bidirectional infrared bridge between the Ericsson MC218 palmtop (EPOC R5, 1999) and large language models, via Flipper Zero and Raspberry Pi. Uses 38kHz carrier protocol for reliable high-speed IR transmission.",
   "codeRepository": "https://github.com/R2BPW/psion-flipper-bridge",
   "programmingLanguage": ["C", "OPL", "Arduino C++"],
   "author": {
@@ -94,7 +94,7 @@
 <a name="overview"></a>
 
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-A working bridge that allows an <b>Ericsson MC218</b> &mdash; a 1999 palmtop running EPOC Release&nbsp;5 &mdash; to converse with a large language model via its built-in infrared port. The user types a question on the Psion keyboard; the message travels by IR to a Flipper Zero, which relays it over UART to an ESP32; the ESP32 queries an LLM over WiFi; and the response returns along the same path to appear on the palmtop's screen.
+A working bridge that allows an <b>Ericsson MC218</b> &mdash; a 1999 palmtop running EPOC Release&nbsp;5 &mdash; to converse with a large language model via its built-in infrared port. The user types a question on the Psion keyboard; the message travels by IR to a Flipper Zero, which relays it over USB&nbsp;CDC to a Raspberry Pi; the RPi queries an LLM (cloud or local); and the response returns along the same path to appear on the palmtop's screen.
 </font></p>
 
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
@@ -120,7 +120,7 @@ The signal chain is as follows:
 
 <br>
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-The Psion transmits using a 5-bit pulse-width modulation scheme built on top of IrDA connection attempt bursts. The Flipper decodes these pulses, assembles the message, and forwards it to the ESP32 as a simple newline-terminated ASCII frame. The ESP32 queries the LLM and returns the response over the same UART link. The Flipper then re-encodes the text as pulse-width IR at 36&nbsp;kHz carrier and transmits it back; the Psion reads this on its IrDA serial port (TTY:B) at 4800&nbsp;baud.
+The Psion transmits using a native OPX (C++ DLL) that drives the IrDA UART at 38400&nbsp;baud &mdash; a rate whose bit period (26&nbsp;&mu;s) matches the 38&nbsp;kHz carrier expected by the Flipper's TSOP receiver. Each byte <font face="Courier New" size="2">0x00</font> produces nine SIR pulses at ~38&nbsp;kHz (a &ldquo;mark&rdquo;), while <font face="Courier New" size="2">0xFF</font> produces silence (a &ldquo;space&rdquo;). An entire message is encoded as mark/space durations in a single buffer and transmitted in one SIR frame &mdash; &ldquo;HELLO&rdquo; takes roughly 100&nbsp;ms. The Flipper decodes the raw timing array, assembles the text, and forwards it over USB&nbsp;CDC to the Raspberry Pi. The Flipper then re-encodes the LLM response as pulse-width IR at 36&nbsp;kHz carrier and transmits it back; the Psion reads this on its IrDA serial port (TTY:B) at 4800&nbsp;baud.
 </font></p>
 </td></tr>
 
@@ -135,45 +135,50 @@ The Psion transmits using a 5-bit pulse-width modulation scheme built on top of 
 <font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Protocol</b></font>
 
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-<b>Psion &rarr; Flipper</b> (5-bit PWM). &nbsp;Each character is encoded as seven IrDA connection attempt bursts. The inter-burst gap encodes the data: a start space of approximately 1955&nbsp;ms, followed by five data bits (A=0 through Z=25, space=26, MSB first) where a short gap (~1205&nbsp;ms) represents 0 and a longer gap (~1505&nbsp;ms) represents 1, and a sixth parity bit (even). End of message is signalled by an extra flash followed by a two-second silence.
+<b>Psion &rarr; Flipper</b> (38&nbsp;kHz carrier, ternary). &nbsp;The entire message is transmitted in a single SIR frame at 38400&nbsp;baud. At this rate, each bit period is ~26&nbsp;&mu;s &mdash; nearly identical to the 38&nbsp;kHz period (26.3&nbsp;&mu;s) that the Flipper's TSOP infrared receiver is tuned to. A byte of <font face="Courier New" size="2">0x00</font> generates nine SIR pulses at ~38&nbsp;kHz (carrier &ldquo;on&rdquo;); a byte of <font face="Courier New" size="2">0xFF</font> generates no pulses (carrier &ldquo;off&rdquo;). By alternating runs of these bytes the OPX constructs mark/space pairs whose durations encode ternary digits. Each character uses three digits (base-3: A=0, B=1, &hellip; Z=25, space=26). A header mark (~8&nbsp;ms) opens the frame; then for each digit a short mark (~1&nbsp;ms) is followed by a space whose length encodes the value.
 </font></p>
 
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-Why IrDA connect attempts rather than ordinary serial data? The Psion's TSOP-like receiver cannot decode SIR protocol from non-EPOC devices, but it can detect IrDA connection attempt bursts as IR activity. Each call to <font face="Courier New" size="2">IrDAConnectToSend&amp;:</font> in OPL produces a detectable flash. This is, in effect, an abuse of the IrDA handshake mechanism as a low-bandwidth data channel.
+Why 38400&nbsp;baud? The Flipper's TSOP infrared receiver has a bandpass filter tuned to 38&nbsp;kHz. Ordinary IrDA at 4800 or 9600&nbsp;baud produces SIR pulses at the wrong repetition rate; the TSOP detects them unreliably, if at all. At 38400&nbsp;baud, the pulse repetition rate matches the TSOP's design frequency, so the receiver locks on cleanly &mdash; turning the IrDA port into a standard 38&nbsp;kHz IR transmitter. The native OPX (C++ DLL for EPOC) handles the encoding and UART access via the <font face="Courier New" size="2">RBusDevComm</font> device driver.
 </font></p>
 
 <br>
 <table width="440" border="0" cellpadding="3" cellspacing="0" align="center">
 <tr bgcolor="#888888">
-<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Component</b></font></td>
-<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>OPL PAUSE</b></font></td>
-<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Actual gap</b></font></td>
+<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Symbol</b></font></td>
+<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Mark (0x00 bytes)</b></font></td>
+<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Space (0xFF bytes)</b></font></td>
 </tr>
 <tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Start space</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">PAUSE 20 (1000 ms)</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">~1955 ms</font></td>
+<td><font face="Verdana, Arial" size="1">Header</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">32 (~8.3 ms)</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">16 (~4.2 ms)</font></td>
 </tr>
 <tr>
-<td><font face="Verdana, Arial" size="1">Bit = 0</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">PAUSE 5 (250 ms)</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">~1205 ms</font></td>
+<td><font face="Verdana, Arial" size="1">Digit 0</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
 </tr>
 <tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Bit = 1</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">PAUSE 11 (550 ms)</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">~1505 ms</font></td>
+<td><font face="Verdana, Arial" size="1">Digit 1</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">8 (~2.1 ms)</font></td>
 </tr>
 <tr>
-<td><font face="Verdana, Arial" size="1">Parity space</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">PAUSE 5 or 11</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">~1205 or ~1505 ms</font></td>
+<td><font face="Verdana, Arial" size="1">Digit 2</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">12 (~3.1 ms)</font></td>
+</tr>
+<tr bgcolor="#F7F7F7">
+<td><font face="Verdana, Arial" size="1">Trail</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
+<td align="center"><font face="Verdana, Arial" size="1">&mdash;</font></td>
 </tr>
 </table>
 
 <br>
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-Flipper-side thresholds: bit&nbsp;1 &ge; 1350&nbsp;ms, start &ge; 1730&nbsp;ms, timeout = 4000&nbsp;ms.
+Flipper-side thresholds: digit&nbsp;1 &ge; 1.5&nbsp;ms, digit&nbsp;2 &ge; 2.5&nbsp;ms, header &ge; 4&nbsp;ms. One character = three ternary digits = ~5&nbsp;ms. A five-letter word transmits in roughly 100&nbsp;ms including SIR frame overhead.
 </font></p>
 
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
@@ -239,8 +244,8 @@ Flipper-side thresholds: bit&nbsp;1 &ge; 1350&nbsp;ms, start &ge; 1730&nbsp;ms, 
 <td><font face="Verdana, Arial" size="1">Stock firmware with IR subsystem.</font></td>
 </tr>
 <tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Flipper WiFi Devboard</font></td>
-<td><font face="Verdana, Arial" size="1">Official ESP32-S2-WROVER. Plugs into Flipper header.</font></td>
+<td><font face="Verdana, Arial" size="1">Raspberry Pi</font></td>
+<td><font face="Verdana, Arial" size="1">Any model with USB. Connected to Flipper via USB-C CDC.</font></td>
 </tr>
 </table>
 
@@ -277,43 +282,44 @@ ufbt<br>
 
 <br>
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-<b>ESP32 sketch.</b> &nbsp;Edit <font face="Courier New" size="2">esp32/simple_bridge/simple_bridge.ino</font> and set WiFi credentials and OpenRouter API key. Then:
+<b>RPi bridge.</b> &nbsp;Deploy <font face="Courier New" size="2">rpi/bridge.py</font> to the Raspberry Pi. Requires <font face="Courier New" size="2">pyserial</font>. Connect RPi to Flipper via USB-C.
 </font></p>
 
 <table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
 <tr><td>
 <font face="Courier New, Courier, monospace" size="2" color="#333333">
-arduino-cli compile \<br>
-&nbsp;&nbsp;--fqbn "esp32:esp32:esp32s2:CDCOnBoot=cdc" \<br>
-&nbsp;&nbsp;esp32/simple_bridge/ \<br>
-&nbsp;&nbsp;--output-dir build
+pip install pyserial<br>
+python3 rpi/bridge.py
 </font>
 </td></tr>
 </table>
 
 <br>
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-Flash: hold BOOT on devboard, press RESET, flash with esptool, power-cycle.
-</font></p>
-
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-<b>Psion OPL programme.</b> &nbsp;Requires the EPOC SDK with OPLTRAN.EXE (runs under Wine on macOS and Linux):
+<b>Psion OPX + OPL.</b> &nbsp;The OPX (native C++ DLL) is built with the EPOC Release&nbsp;5 C++ SDK under Wine. The OPL programme is compiled with OPLTRAN.EXE:
 </font></p>
 
 <table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
 <tr><td>
 <font face="Courier New, Courier, monospace" size="2" color="#333333">
-unix2dos psion/irchat.opl<br>
-wine path/to/OPLTRAN.EXE "C:\\irchat.opl"<br>
-# copy irchat.opo to Psion via<br>
-# IR, cable, or CF card
+# OPX: built via GCC ARM cross-compiler<br>
+# (see opx/ for source and build scripts)<br>
+<br>
+# OPL:<br>
+unix2dos psion/irchat_opx.opl<br>
+wine path/to/OPLTRAN.EXE "C:\\irchat_opx.opl"<br>
+<br>
+# Copy irflash.opx to MC218:<br>
+#&nbsp;&nbsp;D:\System\Opx\IRFLASH.OPX<br>
+# Copy irchat_opx.opo to MC218<br>
+# via CF card
 </font>
 </td></tr>
 </table>
 
 <br>
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-The OPL source uses <font face="Courier New" size="2">INCLUDE "SYSTEM.OXH"</font> for IrDA functions.
+The OPX auto-loads via <font face="Courier New" size="2">DECLARE OPX</font> &mdash; no <font face="Courier New" size="2">LOADM</font> needed on EPOC R5.
 </font></p>
 </td></tr>
 
@@ -328,7 +334,7 @@ The OPL source uses <font face="Courier New" size="2">INCLUDE "SYSTEM.OXH"</font
 <font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Usage</b></font>
 
 <p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-Flash the IR Bridge FAP to the Flipper and launch it from the Infrared category. Power the ESP32 devboard; it will connect to WiFi and report <font face="Courier New" size="2">S:WIFI_OK</font>. On the Psion, run <font face="Courier New" size="2">irchat.opo</font>, type a message (A&ndash;Z and spaces), and press Enter. The Psion transmits via IR &mdash; the Flipper's screen shows a callback counter &mdash; then enters listening mode. The Flipper dispatches the query to the ESP32, which queries the LLM; the response arrives back on the Psion's screen. The programme then prompts for the next message.
+Flash the IR Bridge FAP to the Flipper and launch it from the Infrared category. Start <font face="Courier New" size="2">bridge.py</font> on the Raspberry Pi (connected via USB-C). On the Psion, run <font face="Courier New" size="2">irchat_opx.opo</font>, type a message (A&ndash;Z and spaces), and press Enter. The OPX encodes and transmits the entire message in a single IR burst &mdash; typically under 100&nbsp;ms. The Flipper decodes the raw signal, dispatches to the RPi, which queries the LLM; the response arrives back on the Psion's screen. The programme then prompts for the next message.
 </font></p>
 
 <br>
@@ -391,15 +397,18 @@ Source code and documentation are at<br>
 <tr><td>
 <font face="Courier New, Courier, monospace" size="2" color="#333333">
 psion/<br>
-&nbsp;&nbsp;irchat.opl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPL chat programme<br>
+&nbsp;&nbsp;irchat_opx.opl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPL chat (38kHz protocol)<br>
+<br>
+opx/<br>
+&nbsp;&nbsp;irflash_sir.cpp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPX source (38400 baud)<br>
+&nbsp;&nbsp;IRFLASH.OXH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPX header<br>
 <br>
 flipper/ir_bridge/<br>
 &nbsp;&nbsp;ir_bridge.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flipper Zero FAP source<br>
 &nbsp;&nbsp;application.fam&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;app manifest<br>
 <br>
-esp32/<br>
-&nbsp;&nbsp;llm_bridge/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;advanced bridge (RPC)<br>
-&nbsp;&nbsp;simple_bridge/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;minimal bridge<br>
+rpi/<br>
+&nbsp;&nbsp;bridge.py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RPi LLM bridge (USB CDC)<br>
 <br>
 docs/<br>
 &nbsp;&nbsp;PROTOCOL.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol specification<br>
