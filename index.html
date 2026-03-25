@@ -1,876 +1,385 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
-<html lang="en">
-<head>
-<meta name="yandex-verification" content="99a56b2710964ac4" />
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IR Bridge: Ericsson MC218 — Flipper Zero — LLM</title>
-<meta name="description" content="A bidirectional infrared bridge between the Ericsson MC218 palmtop (EPOC R5, 1999) and large language models, via Flipper Zero and Raspberry Pi. Uses 38kHz carrier trick at 38400 baud for reliable TSOP reception. A project by Artemy Urodovskikh (R2BPW).">
-<meta name="keywords" content="Ericsson MC218, Psion 5mx, Flipper Zero, infrared, IrDA, LLM, EPOC, OPL, OPX, 38kHz, Raspberry Pi, IR bridge, palmtop, large language model, Artemy Urodovskikh, R2BPW">
-<meta name="author" content="Artemy Urodovskikh (R2BPW)">
-<link rel="canonical" href="https://r2bpw.works/">
-
-<!-- Open Graph -->
-<meta property="og:type" content="article">
-<meta property="og:title" content="IR Bridge: Ericsson MC218 → Flipper Zero → LLM">
-<meta property="og:description" content="A 1999 Psion palmtop talks to a large language model via infrared — through Flipper Zero and Raspberry Pi. 38kHz carrier protocol sends HELLO in ~100ms.">
-<meta property="og:url" content="https://r2bpw.works/">
-<meta property="og:image" content="https://raw.githubusercontent.com/R2BPW/psion-flipper-bridge/refs/heads/main/media/photo_2026-03-22%2019.26.51_square.jpeg">
-<meta property="og:image:width" content="1280">
-<meta property="og:image:height" content="1280">
-<meta property="og:site_name" content="R2BPW — Artemy Urodovskikh">
-<meta property="article:author" content="Artemy Urodovskikh">
-
-<!-- Twitter Card -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="IR Bridge: Ericsson MC218 → Flipper Zero → LLM">
-<meta name="twitter:description" content="A 1999 Psion palmtop talks to a large language model via infrared — through Flipper Zero and Raspberry Pi. 38kHz carrier protocol sends HELLO in ~100ms.">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/R2BPW/psion-flipper-bridge/refs/heads/main/media/photo_2026-03-22%2019.26.51_square.jpeg">
-
-<!-- JSON-LD structured data -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareSourceCode",
-  "name": "IR Bridge: Ericsson MC218 — Flipper Zero — LLM",
-  "description": "A bidirectional infrared bridge between the Ericsson MC218 palmtop (EPOC R5, 1999) and large language models, via Flipper Zero and Raspberry Pi. Uses 38kHz carrier protocol for reliable high-speed IR transmission.",
-  "codeRepository": "https://github.com/R2BPW/psion-flipper-bridge",
-  "programmingLanguage": ["C", "OPL", "Arduino C++"],
-  "author": {
-    "@type": "Person",
-    "name": "Artemy Urodovskikh",
-    "alternateName": ["R2BPW", "Артемий Уродовских"],
-    "url": "https://r2bpw.works"
-  },
-  "url": "https://r2bpw.works/",
-  "image": "https://raw.githubusercontent.com/R2BPW/psion-flipper-bridge/refs/heads/main/media/photo_2026-03-22%2019.26.51_square.jpeg"
-}
-</script>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-img { display: block; }
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>R2BPW &mdash; IR Bridge: Ericsson MC218 / Flipper Zero / LLM</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Artemy Urodovskikh">
+<META NAME="description" CONTENT="Bidirectional infrared bridge from a 1999 palmtop to modern AI">
+<STYLE TYPE="text/css">
+<!--
 body {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 11px;
-  background: #C0C0C0;
-  color: #000000;
+  background: #FFFFFF;
+  color: #222222;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 13pt;
+  line-height: 1.6;
   margin: 0;
   padding: 0;
 }
-
-/* ===== FRAMESET SIMULATION ===== */
-.frameset {
-  display: flex;
-  width: 100%;
-  min-height: 100vh;
-  border: 2px inset #808080;
+a:link { color: #1a0dab; }
+a:visited { color: #4a3a8a; }
+a:hover { color: #cc0000; }
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20pt;
+  font-weight: normal;
+  color: #111111;
+  margin: 0 0 4px 0;
 }
-
-/* ===== LEFT NAVIGATION FRAME ===== */
-.frame-nav {
-  width: 160px;
-  min-width: 160px;
-  background: #336699;
-  border-right: 3px ridge #A0A0A0;
-  overflow-y: auto;
-  padding: 0;
+h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15pt;
+  font-weight: normal;
+  color: #111111;
+  margin: 28px 0 10px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #CCCCCC;
 }
-
-.nav-header {
-  background: #003366;
-  padding: 8px 8px 6px 8px;
-  border-bottom: 1px solid #001a33;
+p { margin: 10px 0; }
+pre, code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10pt;
 }
-
-.nav-header img {
-  display: inline;
+pre {
+  background: #F5F5F0;
+  border: 1px solid #DDDDDD;
+  padding: 10px 12px;
+  line-height: 1.5;
+  overflow: auto;
 }
-
-.nav-header .site-title {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  font-weight: bold;
-  color: #FFFFFF;
-  text-decoration: none;
-  letter-spacing: -0.5px;
-}
-
-.nav-header .site-subtitle {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 9px;
-  color: #99CCFF;
-  display: block;
-  margin-top: 2px;
-}
-
-.nav-section {
-  padding: 6px 0;
-  border-bottom: 1px solid #2a5a8a;
-}
-
-.nav-section-title {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 9px;
-  font-weight: bold;
-  color: #FFCC00;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  letter-spacing: 0.5px;
-}
-
-.nav-link {
-  display: block;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 10px;
-  color: #FFFFFF;
-  text-decoration: none;
-  padding: 3px 10px 3px 16px;
+td, th {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 12pt;
   line-height: 1.5;
 }
-
-.nav-link:hover {
-  background: #4477AA;
-  color: #FFFF99;
-}
-
-.nav-link.active {
-  background: #224466;
-  color: #FFCC00;
-  font-weight: bold;
-}
-
-.nav-divider {
-  height: 1px;
-  background: #4477AA;
-  margin: 2px 8px;
-}
-
-.nav-bottom {
-  padding: 8px 10px;
-  border-top: 1px solid #2a5a8a;
-  margin-top: 10px;
-}
-
-.nav-bottom-text {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 8px;
-  color: #99BBDD;
-  line-height: 1.6;
-}
-
-.nav-bottom-text a {
-  color: #CCDDFF;
-  text-decoration: none;
-}
-
-.nav-bottom-text a:hover {
-  color: #FFFF99;
-  text-decoration: underline;
-}
-
-/* ===== MAIN CONTENT FRAME ===== */
-.frame-content {
-  flex: 1;
-  background: #FFFFFF;
-  overflow-y: auto;
-  padding: 0;
-}
-
-/* ===== TOP BANNER BAR ===== */
-.banner-bar {
-  background: #003366;
-  padding: 6px 12px;
-  border-bottom: 2px solid #001a33;
-}
-
-.banner-bar table {
-  width: 100%;
-}
-
-.banner-title {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 13px;
-  font-weight: bold;
-  color: #FFFFFF;
-}
-
-.banner-subtitle {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 10px;
-  color: #99CCFF;
-}
-
-/* ===== BREADCRUMB / NAV ROW ===== */
-.nav-row {
-  background: #EEEEEE;
-  padding: 4px 12px;
-  border-bottom: 1px solid #CCCCCC;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 10px;
-}
-
-.nav-row a {
-  color: #003366;
-  text-decoration: none;
-}
-
-.nav-row a:hover {
-  text-decoration: underline;
-  color: #990000;
-}
-
-/* ===== CONTENT AREA ===== */
-.content-body {
-  padding: 16px 20px 20px 20px;
-  max-width: 620px;
-}
-
-.content-body .section-head {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  font-weight: bold;
-  color: #003366;
-  margin: 0;
-  padding: 0 0 6px 0;
-}
-
-.content-body .section-subhead {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 10px;
-  color: #666666;
-  font-style: italic;
-  margin: 0 0 10px 0;
-}
-
-.content-body p {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 11px;
-  color: #333333;
-  line-height: 1.65;
-  text-align: justify;
-  margin: 0 0 10px 0;
-}
-
-.content-body p b {
-  color: #003366;
-}
-
-.content-body code,
-.content-body .code {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 10px;
-  color: #660000;
-}
-
-/* ===== SECTION DIVIDERS ===== */
-.section-rule {
-  height: 2px;
-  background: #336699;
-  border: none;
-  margin: 16px 0;
-}
-
-.section-rule-light {
-  height: 1px;
-  background: #CCCCCC;
-  border: none;
-  margin: 12px 0;
-}
-
-/* ===== DATA TABLES ===== */
-.data-table {
-  border-collapse: collapse;
-  margin: 10px auto;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 10px;
-}
-
-.data-table th {
-  background: #003366;
-  color: #FFFFFF;
-  font-weight: bold;
-  padding: 4px 10px;
+th {
   text-align: left;
-  border: 1px solid #002244;
-  font-size: 10px;
-}
-
-.data-table td {
-  padding: 3px 10px;
-  border: 1px solid #CCCCCC;
-  font-size: 10px;
-}
-
-.data-table tr:nth-child(even) td {
-  background: #EEF3F8;
-}
-
-.data-table tr:nth-child(odd) td {
-  background: #FFFFFF;
-}
-
-/* ===== CODE BLOCKS ===== */
-.code-block {
-  background: #F0F0E8;
-  border: 1px solid #CCCCBB;
-  padding: 8px 10px;
-  margin: 8px auto;
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 10px;
-  color: #333333;
-  line-height: 1.6;
-  max-width: 460px;
-}
-
-/* ===== ARCHITECTURE DIAGRAM ===== */
-.diagram-container {
-  text-align: center;
-  margin: 10px 0;
-}
-
-.diagram-container img {
-  margin: 0 auto;
-  border: 1px solid #CCCCCC;
-}
-
-/* ===== BOTTOM NAV BAR ===== */
-.bottom-nav {
-  background: #003366;
-  padding: 6px 12px;
-  text-align: center;
-  border-top: 2px solid #001a33;
-  margin-top: 20px;
-}
-
-.bottom-nav a {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 10px;
-  color: #FFFFFF;
-  text-decoration: none;
-  padding: 0 4px;
-}
-
-.bottom-nav a:hover {
-  color: #FFCC00;
-  text-decoration: underline;
-}
-
-.bottom-nav .sep {
-  color: #6699CC;
-  font-size: 10px;
-}
-
-/* ===== FOOTER ===== */
-.footer {
-  padding: 8px 20px;
-  border-top: 1px solid #CCCCCC;
-  background: #F0F0F0;
-}
-
-.footer-text {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 9px;
-  color: #999999;
-  text-align: center;
-  line-height: 1.6;
-}
-
-.footer-text a {
-  color: #666666;
-  text-decoration: none;
-}
-
-.footer-text a:hover {
-  text-decoration: underline;
-}
-
-/* ===== SECTION ANCHOR ===== */
-.section-anchor {
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  font-size: 13px;
   font-weight: bold;
-  color: #003366;
-  border-bottom: 2px solid #336699;
-  padding-bottom: 4px;
-  margin-bottom: 10px;
-  display: block;
+  padding: 5px 12px;
+  background: #F0F0EC;
+  border-bottom: 2px solid #999999;
 }
-</style>
-</head>
-<body>
-
-<div class="frameset">
-
-<!-- ==================== LEFT NAVIGATION FRAME ==================== -->
-<div class="frame-nav">
-
-  <div class="nav-header">
-    <span class="site-title">R2BPW</span>
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-section-title">IR Bridge</div>
-    <a href="#overview" class="nav-link active">Overview</a>
-    <a href="#architecture" class="nav-link">Architecture</a>
-    <a href="#protocol" class="nav-link">Protocol</a>
-    <a href="#hardware" class="nav-link">Hardware</a>
-    <a href="#building" class="nav-link">Building</a>
-    <a href="#usage" class="nav-link">Usage</a>
-    <a href="#limitations" class="nav-link">Limitations</a>
-    <a href="#repository" class="nav-link">Repository</a>
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-section-title">Other Projects</div>
-    <a href="/radio_bargain_bot_v2/" class="nav-link">Radio Bargain</a>
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-section-title">Resources</div>
-    <a href="https://github.com/R2BPW/psion-flipper-bridge" class="nav-link">GitHub Repo</a>
-  </div>
-
-  <div class="nav-bottom">
-    <div class="nav-bottom-text">
-      <a href="https://r2bpw.works">r2bpw.works</a><br>
-      &copy; 2026 R2BPW<br>
-      <br>
-      <a href="/cdn-cgi/l/email-protection#a2c3d0d6c7cfdbe2d090c0d2d58cd5cdd0c9d1">Contact</a>
-    </div>
-  </div>
-
-</div>
-
-<!-- ==================== MAIN CONTENT FRAME ==================== -->
-<div class="frame-content">
-
-  <!-- TOP BANNER -->
-  <div class="banner-bar">
-    <table border="0" cellpadding="0" cellspacing="0">
-    <tr>
-      <td><span class="banner-title">IR Bridge: Ericsson MC218 &harr; Flipper Zero &harr; LLM</span></td>
-    </tr>
-    <tr>
-      <td><span class="banner-subtitle">Showcase &mdash; A bidirectional infrared bridge from a 1999 palmtop to modern AI</span></td>
-    </tr>
-    </table>
-  </div>
-
-  <!-- NAV ROW -->
-  <div class="nav-row">
-    <a href="https://r2bpw.works">R2BPW</a> <font color="#999999">&raquo;</font>
-    <a href="#">Projects</a> <font color="#999999">&raquo;</font>
-    <b>IR Bridge</b>
-  </div>
-
-  <!-- CONTENT -->
-  <div class="content-body">
-
-    <!-- ======================== OVERVIEW ======================== -->
-    <a name="overview"></a>
-
-    <p>
-    A working bridge that allows an <b>Ericsson MC218</b> &mdash; a 1999 palmtop running EPOC Release&nbsp;5 &mdash; to converse with a large language model via its built-in infrared port. The user types a question on the Psion keyboard; the message travels by IR to a Flipper Zero, which relays it over USB&nbsp;CDC to a Raspberry Pi; the RPi queries an LLM (cloud or local); and the response returns along the same path to appear on the palmtop's screen.
-    </p>
-
-    <p>
-    The MC218 uses a proprietary serial connector that has been out of production for twenty-five years. This project eliminates the need for any cable by re-purposing the Psion's built-in IrDA transceiver hardware for a custom infrared protocol. No IrDA software stack is involved on the transmit side; instead, a native OPX drives the SIR modulator at a baud rate chosen so that the resulting pulse train is indistinguishable from a 38&nbsp;kHz consumer-IR carrier. No additional IR hardware is required: the Psion's IrDA LED and the Flipper's TSOP receiver are used directly, pointed at one another at a distance of ten to thirty centimetres.
-    </p>
-
-    <hr class="section-rule">
-
-    <!-- ======================== ARCHITECTURE ======================== -->
-    <a name="architecture"></a>
-    <span class="section-anchor">Architecture</span>
-
-    <p>
-    The signal chain is as follows:
-    </p>
-
-    <div class="diagram-container">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 310" width="540" style="max-width:100%;height:auto;font-family:Verdana,Arial,sans-serif;">
-      <defs>
-        <marker id="arrowRight" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
-          <polygon points="0,0 8,3 0,6" fill="#FFCC00"/>
-        </marker>
-        <marker id="arrowLeft" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
-          <polygon points="8,0 0,3 8,6" fill="#6699CC"/>
-        </marker>
-        <linearGradient id="boxGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#336699"/>
-          <stop offset="100%" stop-color="#224466"/>
-        </linearGradient>
-        <linearGradient id="llmGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="#996600"/>
-          <stop offset="100%" stop-color="#664400"/>
-        </linearGradient>
-      </defs>
-
-      <!-- Background -->
-      <rect x="0" y="0" width="540" height="310" rx="3" fill="#F0F0E8" stroke="#CCCCBB" stroke-width="1"/>
-
-      <!-- Title -->
-      <text x="270" y="24" text-anchor="middle" font-size="11" font-weight="bold" fill="#003366" letter-spacing="0.5">SIGNAL CHAIN</text>
-      <line x1="60" y1="32" x2="480" y2="32" stroke="#CCCCBB" stroke-width="1"/>
-
-      <!-- === ROW 1: DEVICES === -->
-
-      <!-- Ericsson MC218 -->
-      <rect x="20" y="52" width="110" height="54" rx="3" fill="url(#boxGrad)" stroke="#001a33" stroke-width="1"/>
-      <text x="75" y="72" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">Ericsson MC218</text>
-      <text x="75" y="85" text-anchor="middle" font-size="7" fill="#99CCFF">EPOC R5 &#183; IrDA</text>
-      <text x="75" y="97" text-anchor="middle" font-size="7" fill="#99CCFF">OPX + OPL</text>
-
-      <!-- Flipper Zero -->
-      <rect x="160" y="52" width="110" height="54" rx="3" fill="url(#boxGrad)" stroke="#001a33" stroke-width="1"/>
-      <text x="215" y="72" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">Flipper Zero</text>
-      <text x="215" y="85" text-anchor="middle" font-size="7" fill="#99CCFF">TSOP 38kHz</text>
-      <text x="215" y="97" text-anchor="middle" font-size="7" fill="#99CCFF">IR Bridge FAP</text>
-
-      <!-- Raspberry Pi -->
-      <rect x="300" y="52" width="110" height="54" rx="3" fill="url(#boxGrad)" stroke="#001a33" stroke-width="1"/>
-      <text x="355" y="72" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">Raspberry Pi</text>
-      <text x="355" y="85" text-anchor="middle" font-size="7" fill="#99CCFF">bridge.py</text>
-      <text x="355" y="97" text-anchor="middle" font-size="7" fill="#99CCFF">USB CDC</text>
-
-      <!-- LLM -->
-      <rect x="440" y="52" width="80" height="54" rx="3" fill="url(#llmGrad)" stroke="#4d3300" stroke-width="1"/>
-      <text x="480" y="72" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFCC00">LLM</text>
-      <text x="480" y="85" text-anchor="middle" font-size="7" fill="#FFEEAA">Cloud / Local</text>
-      <text x="480" y="97" text-anchor="middle" font-size="7" fill="#FFEEAA">API</text>
-
-      <!-- === FORWARD ARROWS (top) === -->
-      <line x1="130" y1="69" x2="158" y2="69" stroke="#FFCC00" stroke-width="2" marker-end="url(#arrowRight)"/>
-      <line x1="270" y1="69" x2="298" y2="69" stroke="#FFCC00" stroke-width="2" marker-end="url(#arrowRight)"/>
-      <line x1="410" y1="69" x2="438" y2="69" stroke="#FFCC00" stroke-width="2" marker-end="url(#arrowRight)"/>
-
-      <!-- === RETURN ARROWS (bottom) === -->
-      <line x1="440" y1="93" x2="412" y2="93" stroke="#6699CC" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowLeft)"/>
-      <line x1="300" y1="93" x2="272" y2="93" stroke="#6699CC" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowLeft)"/>
-      <line x1="160" y1="93" x2="132" y2="93" stroke="#6699CC" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowLeft)"/>
-
-      <!-- === LABELS ON ARROWS === -->
-      <rect x="131" y="44" width="26" height="12" rx="2" fill="#003366"/>
-      <text x="144" y="53" text-anchor="middle" font-size="6.5" font-weight="bold" fill="#FFCC00">IR</text>
-
-      <rect x="271" y="44" width="26" height="12" rx="2" fill="#003366"/>
-      <text x="284" y="53" text-anchor="middle" font-size="6.5" font-weight="bold" fill="#FFCC00">USB</text>
-
-      <rect x="411" y="44" width="26" height="12" rx="2" fill="#003366"/>
-      <text x="424" y="53" text-anchor="middle" font-size="6.5" font-weight="bold" fill="#FFCC00">API</text>
-
-      <!-- === ROW 2: PROTOCOL DETAIL === -->
-      <line x1="60" y1="126" x2="480" y2="126" stroke="#CCCCBB" stroke-width="1"/>
-      <text x="270" y="144" text-anchor="middle" font-size="10" font-weight="bold" fill="#003366">PROTOCOL DETAIL</text>
-
-      <!-- Psion to Flipper detail -->
-      <rect x="20" y="160" width="250" height="68" rx="3" fill="#FFFFFF" stroke="#336699" stroke-width="1"/>
-      <text x="145" y="176" text-anchor="middle" font-size="8" font-weight="bold" fill="#003366">Psion &#8594; Flipper</text>
-      <line x1="30" y1="182" x2="260" y2="182" stroke="#EEF3F8" stroke-width="1"/>
-      <text x="35" y="195" font-size="7" fill="#333333">SIR @ 38400 baud &#8594; 38 kHz carrier</text>
-      <text x="35" y="207" font-size="7" fill="#333333">Ternary encoding: 3 digits/char</text>
-      <text x="35" y="219" font-size="7" fill="#333333">"HELLO" &#8776; 100 ms total</text>
-
-      <!-- Flipper to Psion detail -->
-      <rect x="280" y="160" width="240" height="68" rx="3" fill="#FFFFFF" stroke="#336699" stroke-width="1"/>
-      <text x="400" y="176" text-anchor="middle" font-size="8" font-weight="bold" fill="#003366">Flipper &#8594; Psion</text>
-      <line x1="290" y1="182" x2="510" y2="182" stroke="#EEF3F8" stroke-width="1"/>
-      <text x="295" y="195" font-size="7" fill="#333333">Pulse-width IR @ 36 kHz carrier</text>
-      <text x="295" y="207" font-size="7" fill="#333333">TTY:B @ 4800 baud, 63-byte chunks</text>
-      <text x="295" y="219" font-size="7" fill="#333333">EOT = 0x04, max 200 chars</text>
-
-      <!-- === ROW 3: KEY INSIGHT === -->
-      <rect x="60" y="248" width="420" height="40" rx="3" fill="#003366" stroke="#001a33" stroke-width="1"/>
-      <text x="270" y="264" text-anchor="middle" font-size="8" font-weight="bold" fill="#FFCC00">KEY INSIGHT</text>
-      <text x="270" y="278" text-anchor="middle" font-size="7" fill="#FFFFFF">38400 baud bit period (26 &#181;s) &#8776; 38 kHz period (26.3 &#181;s) &#8594; TSOP locks on cleanly</text>
-
-      <!-- Legend -->
-      <line x1="60" y1="300" x2="80" y2="300" stroke="#FFCC00" stroke-width="2"/>
-      <text x="84" y="303" font-size="6.5" fill="#666666">Query path</text>
-      <line x1="150" y1="300" x2="170" y2="300" stroke="#6699CC" stroke-width="1.5" stroke-dasharray="4,2"/>
-      <text x="174" y="303" font-size="6.5" fill="#666666">Response path</text>
-
-    </svg>
-    </div>
-
-    <p>
-    The Psion transmits using a native OPX (C++ DLL) that drives the IrDA UART at 38400&nbsp;baud &mdash; a rate whose bit period (26&nbsp;&mu;s) matches the 38&nbsp;kHz carrier expected by the Flipper's TSOP receiver. Each byte <code>0x00</code> produces nine SIR pulses at ~38&nbsp;kHz (a &ldquo;mark&rdquo;), while <code>0xFF</code> produces silence (a &ldquo;space&rdquo;). An entire message is encoded as mark/space durations in a single buffer and transmitted in one SIR frame &mdash; &ldquo;HELLO&rdquo; takes roughly 100&nbsp;ms. The Flipper decodes the raw timing array, assembles the text, and forwards it over USB&nbsp;CDC to the Raspberry Pi. The Flipper then re-encodes the LLM response as pulse-width IR at 36&nbsp;kHz carrier and transmits it back; the Psion reads this on its IrDA serial port (TTY:B) at 4800&nbsp;baud.
-    </p>
-
-    <hr class="section-rule">
-
-    <!-- ======================== PROTOCOL ======================== -->
-    <a name="protocol"></a>
-    <span class="section-anchor">Protocol</span>
-
-    <p>
-    <b>Psion &rarr; Flipper</b> (38&nbsp;kHz carrier, ternary). &nbsp;The entire message is transmitted in a single SIR frame at 38400&nbsp;baud. At this rate, each bit period is ~26&nbsp;&mu;s &mdash; nearly identical to the 38&nbsp;kHz period (26.3&nbsp;&mu;s) that the Flipper's TSOP infrared receiver is tuned to. A byte of <code>0x00</code> generates nine SIR pulses at ~38&nbsp;kHz (carrier &ldquo;on&rdquo;); a byte of <code>0xFF</code> generates no pulses (carrier &ldquo;off&rdquo;). By alternating runs of these bytes the OPX constructs mark/space pairs whose durations encode ternary digits. Each character uses three digits (base-3: A=0, B=1, &hellip; Z=25, space=26). A header mark (~8&nbsp;ms) opens the frame; then for each digit a short mark (~1&nbsp;ms) is followed by a space whose length encodes the value.
-    </p>
-
-    <p>
-    Why 38400&nbsp;baud? The Flipper's TSOP infrared receiver has a bandpass filter tuned to 38&nbsp;kHz. Ordinary IrDA at 4800 or 9600&nbsp;baud produces SIR pulses at the wrong repetition rate; the TSOP detects them unreliably, if at all. At 38400&nbsp;baud, the pulse repetition rate matches the TSOP's design frequency, so the receiver locks on cleanly &mdash; turning the IrDA port into a standard 38&nbsp;kHz IR transmitter. This is <i>not</i> IrDA communication: the project uses only the IrDA transceiver <i>hardware</i> (LED and SIR pulse shaper), while the protocol above it is entirely custom. In OSI terms, the OPX implements a bespoke physical layer (Layer&nbsp;1) that re-purposes the SIR modulator as a 38&nbsp;kHz carrier generator, and a minimal data-link layer (Layer&nbsp;2) with its own header and ternary framing. The native OPX (C++ DLL for EPOC) handles the encoding and UART access via the <code>RBusDevComm</code> device driver.
-    </p>
-
-    <br>
-    <table class="data-table" width="440" align="center">
-    <tr>
-    <th>&nbsp;Symbol</th>
-    <th align="center">Mark (0x00 bytes)</th>
-    <th align="center">Space (0xFF bytes)</th>
-    </tr>
-    <tr>
-    <td>Header</td>
-    <td align="center">32 (~8.3 ms)</td>
-    <td align="center">16 (~4.2 ms)</td>
-    </tr>
-    <tr>
-    <td>Digit 0</td>
-    <td align="center">4 (~1.0 ms)</td>
-    <td align="center">4 (~1.0 ms)</td>
-    </tr>
-    <tr>
-    <td>Digit 1</td>
-    <td align="center">4 (~1.0 ms)</td>
-    <td align="center">8 (~2.1 ms)</td>
-    </tr>
-    <tr>
-    <td>Digit 2</td>
-    <td align="center">4 (~1.0 ms)</td>
-    <td align="center">12 (~3.1 ms)</td>
-    </tr>
-    <tr>
-    <td>Trail</td>
-    <td align="center">4 (~1.0 ms)</td>
-    <td align="center">&mdash;</td>
-    </tr>
-    </table>
-
-    <br>
-    <p>
-    Flipper-side thresholds: digit&nbsp;1 &ge; 1.5&nbsp;ms, digit&nbsp;2 &ge; 2.5&nbsp;ms, header &ge; 4&nbsp;ms. One character = three ternary digits = ~5&nbsp;ms. A five-letter word transmits in roughly 100&nbsp;ms including SIR frame overhead.
-    </p>
-
-    <p>
-    <b>Flipper &rarr; Psion</b> (pulse-width IR + EOT). &nbsp;Each ASCII byte is encoded as eight mark/space pairs at 36&nbsp;kHz carrier. A start mark of 50&nbsp;ms, data marks of 10&nbsp;ms (for 0) or 26&nbsp;ms (for 1), and an end mark of 75&nbsp;ms, with 5&nbsp;ms spaces between all marks. The Psion's SIR decoder on TTY:B at 4800&nbsp;baud interprets the resulting byte values: &ge; <code>$E0</code> = bit&nbsp;1, &le; <code>$90</code> = bit&nbsp;0. End of message is byte <code>0x04</code> (ASCII EOT). Data is sent in chunks of 63 bytes. Maximum response length: 200 characters.
-    </p>
-
-    <br>
-    <table class="data-table" width="320" align="center">
-    <tr>
-    <th>&nbsp;Symbol</th>
-    <th align="center">Mark duration</th>
-    </tr>
-    <tr>
-    <td>Start</td>
-    <td align="center">50 ms</td>
-    </tr>
-    <tr>
-    <td>Bit 0</td>
-    <td align="center">10 ms</td>
-    </tr>
-    <tr>
-    <td>Bit 1</td>
-    <td align="center">26 ms</td>
-    </tr>
-    <tr>
-    <td>End</td>
-    <td align="center">75 ms</td>
-    </tr>
-    <tr>
-    <td>Space between marks</td>
-    <td align="center">5 ms</td>
-    </tr>
-    </table>
-
-    <br>
-    <p>
-    <b>Flipper &harr; ESP32</b> (UART). &nbsp;115200 baud, newline-terminated ASCII. The Flipper sends <code>Q:&lt;text&gt;\n</code> for queries and <code>PING\n</code> for heartbeats. The ESP32 replies with <code>R:&lt;text&gt;\n</code> for responses, <code>S:&lt;status&gt;\n</code> for status, and <code>E:&lt;reason&gt;\n</code> for errors. The advanced bridge sketch supports an RPC opcode table via <code>OP:HH:params\n</code> frames.
-    </p>
-
-    <hr class="section-rule">
-
-    <!-- ======================== HARDWARE ======================== -->
-    <a name="hardware"></a>
-    <span class="section-anchor">Hardware</span>
-
-    <br>
-    <table class="data-table" width="460" align="center">
-    <tr>
-    <th>&nbsp;Component</th>
-    <th>Notes</th>
-    </tr>
-    <tr>
-    <td>Ericsson MC218</td>
-    <td>EPOC Release 5, OPL. Built-in IrDA port.</td>
-    </tr>
-    <tr>
-    <td>Flipper Zero</td>
-    <td>Stock firmware with IR subsystem.</td>
-    </tr>
-    <tr>
-    <td>Raspberry Pi</td>
-    <td>Any model with USB. Connected to Flipper via USB-C CDC.</td>
-    </tr>
-    </table>
-
-    <br>
-    <p>
-    No additional IR hardware is needed. Point the Psion's IrDA window at the Flipper's IR transceiver, ten to thirty centimetres apart.
-    </p>
-
-    <hr class="section-rule">
-
-    <!-- ======================== BUILDING ======================== -->
-    <a name="building"></a>
-    <span class="section-anchor">Building</span>
-
-    <p>
-    <b>Flipper application.</b>
-    </p>
-
-    <div class="code-block">
-    cd flipper/ir_bridge<br>
-    ufbt<br>
-    # copy dist/ir_bridge.fap to<br>
-    # SD: /ext/apps/Infrared/
-    </div>
-
-    <br>
-    <p>
-    <b>RPi bridge.</b> &nbsp;Deploy <code>rpi/bridge.py</code> to the Raspberry Pi. Requires <code>pyserial</code>. Connect RPi to Flipper via USB-C.
-    </p>
-
-    <div class="code-block">
-    pip install pyserial<br>
-    python3 rpi/bridge.py
-    </div>
-
-    <br>
-    <p>
-    <b>Psion OPX + OPL.</b> &nbsp;The OPX (native C++ DLL) is built with the EPOC Release&nbsp;5 C++ SDK under Wine. The OPL programme is compiled with OPLTRAN.EXE:
-    </p>
-
-    <div class="code-block">
-    # OPX: built via GCC ARM cross-compiler<br>
-    # (see opx/ for source and build scripts)<br>
-    <br>
-    # OPL:<br>
-    unix2dos psion/irchat_opx.opl<br>
-    wine path/to/OPLTRAN.EXE "C:\\irchat_opx.opl"<br>
-    <br>
-    # Copy irflash.opx to MC218:<br>
-    #&nbsp;&nbsp;D:\System\Opx\IRFLASH.OPX<br>
-    # Copy irchat_opx.opo to MC218<br>
-    # via CF card
-    </div>
-
-    <br>
-    <p>
-    The OPX auto-loads via <code>DECLARE OPX</code> &mdash; no <code>LOADM</code> needed on EPOC R5.
-    </p>
-
-    <hr class="section-rule">
-
-    <!-- ======================== USAGE ======================== -->
-    <a name="usage"></a>
-    <span class="section-anchor">Usage</span>
-
-    <p>
-    Flash the IR Bridge FAP to the Flipper and launch it from the Infrared category. Start <code>bridge.py</code> on the Raspberry Pi (connected via USB-C). On the Psion, run <code>irchat_opx.opo</code>, type a message (A&ndash;Z and spaces), and press Enter. The OPX encodes and transmits the entire message in a single IR burst &mdash; typically under 100&nbsp;ms. The Flipper decodes the raw signal, dispatches to the RPi, which queries the LLM; the response arrives back on the Psion's screen. The programme then prompts for the next message.
-    </p>
-
-    <br>
-    <table class="data-table" width="300" align="center">
-    <tr>
-    <th>&nbsp;Button</th>
-    <th>Action</th>
-    </tr>
-    <tr>
-    <td>OK</td>
-    <td>Send received message to LLM</td>
-    </tr>
-    <tr>
-    <td>Left</td>
-    <td>Clear display / reset state</td>
-    </tr>
-    <tr>
-    <td>Right</td>
-    <td>Ping ESP32</td>
-    </tr>
-    <tr>
-    <td>Back</td>
-    <td>Exit application</td>
-    </tr>
-    </table>
-    <br>
-
-    <hr class="section-rule">
-
-    <!-- ======================== LIMITATIONS ======================== -->
-    <a name="limitations"></a>
-    <span class="section-anchor">Known Limitations</span>
-
-    <p>
-    The Psion transmit alphabet is restricted to A&ndash;Z and space; there are no numerals or punctuation. LLM responses are capped at 200 characters by the IR transmit buffer constraint (<code>MAX_TIMINGS_AMOUNT=1024</code>). The Psion receives only the first burst of a multi-burst response owing to blocking I/O in OPL with no asynchronous timeout. The <code>infrared_send_raw_ext</code> timing is approximate; long transmissions may drift. TTY:B may be busy after the OPX releases the port; the Psion retries up to fifteen times over seventy-five seconds. The OPX uses the IrDA UART hardware but does not implement the IrDA protocol &mdash; once the OPX has opened the port, standard OPL serial I/O (<code>LPRINT</code>) will not function until the device is rebooted.
-    </p>
-
-    <hr class="section-rule">
-
-    <!-- ======================== REPOSITORY ======================== -->
-    <a name="repository"></a>
-    <span class="section-anchor">Repository</span>
-
-    <p>
-    Source code and documentation are at<br>
-    <a href="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</a>.
-    </p>
-
-    <div class="code-block" style="max-width: 460px;">
-    psion/<br>
-    &nbsp;&nbsp;irchat_opx.opl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPL chat (38kHz protocol)<br>
-    <br>
-    opx/<br>
-    &nbsp;&nbsp;irflash_sir.cpp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPX source (38400 baud)<br>
-    &nbsp;&nbsp;IRFLASH.OXH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPX header<br>
-    <br>
-    flipper/ir_bridge/<br>
-    &nbsp;&nbsp;ir_bridge.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flipper Zero FAP source<br>
-    &nbsp;&nbsp;application.fam&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;app manifest<br>
-    <br>
-    rpi/<br>
-    &nbsp;&nbsp;bridge.py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RPi LLM bridge (USB CDC)<br>
-    <br>
-    docs/<br>
-    &nbsp;&nbsp;PROTOCOL.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol specification<br>
-    &nbsp;&nbsp;HARDWARE.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wiring notes<br>
-    &nbsp;&nbsp;OPL_NOTES.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EPOC OPL compilation
-    </div>
-    <br>
-
-  </div><!-- /content-body -->
-
-  <!-- BOTTOM NAVIGATION -->
-  <div class="bottom-nav">
-    <a href="#overview">Overview</a> <span class="sep">|</span>
-    <a href="#architecture">Architecture</a> <span class="sep">|</span>
-    <a href="#protocol">Protocol</a> <span class="sep">|</span>
-    <a href="#hardware">Hardware</a> <span class="sep">|</span>
-    <a href="#building">Building</a> <span class="sep">|</span>
-    <a href="#usage">Usage</a> <span class="sep">|</span>
-    <a href="#limitations">Limitations</a> <span class="sep">|</span>
-    <a href="#repository">Repository</a>
-  </div>
-
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="footer-text">
-    <a href="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</a><br>
-    All contents &copy;2026 <a href="https://r2bpw.works">R2BPW</a> &mdash; Artemy Urodovskikh.<br>
-    Unauthorized reproduction in any form is strictly prohibited.
-    </div>
-  </div>
-
-</div><!-- /frame-content -->
-
-<
+td {
+  padding: 5px 12px;
+  border-bottom: 1px solid #E0E0E0;
+}
+.nav { font-size: 11pt; }
+.nav a { text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+.subtle { color: #666666; font-size: 11pt; }
+.footer { color: #888888; font-size: 10pt; }
+hr { border: none; border-top: 1px solid #CCCCCC; margin: 24px 0; }
+-->
+</STYLE>
+</HEAD>
+<BODY>
+
+<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR>
+<TD WIDTH="160" VALIGN="TOP" STYLE="padding: 30px 0 30px 24px;">
+
+<!-- NAV -->
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR><TD CLASS="nav" STYLE="padding-bottom: 16px;">
+<B><A HREF="https://r2bpw.works" STYLE="color: #111111; font-size: 14pt;">R2BPW</A></B>
+</TD></TR>
+
+<TR><TD HEIGHT="8"></TD></TR>
+<TR><TD CLASS="nav" STYLE="color: #888888; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">THIS PROJECT</TD></TR>
+<TR><TD CLASS="nav"><A HREF="#overview">Overview</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#arch">Architecture</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#protocol">Protocol</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#hardware">Hardware</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#building">Building</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#usage">Usage</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#limits">Limitations</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#repo">Repository</A></TD></TR>
+
+<TR><TD HEIGHT="20"></TD></TR>
+<TR><TD CLASS="nav" STYLE="color: #888888; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">OTHER</TD></TR>
+<TR><TD CLASS="nav"><A HREF="https://r2bpw.works/radio_bargain_bot_v2/">Radio Bargain</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="https://github.com/R2BPW/psion-flipper-bridge">GitHub</A></TD></TR>
+</TABLE>
+
+</TD>
+
+<!-- SEPARATOR -->
+<TD WIDTH="1" BGCOLOR="#E0E0E0"><IMG SRC="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" WIDTH="1" HEIGHT="1"></TD>
+
+<!-- CONTENT -->
+<TD VALIGN="TOP" STYLE="padding: 30px 40px 40px 36px;">
+
+<A NAME="overview"></A>
+<H1>IR Bridge</H1>
+<P CLASS="subtle" STYLE="margin-top: 2px;">Ericsson MC218 &#8596; Flipper Zero &#8596; LLM</P>
+
+<HR>
+
+<P>A working bridge that allows an <B>Ericsson MC218</B> &mdash; a 1999 palmtop
+running EPOC Release 5 &mdash; to converse with a large language model via its
+built-in infrared port. The user types a question on the Psion keyboard; the
+message travels by IR to a Flipper Zero, which relays it over USB CDC to a
+Raspberry Pi; the RPi queries an LLM (cloud or local); and the response returns
+along the same path to appear on the palmtop's screen.</P>
+
+<P>The MC218 uses a proprietary serial connector that has been out of production
+for twenty-five years. This project eliminates the need for any cable by
+re-purposing the Psion's built-in IrDA transceiver hardware for a custom infrared
+protocol. No IrDA software stack is involved on the transmit side; instead, a
+native OPX drives the SIR modulator at a baud rate chosen so that the resulting
+pulse train is indistinguishable from a 38&nbsp;kHz consumer-IR carrier. No
+additional IR hardware is required: the Psion's IrDA LED and the Flipper's TSOP
+receiver are used directly, pointed at one another at a distance of ten to
+thirty centimetres.</P>
+
+<!-- ARCHITECTURE -->
+<A NAME="arch"></A>
+<H2>Architecture</H2>
+
+<P>The signal chain:</P>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR VALIGN="MIDDLE">
+<TD STYLE="background: #F8F8F4; border: 1px solid #D0D0CC; padding: 10px 14px;">
+<B>Ericsson MC218</B><BR>
+<FONT CLASS="subtle">EPOC R5, IrDA, OPX+OPL</FONT>
+</TD>
+<TD STYLE="padding: 0 8px; color: #999999;">&rarr; <FONT CLASS="subtle">IR</FONT> &rarr;</TD>
+<TD STYLE="background: #F8F8F4; border: 1px solid #D0D0CC; padding: 10px 14px;">
+<B>Flipper Zero</B><BR>
+<FONT CLASS="subtle">TSOP 38kHz, IR Bridge FAP</FONT>
+</TD>
+<TD STYLE="padding: 0 8px; color: #999999;">&rarr; <FONT CLASS="subtle">USB</FONT> &rarr;</TD>
+<TD STYLE="background: #F8F8F4; border: 1px solid #D0D0CC; padding: 10px 14px;">
+<B>Raspberry Pi</B><BR>
+<FONT CLASS="subtle">bridge.py, USB CDC</FONT>
+</TD>
+<TD STYLE="padding: 0 8px; color: #999999;">&rarr; <FONT CLASS="subtle">API</FONT> &rarr;</TD>
+<TD STYLE="background: #F8F8F4; border: 1px solid #D0D0CC; padding: 10px 14px;">
+<B>LLM</B><BR>
+<FONT CLASS="subtle">Cloud / Local</FONT>
+</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+<TR VALIGN="TOP">
+<TD WIDTH="48%" STYLE="padding-right: 16px;">
+<P><B>Psion &rarr; Flipper.</B>&nbsp;
+SIR @ 38400 baud &rarr; 38&nbsp;kHz carrier.
+Ternary encoding: 3 digits per character.
+"HELLO" &asymp; 100&nbsp;ms total.</P>
+</TD>
+<TD WIDTH="4%"></TD>
+<TD WIDTH="48%">
+<P><B>Flipper &rarr; Psion.</B>&nbsp;
+Pulse-width IR @ 36&nbsp;kHz carrier.
+TTY:B @ 4800 baud, 63-byte chunks.
+EOT = 0x04, max 200 chars.</P>
+</TD>
+</TR>
+</TABLE>
+
+<P CLASS="subtle"><B>Key insight:</B> 38400 baud bit period (26&nbsp;&micro;s) &asymp;
+38&nbsp;kHz period (26.3&nbsp;&micro;s) &mdash; the TSOP locks on cleanly.</P>
+
+<P>The Psion transmits using a native OPX (C++ DLL) that drives the IrDA UART at
+38400 baud &mdash; a rate whose bit period (26&nbsp;&micro;s) matches the 38&nbsp;kHz
+carrier expected by the Flipper's TSOP receiver. Each byte <CODE>0x00</CODE>
+produces nine SIR pulses at ~38&nbsp;kHz (a "mark"), while <CODE>0xFF</CODE>
+produces silence (a "space"). An entire message is encoded as mark/space
+durations in a single buffer and transmitted in one SIR frame &mdash; "HELLO"
+takes roughly 100&nbsp;ms. The Flipper decodes the raw timing array, assembles
+the text, and forwards it over USB CDC to the Raspberry Pi. The Flipper then
+re-encodes the LLM response as pulse-width IR at 36&nbsp;kHz carrier and transmits
+it back; the Psion reads this on its IrDA serial port (TTY:B) at 4800 baud.</P>
+
+<!-- PROTOCOL -->
+<A NAME="protocol"></A>
+<H2>Protocol</H2>
+
+<P><B>Psion &rarr; Flipper</B> (38&nbsp;kHz carrier, ternary).&nbsp;
+The entire message is transmitted in a single SIR frame at 38400 baud. At this
+rate, each bit period is ~26&nbsp;&micro;s &mdash; nearly identical to the
+38&nbsp;kHz period (26.3&nbsp;&micro;s) that the Flipper's TSOP infrared receiver
+is tuned to. A byte of <CODE>0x00</CODE> generates nine SIR pulses at ~38&nbsp;kHz
+(carrier "on"); a byte of <CODE>0xFF</CODE> generates no pulses (carrier "off").
+By alternating runs of these bytes the OPX constructs mark/space pairs whose
+durations encode ternary digits. Each character uses three digits (base-3: A=0,
+B=1, &hellip; Z=25, space=26). A header mark (~8&nbsp;ms) opens the frame; then
+for each digit a short mark (~1&nbsp;ms) is followed by a space whose length
+encodes the value.</P>
+
+<P><I>Why 38400 baud?</I> The Flipper's TSOP infrared receiver has a bandpass
+filter tuned to 38&nbsp;kHz. Ordinary IrDA at 4800 or 9600 baud produces SIR
+pulses at the wrong repetition rate; the TSOP detects them unreliably, if at all.
+At 38400 baud, the pulse repetition rate matches the TSOP's design frequency, so
+the receiver locks on cleanly &mdash; turning the IrDA port into a standard
+38&nbsp;kHz IR transmitter. This is <I>not</I> IrDA communication: the project
+uses only the IrDA transceiver <I>hardware</I> (LED and SIR pulse shaper), while
+the protocol above it is entirely custom.</P>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TH>Symbol</TH>
+<TH>Mark (0x00 bytes)</TH>
+<TH>Space (0xFF bytes)</TH>
+</TR>
+<TR><TD>Header</TD><TD>32 (~8.3&nbsp;ms)</TD><TD>16 (~4.2&nbsp;ms)</TD></TR>
+<TR><TD>Digit 0</TD><TD>4 (~1.0&nbsp;ms)</TD><TD>4 (~1.0&nbsp;ms)</TD></TR>
+<TR><TD>Digit 1</TD><TD>4 (~1.0&nbsp;ms)</TD><TD>8 (~2.1&nbsp;ms)</TD></TR>
+<TR><TD>Digit 2</TD><TD>4 (~1.0&nbsp;ms)</TD><TD>12 (~3.1&nbsp;ms)</TD></TR>
+<TR><TD>Trail</TD><TD>4 (~1.0&nbsp;ms)</TD><TD>&mdash;</TD></TR>
+</TABLE>
+
+<P CLASS="subtle">Flipper-side thresholds: digit&nbsp;1 &ge; 1.5&nbsp;ms,
+digit&nbsp;2 &ge; 2.5&nbsp;ms, header &ge; 4&nbsp;ms. One character = three
+ternary digits = ~5&nbsp;ms. A five-letter word transmits in roughly 100&nbsp;ms
+including SIR frame overhead.</P>
+
+<P><B>Flipper &rarr; Psion</B> (pulse-width IR + EOT).&nbsp;
+Each ASCII byte is encoded as eight mark/space pairs at 36&nbsp;kHz carrier. A
+start mark of 50&nbsp;ms, data marks of 10&nbsp;ms (for 0) or 26&nbsp;ms (for 1),
+and an end mark of 75&nbsp;ms, with 5&nbsp;ms spaces between all marks. The
+Psion's SIR decoder on TTY:B at 4800 baud interprets the resulting byte values:
+&ge;&nbsp;<CODE>$E0</CODE> = bit&nbsp;1, &le;&nbsp;<CODE>$90</CODE> = bit&nbsp;0.
+End of message is byte <CODE>0x04</CODE> (ASCII EOT). Data is sent in chunks of
+63 bytes. Maximum response length: 200 characters.</P>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR><TH>Symbol</TH><TH>Mark duration</TH></TR>
+<TR><TD>Start</TD><TD>50&nbsp;ms</TD></TR>
+<TR><TD>Bit 0</TD><TD>10&nbsp;ms</TD></TR>
+<TR><TD>Bit 1</TD><TD>26&nbsp;ms</TD></TR>
+<TR><TD>End</TD><TD>75&nbsp;ms</TD></TR>
+<TR><TD>Space between marks</TD><TD>5&nbsp;ms</TD></TR>
+</TABLE>
+
+<P><B>Flipper &#8596; ESP32</B> (UART).&nbsp;
+115200 baud, newline-terminated ASCII. The Flipper sends <CODE>Q:&lt;text&gt;\n</CODE>
+for queries and <CODE>PING\n</CODE> for heartbeats. The ESP32 replies with
+<CODE>R:&lt;text&gt;\n</CODE> for responses, <CODE>S:&lt;status&gt;\n</CODE> for
+status, and <CODE>E:&lt;reason&gt;\n</CODE> for errors.</P>
+
+<!-- HARDWARE -->
+<A NAME="hardware"></A>
+<H2>Hardware</H2>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+<TR><TH>Component</TH><TH>Notes</TH></TR>
+<TR><TD><B>Ericsson MC218</B></TD><TD>EPOC Release 5, OPL. Built-in IrDA port.</TD></TR>
+<TR><TD><B>Flipper Zero</B></TD><TD>Stock firmware with IR subsystem.</TD></TR>
+<TR><TD><B>Raspberry Pi</B></TD><TD>Any model with USB. Connected to Flipper via USB-C CDC.</TD></TR>
+</TABLE>
+
+<P>No additional IR hardware is needed. Point the Psion's IrDA window at the
+Flipper's IR transceiver, ten to thirty centimetres apart.</P>
+
+<!-- BUILDING -->
+<A NAME="building"></A>
+<H2>Building</H2>
+
+<P><B>Flipper application.</B></P>
+<PRE>cd flipper/ir_bridge
+ufbt
+# copy dist/ir_bridge.fap to
+# SD: /ext/apps/Infrared/</PRE>
+
+<P><B>RPi bridge.</B>&nbsp; Deploy <CODE>rpi/bridge.py</CODE> to the Raspberry
+Pi. Requires <CODE>pyserial</CODE>. Connect RPi to Flipper via USB-C.</P>
+<PRE>pip install pyserial
+python3 rpi/bridge.py</PRE>
+
+<P><B>Psion OPX + OPL.</B>&nbsp; The OPX (native C++ DLL) is built with the
+EPOC Release 5 C++ SDK under Wine. The OPL programme is compiled with
+OPLTRAN.EXE:</P>
+<PRE># OPX: built via GCC ARM cross-compiler
+# (see opx/ for source and build scripts)
+
+# OPL:
+unix2dos psion/irchat_opx.opl
+wine path/to/OPLTRAN.EXE "C:\irchat_opx.opl"
+
+# Copy irflash.opx to MC218:
+#  D:\System\Opx\IRFLASH.OPX
+# Copy irchat_opx.opo to MC218
+# via CF card</PRE>
+
+<P>The OPX auto-loads via <CODE>DECLARE OPX</CODE> &mdash; no <CODE>LOADM</CODE>
+needed on EPOC R5.</P>
+
+<!-- USAGE -->
+<A NAME="usage"></A>
+<H2>Usage</H2>
+
+<P>Flash the IR Bridge FAP to the Flipper and launch it from the Infrared
+category. Start <CODE>bridge.py</CODE> on the Raspberry Pi (connected via
+USB-C). On the Psion, run <CODE>irchat_opx.opo</CODE>, type a message (A&ndash;Z
+and spaces), and press Enter. The OPX encodes and transmits the entire message
+in a single IR burst &mdash; typically under 100&nbsp;ms. The Flipper decodes
+the raw signal, dispatches to the RPi, which queries the LLM; the response
+arrives back on the Psion's screen.</P>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR><TH>Button</TH><TH>Action</TH></TR>
+<TR><TD><B>OK</B></TD><TD>Send received message to LLM</TD></TR>
+<TR><TD><B>Left</B></TD><TD>Clear display / reset state</TD></TR>
+<TR><TD><B>Right</B></TD><TD>Ping ESP32</TD></TR>
+<TR><TD><B>Back</B></TD><TD>Exit application</TD></TR>
+</TABLE>
+
+<!-- LIMITATIONS -->
+<A NAME="limits"></A>
+<H2>Known Limitations</H2>
+
+<P>The Psion transmit alphabet is restricted to A&ndash;Z and space; there are
+no numerals or punctuation. LLM responses are capped at 200 characters by the IR
+transmit buffer constraint (<CODE>MAX_TIMINGS_AMOUNT=1024</CODE>). The Psion
+receives only the first burst of a multi-burst response owing to blocking I/O in
+OPL with no asynchronous timeout. The <CODE>infrared_send_raw_ext</CODE> timing
+is approximate; long transmissions may drift. TTY:B may be busy after the OPX
+releases the port; the Psion retries up to fifteen times over seventy-five
+seconds. The OPX uses the IrDA UART hardware but does not implement the IrDA
+protocol &mdash; once the OPX has opened the port, standard OPL serial I/O
+(<CODE>LPRINT</CODE>) will not function until the device is rebooted.</P>
+
+<!-- REPOSITORY -->
+<A NAME="repo"></A>
+<H2>Repository</H2>
+
+<P>Source code and documentation at
+<A HREF="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</A>.</P>
+
+<PRE>psion/
+  irchat_opx.opl        OPL chat (38kHz protocol)
+
+opx/
+  irflash_sir.cpp       OPX source (38400 baud)
+  IRFLASH.OXH           OPX header
+
+flipper/ir_bridge/
+  ir_bridge.c           Flipper Zero FAP source
+  application.fam       app manifest
+
+rpi/
+  bridge.py             RPi LLM bridge (USB CDC)
+
+docs/
+  PROTOCOL.md           protocol specification
+  HARDWARE.md           wiring notes
+  OPL_NOTES.md          EPOC OPL compilation</PRE>
+
+<HR>
+
+<P CLASS="footer">
+&copy; 2026 <A HREF="https://r2bpw.works">R2BPW</A> &mdash; Artemy Urodovskikh.
+</P>
+
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
