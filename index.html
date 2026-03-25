@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html lang="en">
 <head>
 <meta name="yandex-verification" content="99a56b2710964ac4" />
@@ -46,395 +46,832 @@
   "image": "https://raw.githubusercontent.com/R2BPW/psion-flipper-bridge/refs/heads/main/media/photo_2026-03-22%2019.26.51_square.jpeg"
 }
 </script>
-<style>img { display: block; }</style>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+img { display: block; }
+
+body {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  background: #C0C0C0;
+  color: #000000;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== FRAMESET SIMULATION ===== */
+.frameset {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  border: 2px inset #808080;
+}
+
+/* ===== LEFT NAVIGATION FRAME ===== */
+.frame-nav {
+  width: 160px;
+  min-width: 160px;
+  background: #336699;
+  border-right: 3px ridge #A0A0A0;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.nav-header {
+  background: #003366;
+  padding: 8px 8px 6px 8px;
+  border-bottom: 1px solid #001a33;
+}
+
+.nav-header img {
+  display: inline;
+}
+
+.nav-header .site-title {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FFFFFF;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+.nav-header .site-subtitle {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  color: #99CCFF;
+  display: block;
+  margin-top: 2px;
+}
+
+.nav-section {
+  padding: 6px 0;
+  border-bottom: 1px solid #2a5a8a;
+}
+
+.nav-section-title {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: bold;
+  color: #FFCC00;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  letter-spacing: 0.5px;
+}
+
+.nav-link {
+  display: block;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 3px 10px 3px 16px;
+  line-height: 1.5;
+}
+
+.nav-link:hover {
+  background: #4477AA;
+  color: #FFFF99;
+}
+
+.nav-link.active {
+  background: #224466;
+  color: #FFCC00;
+  font-weight: bold;
+}
+
+.nav-divider {
+  height: 1px;
+  background: #4477AA;
+  margin: 2px 8px;
+}
+
+.nav-bottom {
+  padding: 8px 10px;
+  border-top: 1px solid #2a5a8a;
+  margin-top: 10px;
+}
+
+.nav-bottom-text {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  color: #99BBDD;
+  line-height: 1.6;
+}
+
+.nav-bottom-text a {
+  color: #CCDDFF;
+  text-decoration: none;
+}
+
+.nav-bottom-text a:hover {
+  color: #FFFF99;
+  text-decoration: underline;
+}
+
+/* ===== MAIN CONTENT FRAME ===== */
+.frame-content {
+  flex: 1;
+  background: #FFFFFF;
+  overflow-y: auto;
+  padding: 0;
+}
+
+/* ===== TOP BANNER BAR ===== */
+.banner-bar {
+  background: #003366;
+  padding: 6px 12px;
+  border-bottom: 2px solid #001a33;
+}
+
+.banner-bar table {
+  width: 100%;
+}
+
+.banner-title {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+
+.banner-subtitle {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  color: #99CCFF;
+}
+
+/* ===== BREADCRUMB / NAV ROW ===== */
+.nav-row {
+  background: #EEEEEE;
+  padding: 4px 12px;
+  border-bottom: 1px solid #CCCCCC;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+}
+
+.nav-row a {
+  color: #003366;
+  text-decoration: none;
+}
+
+.nav-row a:hover {
+  text-decoration: underline;
+  color: #990000;
+}
+
+/* ===== CONTENT AREA ===== */
+.content-body {
+  padding: 16px 20px 20px 20px;
+  max-width: 620px;
+}
+
+.content-body .section-head {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #003366;
+  margin: 0;
+  padding: 0 0 6px 0;
+}
+
+.content-body .section-subhead {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  color: #666666;
+  font-style: italic;
+  margin: 0 0 10px 0;
+}
+
+.content-body p {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  color: #333333;
+  line-height: 1.65;
+  text-align: justify;
+  margin: 0 0 10px 0;
+}
+
+.content-body p b {
+  color: #003366;
+}
+
+.content-body code,
+.content-body .code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  color: #660000;
+}
+
+/* ===== SECTION DIVIDERS ===== */
+.section-rule {
+  height: 2px;
+  background: #336699;
+  border: none;
+  margin: 16px 0;
+}
+
+.section-rule-light {
+  height: 1px;
+  background: #CCCCCC;
+  border: none;
+  margin: 12px 0;
+}
+
+/* ===== DATA TABLES ===== */
+.data-table {
+  border-collapse: collapse;
+  margin: 10px auto;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+}
+
+.data-table th {
+  background: #003366;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 4px 10px;
+  text-align: left;
+  border: 1px solid #002244;
+  font-size: 10px;
+}
+
+.data-table td {
+  padding: 3px 10px;
+  border: 1px solid #CCCCCC;
+  font-size: 10px;
+}
+
+.data-table tr:nth-child(even) td {
+  background: #EEF3F8;
+}
+
+.data-table tr:nth-child(odd) td {
+  background: #FFFFFF;
+}
+
+/* ===== CODE BLOCKS ===== */
+.code-block {
+  background: #F0F0E8;
+  border: 1px solid #CCCCBB;
+  padding: 8px 10px;
+  margin: 8px auto;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 10px;
+  color: #333333;
+  line-height: 1.6;
+  max-width: 460px;
+}
+
+/* ===== ARCHITECTURE DIAGRAM ===== */
+.diagram-container {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.diagram-container img {
+  margin: 0 auto;
+  border: 1px solid #CCCCCC;
+}
+
+/* ===== BOTTOM NAV BAR ===== */
+.bottom-nav {
+  background: #003366;
+  padding: 6px 12px;
+  text-align: center;
+  border-top: 2px solid #001a33;
+  margin-top: 20px;
+}
+
+.bottom-nav a {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 10px;
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 0 4px;
+}
+
+.bottom-nav a:hover {
+  color: #FFCC00;
+  text-decoration: underline;
+}
+
+.bottom-nav .sep {
+  color: #6699CC;
+  font-size: 10px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  padding: 8px 20px;
+  border-top: 1px solid #CCCCCC;
+  background: #F0F0F0;
+}
+
+.footer-text {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  color: #999999;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.footer-text a {
+  color: #666666;
+  text-decoration: none;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* ===== SECTION ANCHOR ===== */
+.section-anchor {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  color: #003366;
+  border-bottom: 2px solid #336699;
+  padding-bottom: 4px;
+  margin-bottom: 10px;
+  display: block;
+}
+</style>
 </head>
-<body bgcolor="#FFFFFF" text="#333333" link="#003366" vlink="#666666" alink="#990000">
+<body>
 
-<table width="540" border="0" cellpadding="0" cellspacing="0" align="center">
+<div class="frameset">
 
-<tr><td colspan="3" height="24"></td></tr>
-<tr><td colspan="3" bgcolor="#999999" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td colspan="3" height="14"></td></tr>
+<!-- ==================== LEFT NAVIGATION FRAME ==================== -->
+<div class="frame-nav">
 
-<!-- HEADER -->
-<tr>
-<td>
-<font face="Georgia, Times New Roman, serif" size="5" color="#222222"><b>IR Bridge</b></font><br>
-<font face="Georgia, Times New Roman, serif" size="2" color="#888888"><i>Ericsson MC218 &harr; Flipper Zero &harr; LLM</i></font>
-</td>
-</tr>
+  <div class="nav-header">
+    <span class="site-title">R2BPW</span>
+    <span class="site-subtitle">Artemy Urodovskikh</span>
+  </div>
 
-<tr><td height="6"></td></tr>
-<tr><td bgcolor="#CCCCCC" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
+  <div class="nav-section">
+    <div class="nav-section-title">IR Bridge</div>
+    <a href="#overview" class="nav-link active">Overview</a>
+    <a href="#architecture" class="nav-link">Architecture</a>
+    <a href="#protocol" class="nav-link">Protocol</a>
+    <a href="#hardware" class="nav-link">Hardware</a>
+    <a href="#building" class="nav-link">Building</a>
+    <a href="#usage" class="nav-link">Usage</a>
+    <a href="#limitations" class="nav-link">Limitations</a>
+    <a href="#repository" class="nav-link">Repository</a>
+  </div>
 
-<!-- NAVIGATION -->
-<tr>
-<td height="28" valign="middle">
-<font face="Verdana, Arial, sans-serif" size="1">
-<a href="#overview">Overview</a> &middot;
-<a href="#architecture">Architecture</a> &middot;
-<a href="#protocol">Protocol</a> &middot;
-<a href="#hardware">Hardware</a> &middot;
-<a href="#building">Building</a> &middot;
-<a href="#usage">Usage</a> &middot;
-<a href="#limitations">Limitations</a> &middot;
-<a href="#repository">Repository</a>
-&nbsp;<font color="#CCCCCC">|</font>&nbsp;
-<a href="/radio_bargain_bot_v2/"><font color="#999999">Radio&nbsp;Bargain</font></a>
-</font>
-</td>
-</tr>
+  <div class="nav-section">
+    <div class="nav-section-title">Other Projects</div>
+    <a href="/radio_bargain_bot_v2/" class="nav-link">Radio Bargain</a>
+  </div>
 
-<tr><td bgcolor="#CCCCCC" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td height="20"></td></tr>
+  <div class="nav-section">
+    <div class="nav-section-title">Resources</div>
+    <a href="https://github.com/R2BPW/psion-flipper-bridge" class="nav-link">GitHub Repo</a>
+  </div>
 
-<!-- ======================== OVERVIEW ======================== -->
+  <div class="nav-bottom">
+    <div class="nav-bottom-text">
+      <a href="https://r2bpw.works">r2bpw.works</a><br>
+      &copy; 2026 R2BPW<br>
+      <br>
+      <a href="/cdn-cgi/l/email-protection#a2c3d0d6c7cfdbe2d090c0d2d58cd5cdd0c9d1">Contact</a>
+    </div>
+  </div>
 
-<tr><td>
-<a name="overview"></a>
+</div>
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-A working bridge that allows an <b>Ericsson MC218</b> &mdash; a 1999 palmtop running EPOC Release&nbsp;5 &mdash; to converse with a large language model via its built-in infrared port. The user types a question on the Psion keyboard; the message travels by IR to a Flipper Zero, which relays it over USB&nbsp;CDC to a Raspberry Pi; the RPi queries an LLM (cloud or local); and the response returns along the same path to appear on the palmtop's screen.
-</font></p>
+<!-- ==================== MAIN CONTENT FRAME ==================== -->
+<div class="frame-content">
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-The MC218 uses a proprietary serial connector that has been out of production for twenty-five years. This project eliminates the need for any cable by re-purposing the Psion's built-in IrDA transceiver hardware for a custom infrared protocol. No IrDA software stack is involved on the transmit side; instead, a native OPX drives the SIR modulator at a baud rate chosen so that the resulting pulse train is indistinguishable from a 38&nbsp;kHz consumer-IR carrier. No additional IR hardware is required: the Psion's IrDA LED and the Flipper's TSOP receiver are used directly, pointed at one another at a distance of ten to thirty centimetres.
-</font></p>
-</td></tr>
+  <!-- TOP BANNER -->
+  <div class="banner-bar">
+    <table border="0" cellpadding="0" cellspacing="0">
+    <tr>
+      <td><span class="banner-title">IR Bridge: Ericsson MC218 &harr; Flipper Zero &harr; LLM</span></td>
+    </tr>
+    <tr>
+      <td><span class="banner-subtitle">Showcase &mdash; A bidirectional infrared bridge from a 1999 palmtop to modern AI</span></td>
+    </tr>
+    </table>
+  </div>
 
-<tr><td height="8"></td></tr>
-<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td height="16"></td></tr>
+  <!-- NAV ROW -->
+  <div class="nav-row">
+    <a href="https://r2bpw.works">R2BPW</a> <font color="#999999">&raquo;</font>
+    <a href="#">Projects</a> <font color="#999999">&raquo;</font>
+    <b>IR Bridge</b>
+  </div>
 
-<!-- ======================== ARCHITECTURE ======================== -->
+  <!-- CONTENT -->
+  <div class="content-body">
 
-<tr><td>
-<a name="architecture"></a>
-<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Architecture</b></font>
+    <!-- ======================== OVERVIEW ======================== -->
+    <a name="overview"></a>
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-The signal chain is as follows:
-</font></p>
+    <p>
+    A working bridge that allows an <b>Ericsson MC218</b> &mdash; a 1999 palmtop running EPOC Release&nbsp;5 &mdash; to converse with a large language model via its built-in infrared port. The user types a question on the Psion keyboard; the message travels by IR to a Flipper Zero, which relays it over USB&nbsp;CDC to a Raspberry Pi; the RPi queries an LLM (cloud or local); and the response returns along the same path to appear on the palmtop's screen.
+    </p>
 
-<img src="data:image/png;base64,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" width="280" alt="Architecture diagram: Ericsson MC218 → Flipper Zero → Raspberry Pi → LLM, response returns same path" style="display:block;margin:0 auto;">
+    <p>
+    The MC218 uses a proprietary serial connector that has been out of production for twenty-five years. This project eliminates the need for any cable by re-purposing the Psion's built-in IrDA transceiver hardware for a custom infrared protocol. No IrDA software stack is involved on the transmit side; instead, a native OPX drives the SIR modulator at a baud rate chosen so that the resulting pulse train is indistinguishable from a 38&nbsp;kHz consumer-IR carrier. No additional IR hardware is required: the Psion's IrDA LED and the Flipper's TSOP receiver are used directly, pointed at one another at a distance of ten to thirty centimetres.
+    </p>
 
-<br>
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-The Psion transmits using a native OPX (C++ DLL) that drives the IrDA UART at 38400&nbsp;baud &mdash; a rate whose bit period (26&nbsp;&mu;s) matches the 38&nbsp;kHz carrier expected by the Flipper's TSOP receiver. Each byte <font face="Courier New" size="2">0x00</font> produces nine SIR pulses at ~38&nbsp;kHz (a &ldquo;mark&rdquo;), while <font face="Courier New" size="2">0xFF</font> produces silence (a &ldquo;space&rdquo;). An entire message is encoded as mark/space durations in a single buffer and transmitted in one SIR frame &mdash; &ldquo;HELLO&rdquo; takes roughly 100&nbsp;ms. The Flipper decodes the raw timing array, assembles the text, and forwards it over USB&nbsp;CDC to the Raspberry Pi. The Flipper then re-encodes the LLM response as pulse-width IR at 36&nbsp;kHz carrier and transmits it back; the Psion reads this on its IrDA serial port (TTY:B) at 4800&nbsp;baud.
-</font></p>
-</td></tr>
+    <hr class="section-rule">
 
-<tr><td height="8"></td></tr>
-<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td height="16"></td></tr>
+    <!-- ======================== ARCHITECTURE ======================== -->
+    <a name="architecture"></a>
+    <span class="section-anchor">Architecture</span>
 
-<!-- ======================== PROTOCOL ======================== -->
+    <p>
+    The signal chain is as follows:
+    </p>
 
-<tr><td>
-<a name="protocol"></a>
-<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Protocol</b></font>
+    <div class="diagram-container">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 310" width="540" style="max-width:100%;height:auto;font-family:Verdana,Arial,sans-serif;">
+      <defs>
+        <marker id="arrowRight" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0,0 8,3 0,6" fill="#FFCC00"/>
+        </marker>
+        <marker id="arrowLeft" markerWidth="8" markerHeight="6" refX="0" refY="3" orient="auto">
+          <polygon points="8,0 0,3 8,6" fill="#6699CC"/>
+        </marker>
+        <linearGradient id="boxGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#336699"/>
+          <stop offset="100%" stop-color="#224466"/>
+        </linearGradient>
+        <linearGradient id="llmGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#996600"/>
+          <stop offset="100%" stop-color="#664400"/>
+        </linearGradient>
+      </defs>
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-<b>Psion &rarr; Flipper</b> (38&nbsp;kHz carrier, ternary). &nbsp;The entire message is transmitted in a single SIR frame at 38400&nbsp;baud. At this rate, each bit period is ~26&nbsp;&mu;s &mdash; nearly identical to the 38&nbsp;kHz period (26.3&nbsp;&mu;s) that the Flipper's TSOP infrared receiver is tuned to. A byte of <font face="Courier New" size="2">0x00</font> generates nine SIR pulses at ~38&nbsp;kHz (carrier &ldquo;on&rdquo;); a byte of <font face="Courier New" size="2">0xFF</font> generates no pulses (carrier &ldquo;off&rdquo;). By alternating runs of these bytes the OPX constructs mark/space pairs whose durations encode ternary digits. Each character uses three digits (base-3: A=0, B=1, &hellip; Z=25, space=26). A header mark (~8&nbsp;ms) opens the frame; then for each digit a short mark (~1&nbsp;ms) is followed by a space whose length encodes the value.
-</font></p>
+      <!-- Background -->
+      <rect x="0" y="0" width="540" height="310" rx="3" fill="#F0F0E8" stroke="#CCCCBB" stroke-width="1"/>
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-Why 38400&nbsp;baud? The Flipper's TSOP infrared receiver has a bandpass filter tuned to 38&nbsp;kHz. Ordinary IrDA at 4800 or 9600&nbsp;baud produces SIR pulses at the wrong repetition rate; the TSOP detects them unreliably, if at all. At 38400&nbsp;baud, the pulse repetition rate matches the TSOP's design frequency, so the receiver locks on cleanly &mdash; turning the IrDA port into a standard 38&nbsp;kHz IR transmitter. This is <i>not</i> IrDA communication: the project uses only the IrDA transceiver <i>hardware</i> (LED and SIR pulse shaper), while the protocol above it is entirely custom. In OSI terms, the OPX implements a bespoke physical layer (Layer&nbsp;1) that re-purposes the SIR modulator as a 38&nbsp;kHz carrier generator, and a minimal data-link layer (Layer&nbsp;2) with its own header and ternary framing. The native OPX (C++ DLL for EPOC) handles the encoding and UART access via the <font face="Courier New" size="2">RBusDevComm</font> device driver.
-</font></p>
+      <!-- Title -->
+      <text x="270" y="24" text-anchor="middle" font-size="11" font-weight="bold" fill="#003366" letter-spacing="0.5">SIGNAL CHAIN</text>
+      <line x1="60" y1="32" x2="480" y2="32" stroke="#CCCCBB" stroke-width="1"/>
 
-<br>
-<table width="440" border="0" cellpadding="3" cellspacing="0" align="center">
-<tr bgcolor="#888888">
-<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Symbol</b></font></td>
-<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Mark (0x00 bytes)</b></font></td>
-<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Space (0xFF bytes)</b></font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Header</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">32 (~8.3 ms)</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">16 (~4.2 ms)</font></td>
-</tr>
-<tr>
-<td><font face="Verdana, Arial" size="1">Digit 0</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Digit 1</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">8 (~2.1 ms)</font></td>
-</tr>
-<tr>
-<td><font face="Verdana, Arial" size="1">Digit 2</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">12 (~3.1 ms)</font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Trail</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">4 (~1.0 ms)</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">&mdash;</font></td>
-</tr>
-</table>
+      <!-- === ROW 1: DEVICES === -->
 
-<br>
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-Flipper-side thresholds: digit&nbsp;1 &ge; 1.5&nbsp;ms, digit&nbsp;2 &ge; 2.5&nbsp;ms, header &ge; 4&nbsp;ms. One character = three ternary digits = ~5&nbsp;ms. A five-letter word transmits in roughly 100&nbsp;ms including SIR frame overhead.
-</font></p>
+      <!-- Ericsson MC218 -->
+      <rect x="20" y="52" width="110" height="54" rx="3" fill="url(#boxGrad)" stroke="#001a33" stroke-width="1"/>
+      <text x="75" y="72" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">Ericsson MC218</text>
+      <text x="75" y="85" text-anchor="middle" font-size="7" fill="#99CCFF">EPOC R5 &#183; IrDA</text>
+      <text x="75" y="97" text-anchor="middle" font-size="7" fill="#99CCFF">OPX + OPL</text>
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-<b>Flipper &rarr; Psion</b> (pulse-width IR + EOT). &nbsp;Each ASCII byte is encoded as eight mark/space pairs at 36&nbsp;kHz carrier. A start mark of 50&nbsp;ms, data marks of 10&nbsp;ms (for 0) or 26&nbsp;ms (for 1), and an end mark of 75&nbsp;ms, with 5&nbsp;ms spaces between all marks. The Psion's SIR decoder on TTY:B at 4800&nbsp;baud interprets the resulting byte values: &ge; <font face="Courier New" size="2">$E0</font> = bit&nbsp;1, &le; <font face="Courier New" size="2">$90</font> = bit&nbsp;0. End of message is byte <font face="Courier New" size="2">0x04</font> (ASCII EOT). Data is sent in chunks of 63 bytes. Maximum response length: 200 characters.
-</font></p>
+      <!-- Flipper Zero -->
+      <rect x="160" y="52" width="110" height="54" rx="3" fill="url(#boxGrad)" stroke="#001a33" stroke-width="1"/>
+      <text x="215" y="72" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">Flipper Zero</text>
+      <text x="215" y="85" text-anchor="middle" font-size="7" fill="#99CCFF">TSOP 38kHz</text>
+      <text x="215" y="97" text-anchor="middle" font-size="7" fill="#99CCFF">IR Bridge FAP</text>
 
-<br>
-<table width="320" border="0" cellpadding="3" cellspacing="0" align="center">
-<tr bgcolor="#888888">
-<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Symbol</b></font></td>
-<td align="center"><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Mark duration</b></font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Start</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">50 ms</font></td>
-</tr>
-<tr>
-<td><font face="Verdana, Arial" size="1">Bit 0</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">10 ms</font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Bit 1</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">26 ms</font></td>
-</tr>
-<tr>
-<td><font face="Verdana, Arial" size="1">End</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">75 ms</font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Space between marks</font></td>
-<td align="center"><font face="Verdana, Arial" size="1">5 ms</font></td>
-</tr>
-</table>
+      <!-- Raspberry Pi -->
+      <rect x="300" y="52" width="110" height="54" rx="3" fill="url(#boxGrad)" stroke="#001a33" stroke-width="1"/>
+      <text x="355" y="72" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFFFFF">Raspberry Pi</text>
+      <text x="355" y="85" text-anchor="middle" font-size="7" fill="#99CCFF">bridge.py</text>
+      <text x="355" y="97" text-anchor="middle" font-size="7" fill="#99CCFF">USB CDC</text>
 
-<br>
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-<b>Flipper &harr; ESP32</b> (UART). &nbsp;115200 baud, newline-terminated ASCII. The Flipper sends <font face="Courier New" size="2">Q:&lt;text&gt;\n</font> for queries and <font face="Courier New" size="2">PING\n</font> for heartbeats. The ESP32 replies with <font face="Courier New" size="2">R:&lt;text&gt;\n</font> for responses, <font face="Courier New" size="2">S:&lt;status&gt;\n</font> for status, and <font face="Courier New" size="2">E:&lt;reason&gt;\n</font> for errors. The advanced bridge sketch supports an RPC opcode table via <font face="Courier New" size="2">OP:HH:params\n</font> frames.
-</font></p>
-</td></tr>
+      <!-- LLM -->
+      <rect x="440" y="52" width="80" height="54" rx="3" fill="url(#llmGrad)" stroke="#4d3300" stroke-width="1"/>
+      <text x="480" y="72" text-anchor="middle" font-size="9" font-weight="bold" fill="#FFCC00">LLM</text>
+      <text x="480" y="85" text-anchor="middle" font-size="7" fill="#FFEEAA">Cloud / Local</text>
+      <text x="480" y="97" text-anchor="middle" font-size="7" fill="#FFEEAA">API</text>
 
-<tr><td height="8"></td></tr>
-<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td height="16"></td></tr>
+      <!-- === FORWARD ARROWS (top) === -->
+      <line x1="130" y1="69" x2="158" y2="69" stroke="#FFCC00" stroke-width="2" marker-end="url(#arrowRight)"/>
+      <line x1="270" y1="69" x2="298" y2="69" stroke="#FFCC00" stroke-width="2" marker-end="url(#arrowRight)"/>
+      <line x1="410" y1="69" x2="438" y2="69" stroke="#FFCC00" stroke-width="2" marker-end="url(#arrowRight)"/>
 
-<!-- ======================== HARDWARE ======================== -->
+      <!-- === RETURN ARROWS (bottom) === -->
+      <line x1="440" y1="93" x2="412" y2="93" stroke="#6699CC" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowLeft)"/>
+      <line x1="300" y1="93" x2="272" y2="93" stroke="#6699CC" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowLeft)"/>
+      <line x1="160" y1="93" x2="132" y2="93" stroke="#6699CC" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowLeft)"/>
 
-<tr><td>
-<a name="hardware"></a>
-<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Hardware</b></font>
+      <!-- === LABELS ON ARROWS === -->
+      <rect x="131" y="44" width="26" height="12" rx="2" fill="#003366"/>
+      <text x="144" y="53" text-anchor="middle" font-size="6.5" font-weight="bold" fill="#FFCC00">IR</text>
 
-<br><br>
-<table width="460" border="0" cellpadding="3" cellspacing="0" align="center">
-<tr bgcolor="#888888">
-<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Component</b></font></td>
-<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Notes</b></font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Ericsson MC218</font></td>
-<td><font face="Verdana, Arial" size="1">EPOC Release 5, OPL. Built-in IrDA port.</font></td>
-</tr>
-<tr>
-<td><font face="Verdana, Arial" size="1">Flipper Zero</font></td>
-<td><font face="Verdana, Arial" size="1">Stock firmware with IR subsystem.</font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Raspberry Pi</font></td>
-<td><font face="Verdana, Arial" size="1">Any model with USB. Connected to Flipper via USB-C CDC.</font></td>
-</tr>
-</table>
+      <rect x="271" y="44" width="26" height="12" rx="2" fill="#003366"/>
+      <text x="284" y="53" text-anchor="middle" font-size="6.5" font-weight="bold" fill="#FFCC00">USB</text>
 
-<br>
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-No additional IR hardware is needed. Point the Psion's IrDA window at the Flipper's IR transceiver, ten to thirty centimetres apart.
-</font></p>
-</td></tr>
+      <rect x="411" y="44" width="26" height="12" rx="2" fill="#003366"/>
+      <text x="424" y="53" text-anchor="middle" font-size="6.5" font-weight="bold" fill="#FFCC00">API</text>
 
-<tr><td height="8"></td></tr>
-<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td height="16"></td></tr>
+      <!-- === ROW 2: PROTOCOL DETAIL === -->
+      <line x1="60" y1="126" x2="480" y2="126" stroke="#CCCCBB" stroke-width="1"/>
+      <text x="270" y="144" text-anchor="middle" font-size="10" font-weight="bold" fill="#003366">PROTOCOL DETAIL</text>
 
-<!-- ======================== BUILDING ======================== -->
+      <!-- Psion to Flipper detail -->
+      <rect x="20" y="160" width="250" height="68" rx="3" fill="#FFFFFF" stroke="#336699" stroke-width="1"/>
+      <text x="145" y="176" text-anchor="middle" font-size="8" font-weight="bold" fill="#003366">Psion &#8594; Flipper</text>
+      <line x1="30" y1="182" x2="260" y2="182" stroke="#EEF3F8" stroke-width="1"/>
+      <text x="35" y="195" font-size="7" fill="#333333">SIR @ 38400 baud &#8594; 38 kHz carrier</text>
+      <text x="35" y="207" font-size="7" fill="#333333">Ternary encoding: 3 digits/char</text>
+      <text x="35" y="219" font-size="7" fill="#333333">"HELLO" &#8776; 100 ms total</text>
 
-<tr><td>
-<a name="building"></a>
-<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Building</b></font>
+      <!-- Flipper to Psion detail -->
+      <rect x="280" y="160" width="240" height="68" rx="3" fill="#FFFFFF" stroke="#336699" stroke-width="1"/>
+      <text x="400" y="176" text-anchor="middle" font-size="8" font-weight="bold" fill="#003366">Flipper &#8594; Psion</text>
+      <line x1="290" y1="182" x2="510" y2="182" stroke="#EEF3F8" stroke-width="1"/>
+      <text x="295" y="195" font-size="7" fill="#333333">Pulse-width IR @ 36 kHz carrier</text>
+      <text x="295" y="207" font-size="7" fill="#333333">TTY:B @ 4800 baud, 63-byte chunks</text>
+      <text x="295" y="219" font-size="7" fill="#333333">EOT = 0x04, max 200 chars</text>
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-<b>Flipper application.</b>
-</font></p>
+      <!-- === ROW 3: KEY INSIGHT === -->
+      <rect x="60" y="248" width="420" height="40" rx="3" fill="#003366" stroke="#001a33" stroke-width="1"/>
+      <text x="270" y="264" text-anchor="middle" font-size="8" font-weight="bold" fill="#FFCC00">KEY INSIGHT</text>
+      <text x="270" y="278" text-anchor="middle" font-size="7" fill="#FFFFFF">38400 baud bit period (26 &#181;s) &#8776; 38 kHz period (26.3 &#181;s) &#8594; TSOP locks on cleanly</text>
 
-<table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
-<tr><td>
-<font face="Courier New, Courier, monospace" size="2" color="#333333">
-cd flipper/ir_bridge<br>
-ufbt<br>
-# copy dist/ir_bridge.fap to<br>
-# SD: /ext/apps/Infrared/
-</font>
-</td></tr>
-</table>
+      <!-- Legend -->
+      <line x1="60" y1="300" x2="80" y2="300" stroke="#FFCC00" stroke-width="2"/>
+      <text x="84" y="303" font-size="6.5" fill="#666666">Query path</text>
+      <line x1="150" y1="300" x2="170" y2="300" stroke="#6699CC" stroke-width="1.5" stroke-dasharray="4,2"/>
+      <text x="174" y="303" font-size="6.5" fill="#666666">Response path</text>
 
-<br>
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-<b>RPi bridge.</b> &nbsp;Deploy <font face="Courier New" size="2">rpi/bridge.py</font> to the Raspberry Pi. Requires <font face="Courier New" size="2">pyserial</font>. Connect RPi to Flipper via USB-C.
-</font></p>
+    </svg>
+    </div>
 
-<table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
-<tr><td>
-<font face="Courier New, Courier, monospace" size="2" color="#333333">
-pip install pyserial<br>
-python3 rpi/bridge.py
-</font>
-</td></tr>
-</table>
+    <p>
+    The Psion transmits using a native OPX (C++ DLL) that drives the IrDA UART at 38400&nbsp;baud &mdash; a rate whose bit period (26&nbsp;&mu;s) matches the 38&nbsp;kHz carrier expected by the Flipper's TSOP receiver. Each byte <code>0x00</code> produces nine SIR pulses at ~38&nbsp;kHz (a &ldquo;mark&rdquo;), while <code>0xFF</code> produces silence (a &ldquo;space&rdquo;). An entire message is encoded as mark/space durations in a single buffer and transmitted in one SIR frame &mdash; &ldquo;HELLO&rdquo; takes roughly 100&nbsp;ms. The Flipper decodes the raw timing array, assembles the text, and forwards it over USB&nbsp;CDC to the Raspberry Pi. The Flipper then re-encodes the LLM response as pulse-width IR at 36&nbsp;kHz carrier and transmits it back; the Psion reads this on its IrDA serial port (TTY:B) at 4800&nbsp;baud.
+    </p>
 
-<br>
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-<b>Psion OPX + OPL.</b> &nbsp;The OPX (native C++ DLL) is built with the EPOC Release&nbsp;5 C++ SDK under Wine. The OPL programme is compiled with OPLTRAN.EXE:
-</font></p>
+    <hr class="section-rule">
 
-<table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
-<tr><td>
-<font face="Courier New, Courier, monospace" size="2" color="#333333">
-# OPX: built via GCC ARM cross-compiler<br>
-# (see opx/ for source and build scripts)<br>
-<br>
-# OPL:<br>
-unix2dos psion/irchat_opx.opl<br>
-wine path/to/OPLTRAN.EXE "C:\\irchat_opx.opl"<br>
-<br>
-# Copy irflash.opx to MC218:<br>
-#&nbsp;&nbsp;D:\System\Opx\IRFLASH.OPX<br>
-# Copy irchat_opx.opo to MC218<br>
-# via CF card
-</font>
-</td></tr>
-</table>
+    <!-- ======================== PROTOCOL ======================== -->
+    <a name="protocol"></a>
+    <span class="section-anchor">Protocol</span>
 
-<br>
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-The OPX auto-loads via <font face="Courier New" size="2">DECLARE OPX</font> &mdash; no <font face="Courier New" size="2">LOADM</font> needed on EPOC R5.
-</font></p>
-</td></tr>
+    <p>
+    <b>Psion &rarr; Flipper</b> (38&nbsp;kHz carrier, ternary). &nbsp;The entire message is transmitted in a single SIR frame at 38400&nbsp;baud. At this rate, each bit period is ~26&nbsp;&mu;s &mdash; nearly identical to the 38&nbsp;kHz period (26.3&nbsp;&mu;s) that the Flipper's TSOP infrared receiver is tuned to. A byte of <code>0x00</code> generates nine SIR pulses at ~38&nbsp;kHz (carrier &ldquo;on&rdquo;); a byte of <code>0xFF</code> generates no pulses (carrier &ldquo;off&rdquo;). By alternating runs of these bytes the OPX constructs mark/space pairs whose durations encode ternary digits. Each character uses three digits (base-3: A=0, B=1, &hellip; Z=25, space=26). A header mark (~8&nbsp;ms) opens the frame; then for each digit a short mark (~1&nbsp;ms) is followed by a space whose length encodes the value.
+    </p>
 
-<tr><td height="8"></td></tr>
-<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td height="16"></td></tr>
+    <p>
+    Why 38400&nbsp;baud? The Flipper's TSOP infrared receiver has a bandpass filter tuned to 38&nbsp;kHz. Ordinary IrDA at 4800 or 9600&nbsp;baud produces SIR pulses at the wrong repetition rate; the TSOP detects them unreliably, if at all. At 38400&nbsp;baud, the pulse repetition rate matches the TSOP's design frequency, so the receiver locks on cleanly &mdash; turning the IrDA port into a standard 38&nbsp;kHz IR transmitter. This is <i>not</i> IrDA communication: the project uses only the IrDA transceiver <i>hardware</i> (LED and SIR pulse shaper), while the protocol above it is entirely custom. In OSI terms, the OPX implements a bespoke physical layer (Layer&nbsp;1) that re-purposes the SIR modulator as a 38&nbsp;kHz carrier generator, and a minimal data-link layer (Layer&nbsp;2) with its own header and ternary framing. The native OPX (C++ DLL for EPOC) handles the encoding and UART access via the <code>RBusDevComm</code> device driver.
+    </p>
 
-<!-- ======================== USAGE ======================== -->
+    <br>
+    <table class="data-table" width="440" align="center">
+    <tr>
+    <th>&nbsp;Symbol</th>
+    <th align="center">Mark (0x00 bytes)</th>
+    <th align="center">Space (0xFF bytes)</th>
+    </tr>
+    <tr>
+    <td>Header</td>
+    <td align="center">32 (~8.3 ms)</td>
+    <td align="center">16 (~4.2 ms)</td>
+    </tr>
+    <tr>
+    <td>Digit 0</td>
+    <td align="center">4 (~1.0 ms)</td>
+    <td align="center">4 (~1.0 ms)</td>
+    </tr>
+    <tr>
+    <td>Digit 1</td>
+    <td align="center">4 (~1.0 ms)</td>
+    <td align="center">8 (~2.1 ms)</td>
+    </tr>
+    <tr>
+    <td>Digit 2</td>
+    <td align="center">4 (~1.0 ms)</td>
+    <td align="center">12 (~3.1 ms)</td>
+    </tr>
+    <tr>
+    <td>Trail</td>
+    <td align="center">4 (~1.0 ms)</td>
+    <td align="center">&mdash;</td>
+    </tr>
+    </table>
 
-<tr><td>
-<a name="usage"></a>
-<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Usage</b></font>
+    <br>
+    <p>
+    Flipper-side thresholds: digit&nbsp;1 &ge; 1.5&nbsp;ms, digit&nbsp;2 &ge; 2.5&nbsp;ms, header &ge; 4&nbsp;ms. One character = three ternary digits = ~5&nbsp;ms. A five-letter word transmits in roughly 100&nbsp;ms including SIR frame overhead.
+    </p>
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-Flash the IR Bridge FAP to the Flipper and launch it from the Infrared category. Start <font face="Courier New" size="2">bridge.py</font> on the Raspberry Pi (connected via USB-C). On the Psion, run <font face="Courier New" size="2">irchat_opx.opo</font>, type a message (A&ndash;Z and spaces), and press Enter. The OPX encodes and transmits the entire message in a single IR burst &mdash; typically under 100&nbsp;ms. The Flipper decodes the raw signal, dispatches to the RPi, which queries the LLM; the response arrives back on the Psion's screen. The programme then prompts for the next message.
-</font></p>
+    <p>
+    <b>Flipper &rarr; Psion</b> (pulse-width IR + EOT). &nbsp;Each ASCII byte is encoded as eight mark/space pairs at 36&nbsp;kHz carrier. A start mark of 50&nbsp;ms, data marks of 10&nbsp;ms (for 0) or 26&nbsp;ms (for 1), and an end mark of 75&nbsp;ms, with 5&nbsp;ms spaces between all marks. The Psion's SIR decoder on TTY:B at 4800&nbsp;baud interprets the resulting byte values: &ge; <code>$E0</code> = bit&nbsp;1, &le; <code>$90</code> = bit&nbsp;0. End of message is byte <code>0x04</code> (ASCII EOT). Data is sent in chunks of 63 bytes. Maximum response length: 200 characters.
+    </p>
 
-<br>
-<table width="300" border="0" cellpadding="3" cellspacing="0" align="center">
-<tr bgcolor="#888888">
-<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>&nbsp;Button</b></font></td>
-<td><font face="Verdana, Arial" size="1" color="#FFFFFF"><b>Action</b></font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">OK</font></td>
-<td><font face="Verdana, Arial" size="1">Send received message to LLM</font></td>
-</tr>
-<tr>
-<td><font face="Verdana, Arial" size="1">Left</font></td>
-<td><font face="Verdana, Arial" size="1">Clear display / reset state</font></td>
-</tr>
-<tr bgcolor="#F7F7F7">
-<td><font face="Verdana, Arial" size="1">Right</font></td>
-<td><font face="Verdana, Arial" size="1">Ping ESP32</font></td>
-</tr>
-<tr>
-<td><font face="Verdana, Arial" size="1">Back</font></td>
-<td><font face="Verdana, Arial" size="1">Exit application</font></td>
-</tr>
-</table>
-<br>
-</td></tr>
+    <br>
+    <table class="data-table" width="320" align="center">
+    <tr>
+    <th>&nbsp;Symbol</th>
+    <th align="center">Mark duration</th>
+    </tr>
+    <tr>
+    <td>Start</td>
+    <td align="center">50 ms</td>
+    </tr>
+    <tr>
+    <td>Bit 0</td>
+    <td align="center">10 ms</td>
+    </tr>
+    <tr>
+    <td>Bit 1</td>
+    <td align="center">26 ms</td>
+    </tr>
+    <tr>
+    <td>End</td>
+    <td align="center">75 ms</td>
+    </tr>
+    <tr>
+    <td>Space between marks</td>
+    <td align="center">5 ms</td>
+    </tr>
+    </table>
 
-<tr><td height="8"></td></tr>
-<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td height="16"></td></tr>
+    <br>
+    <p>
+    <b>Flipper &harr; ESP32</b> (UART). &nbsp;115200 baud, newline-terminated ASCII. The Flipper sends <code>Q:&lt;text&gt;\n</code> for queries and <code>PING\n</code> for heartbeats. The ESP32 replies with <code>R:&lt;text&gt;\n</code> for responses, <code>S:&lt;status&gt;\n</code> for status, and <code>E:&lt;reason&gt;\n</code> for errors. The advanced bridge sketch supports an RPC opcode table via <code>OP:HH:params\n</code> frames.
+    </p>
 
-<!-- ======================== LIMITATIONS ======================== -->
+    <hr class="section-rule">
 
-<tr><td>
-<a name="limitations"></a>
-<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Known Limitations</b></font>
+    <!-- ======================== HARDWARE ======================== -->
+    <a name="hardware"></a>
+    <span class="section-anchor">Hardware</span>
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-The Psion transmit alphabet is restricted to A&ndash;Z and space; there are no numerals or punctuation. LLM responses are capped at 200 characters by the IR transmit buffer constraint (<font face="Courier New" size="2">MAX_TIMINGS_AMOUNT=1024</font>). The Psion receives only the first burst of a multi-burst response owing to blocking I/O in OPL with no asynchronous timeout. The <font face="Courier New" size="2">infrared_send_raw_ext</font> timing is approximate; long transmissions may drift. TTY:B may be busy after the OPX releases the port; the Psion retries up to fifteen times over seventy-five seconds. The OPX uses the IrDA UART hardware but does not implement the IrDA protocol &mdash; once the OPX has opened the port, standard OPL serial I/O (<font face="Courier New" size="2">LPRINT</font>) will not function until the device is rebooted.
-</font></p>
-</td></tr>
+    <br>
+    <table class="data-table" width="460" align="center">
+    <tr>
+    <th>&nbsp;Component</th>
+    <th>Notes</th>
+    </tr>
+    <tr>
+    <td>Ericsson MC218</td>
+    <td>EPOC Release 5, OPL. Built-in IrDA port.</td>
+    </tr>
+    <tr>
+    <td>Flipper Zero</td>
+    <td>Stock firmware with IR subsystem.</td>
+    </tr>
+    <tr>
+    <td>Raspberry Pi</td>
+    <td>Any model with USB. Connected to Flipper via USB-C CDC.</td>
+    </tr>
+    </table>
 
-<tr><td height="8"></td></tr>
-<tr><td bgcolor="#DDDDDD" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td height="16"></td></tr>
+    <br>
+    <p>
+    No additional IR hardware is needed. Point the Psion's IrDA window at the Flipper's IR transceiver, ten to thirty centimetres apart.
+    </p>
 
-<!-- ======================== REPOSITORY ======================== -->
+    <hr class="section-rule">
 
-<tr><td>
-<a name="repository"></a>
-<font face="Georgia, Times New Roman, serif" size="4" color="#222222"><b>Repository</b></font>
+    <!-- ======================== BUILDING ======================== -->
+    <a name="building"></a>
+    <span class="section-anchor">Building</span>
 
-<p align="justify"><font face="Georgia, Times New Roman, serif" size="3">
-Source code and documentation are at<br>
-<a href="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</a>.
-</font></p>
+    <p>
+    <b>Flipper application.</b>
+    </p>
 
-<table width="440" border="0" cellpadding="8" cellspacing="0" align="center" bgcolor="#F5F5F2">
-<tr><td>
-<font face="Courier New, Courier, monospace" size="2" color="#333333">
-psion/<br>
-&nbsp;&nbsp;irchat_opx.opl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPL chat (38kHz protocol)<br>
-<br>
-opx/<br>
-&nbsp;&nbsp;irflash_sir.cpp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPX source (38400 baud)<br>
-&nbsp;&nbsp;IRFLASH.OXH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPX header<br>
-<br>
-flipper/ir_bridge/<br>
-&nbsp;&nbsp;ir_bridge.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flipper Zero FAP source<br>
-&nbsp;&nbsp;application.fam&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;app manifest<br>
-<br>
-rpi/<br>
-&nbsp;&nbsp;bridge.py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RPi LLM bridge (USB CDC)<br>
-<br>
-docs/<br>
-&nbsp;&nbsp;PROTOCOL.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol specification<br>
-&nbsp;&nbsp;HARDWARE.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wiring notes<br>
-&nbsp;&nbsp;OPL_NOTES.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EPOC OPL compilation
-</font>
-</td></tr>
-</table>
-<br>
-</td></tr>
+    <div class="code-block">
+    cd flipper/ir_bridge<br>
+    ufbt<br>
+    # copy dist/ir_bridge.fap to<br>
+    # SD: /ext/apps/Infrared/
+    </div>
 
-<tr><td height="8"></td></tr>
-<tr><td bgcolor="#999999" height="1"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" width="1" height="1" alt=""></td></tr>
-<tr><td height="14"></td></tr>
+    <br>
+    <p>
+    <b>RPi bridge.</b> &nbsp;Deploy <code>rpi/bridge.py</code> to the Raspberry Pi. Requires <code>pyserial</code>. Connect RPi to Flipper via USB-C.
+    </p>
 
-<!-- ======================== FOOTER ======================== -->
+    <div class="code-block">
+    pip install pyserial<br>
+    python3 rpi/bridge.py
+    </div>
 
-<tr><td>
-<font face="Verdana, Arial, sans-serif" size="1" color="#999999">
-<a href="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</a>
-</font>
-</td></tr>
+    <br>
+    <p>
+    <b>Psion OPX + OPL.</b> &nbsp;The OPX (native C++ DLL) is built with the EPOC Release&nbsp;5 C++ SDK under Wine. The OPL programme is compiled with OPLTRAN.EXE:
+    </p>
 
-<tr><td height="30"></td></tr>
+    <div class="code-block">
+    # OPX: built via GCC ARM cross-compiler<br>
+    # (see opx/ for source and build scripts)<br>
+    <br>
+    # OPL:<br>
+    unix2dos psion/irchat_opx.opl<br>
+    wine path/to/OPLTRAN.EXE "C:\\irchat_opx.opl"<br>
+    <br>
+    # Copy irflash.opx to MC218:<br>
+    #&nbsp;&nbsp;D:\System\Opx\IRFLASH.OPX<br>
+    # Copy irchat_opx.opo to MC218<br>
+    # via CF card
+    </div>
 
-</table>
+    <br>
+    <p>
+    The OPX auto-loads via <code>DECLARE OPX</code> &mdash; no <code>LOADM</code> needed on EPOC R5.
+    </p>
 
-</body>
-</html>
+    <hr class="section-rule">
+
+    <!-- ======================== USAGE ======================== -->
+    <a name="usage"></a>
+    <span class="section-anchor">Usage</span>
+
+    <p>
+    Flash the IR Bridge FAP to the Flipper and launch it from the Infrared category. Start <code>bridge.py</code> on the Raspberry Pi (connected via USB-C). On the Psion, run <code>irchat_opx.opo</code>, type a message (A&ndash;Z and spaces), and press Enter. The OPX encodes and transmits the entire message in a single IR burst &mdash; typically under 100&nbsp;ms. The Flipper decodes the raw signal, dispatches to the RPi, which queries the LLM; the response arrives back on the Psion's screen. The programme then prompts for the next message.
+    </p>
+
+    <br>
+    <table class="data-table" width="300" align="center">
+    <tr>
+    <th>&nbsp;Button</th>
+    <th>Action</th>
+    </tr>
+    <tr>
+    <td>OK</td>
+    <td>Send received message to LLM</td>
+    </tr>
+    <tr>
+    <td>Left</td>
+    <td>Clear display / reset state</td>
+    </tr>
+    <tr>
+    <td>Right</td>
+    <td>Ping ESP32</td>
+    </tr>
+    <tr>
+    <td>Back</td>
+    <td>Exit application</td>
+    </tr>
+    </table>
+    <br>
+
+    <hr class="section-rule">
+
+    <!-- ======================== LIMITATIONS ======================== -->
+    <a name="limitations"></a>
+    <span class="section-anchor">Known Limitations</span>
+
+    <p>
+    The Psion transmit alphabet is restricted to A&ndash;Z and space; there are no numerals or punctuation. LLM responses are capped at 200 characters by the IR transmit buffer constraint (<code>MAX_TIMINGS_AMOUNT=1024</code>). The Psion receives only the first burst of a multi-burst response owing to blocking I/O in OPL with no asynchronous timeout. The <code>infrared_send_raw_ext</code> timing is approximate; long transmissions may drift. TTY:B may be busy after the OPX releases the port; the Psion retries up to fifteen times over seventy-five seconds. The OPX uses the IrDA UART hardware but does not implement the IrDA protocol &mdash; once the OPX has opened the port, standard OPL serial I/O (<code>LPRINT</code>) will not function until the device is rebooted.
+    </p>
+
+    <hr class="section-rule">
+
+    <!-- ======================== REPOSITORY ======================== -->
+    <a name="repository"></a>
+    <span class="section-anchor">Repository</span>
+
+    <p>
+    Source code and documentation are at<br>
+    <a href="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</a>.
+    </p>
+
+    <div class="code-block" style="max-width: 460px;">
+    psion/<br>
+    &nbsp;&nbsp;irchat_opx.opl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPL chat (38kHz protocol)<br>
+    <br>
+    opx/<br>
+    &nbsp;&nbsp;irflash_sir.cpp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPX source (38400 baud)<br>
+    &nbsp;&nbsp;IRFLASH.OXH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OPX header<br>
+    <br>
+    flipper/ir_bridge/<br>
+    &nbsp;&nbsp;ir_bridge.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Flipper Zero FAP source<br>
+    &nbsp;&nbsp;application.fam&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;app manifest<br>
+    <br>
+    rpi/<br>
+    &nbsp;&nbsp;bridge.py&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RPi LLM bridge (USB CDC)<br>
+    <br>
+    docs/<br>
+    &nbsp;&nbsp;PROTOCOL.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol specification<br>
+    &nbsp;&nbsp;HARDWARE.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;wiring notes<br>
+    &nbsp;&nbsp;OPL_NOTES.md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EPOC OPL compilation
+    </div>
+    <br>
+
+  </div><!-- /content-body -->
+
+  <!-- BOTTOM NAVIGATION -->
+  <div class="bottom-nav">
+    <a href="#overview">Overview</a> <span class="sep">|</span>
+    <a href="#architecture">Architecture</a> <span class="sep">|</span>
+    <a href="#protocol">Protocol</a> <span class="sep">|</span>
+    <a href="#hardware">Hardware</a> <span class="sep">|</span>
+    <a href="#building">Building</a> <span class="sep">|</span>
+    <a href="#usage">Usage</a> <span class="sep">|</span>
+    <a href="#limitations">Limitations</a> <span class="sep">|</span>
+    <a href="#repository">Repository</a>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-text">
+    <a href="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</a><br>
+    All contents &copy;2026 <a href="https://r2bpw.works">R2BPW</a> &mdash; Artemy Urodovskikh.<br>
+    Unauthorized reproduction in any form is strictly prohibited.
+    </div>
+  </div>
+
+</div><!-- /frame-content -->
+
+<
