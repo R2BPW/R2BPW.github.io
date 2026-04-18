@@ -1,0 +1,411 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>R2BPW &mdash; IR Bridge: Ericsson MC218 / Flipper Zero / LLM</TITLE>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<META NAME="author" CONTENT="Artemy Urodovskikh">
+<META NAME="description" CONTENT="Bidirectional infrared bridge from a 1999 palmtop to modern AI">
+<STYLE TYPE="text/css">
+<!--
+body {
+  background: #FFFFFF;
+  color: #222222;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 13pt;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+a:link { color: #1a0dab; }
+a:visited { color: #4a3a8a; }
+a:hover { color: #cc0000; }
+h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20pt;
+  font-weight: normal;
+  color: #111111;
+  margin: 0 0 4px 0;
+}
+h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 15pt;
+  font-weight: normal;
+  color: #111111;
+  margin: 28px 0 10px 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #CCCCCC;
+}
+p { margin: 10px 0; }
+pre, code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 10pt;
+}
+pre {
+  background: #F5F5F0;
+  border: 1px solid #DDDDDD;
+  padding: 10px 12px;
+  line-height: 1.5;
+  overflow: auto;
+}
+td, th {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 12pt;
+  line-height: 1.5;
+}
+th {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 12px;
+  background: #F0F0EC;
+  border-bottom: 2px solid #999999;
+}
+td {
+  padding: 5px 12px;
+  border-bottom: 1px solid #E0E0E0;
+}
+.nav { font-size: 11pt; }
+.nav a { text-decoration: none; }
+.nav a:hover { text-decoration: underline; }
+.subtle { color: #666666; font-size: 11pt; }
+.footer { color: #888888; font-size: 10pt; }
+hr { border: none; border-top: 1px solid #CCCCCC; margin: 24px 0; }
+-->
+</STYLE>
+</HEAD>
+<BODY>
+
+<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR>
+<TD WIDTH="160" VALIGN="TOP" STYLE="padding: 30px 0 30px 24px;">
+
+<!-- NAV -->
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR><TD CLASS="nav" STYLE="padding-bottom: 16px;">
+<B><A HREF="https://r2bpw.works" STYLE="color: #111111; font-size: 14pt;">R2BPW</A></B>
+</TD></TR>
+
+<TR><TD HEIGHT="8"></TD></TR>
+<TR><TD CLASS="nav" STYLE="color: #888888; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">THIS PROJECT</TD></TR>
+<TR><TD CLASS="nav"><A HREF="#overview">Overview</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#arch">Architecture</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#protocol">Protocol</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#hardware">Hardware</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#building">Building</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#usage">Usage</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#limits">Limitations</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#repo">Repository</A></TD></TR>
+
+<TR><TD HEIGHT="20"></TD></TR>
+<TR><TD CLASS="nav" STYLE="color: #888888; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">OTHER</TD></TR>
+<TR><TD CLASS="nav"><A HREF="https://r2bpw.works/radio_bargain_bot_v2/">Radio Bargain</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="https://github.com/R2BPW/psion-flipper-bridge">GitHub</A></TD></TR>
+</TABLE>
+
+</TD>
+
+<!-- SEPARATOR -->
+<TD WIDTH="1" BGCOLOR="#E0E0E0"><IMG SRC="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" WIDTH="1" HEIGHT="1"></TD>
+
+<!-- CONTENT -->
+<TD VALIGN="TOP" STYLE="padding: 30px 40px 40px 36px;">
+
+<A NAME="overview"></A>
+<H1>IR Bridge</H1>
+<P CLASS="subtle" STYLE="margin-top: 2px;">Ericsson MC218 &#8596; Flipper Zero &#8596; LLM</P>
+
+<HR>
+
+<P>A working bridge that lets an <B>Ericsson MC218</B> &mdash; a 1999 palmtop
+running EPOC Release 5 &mdash; chat with a large language model via infrared.
+The user types a question on the Psion keyboard; a native OPX encodes and
+transmits the entire message in a single IR burst (~100&nbsp;ms for "HELLO");
+a Flipper Zero decodes the raw signal and relays it over UART to an ESP32 WiFi
+devboard, which queries an LLM API; and the response travels back the same path
+to appear on the palmtop's screen.</P>
+
+<P>The MC218 uses a proprietary serial connector that has been out of production
+for twenty-five years. This project eliminates the need for any cable by
+re-purposing the Psion's built-in IrDA transceiver hardware for a custom
+38&nbsp;kHz IR protocol. No IrDA software stack is involved on the transmit
+side; instead, a native OPX drives the SIR modulator at a baud rate chosen so
+that the resulting pulse train is indistinguishable from a 38&nbsp;kHz
+consumer-IR carrier. The ESP32 WiFi devboard plugs directly into the Flipper,
+making the entire setup cable-free. No additional IR hardware is required: the
+Psion's IrDA LED and the Flipper's TSOP receiver are used directly, pointed at
+one another at a distance of ten to thirty centimetres.</P>
+
+<!-- ARCHITECTURE -->
+<A NAME="arch"></A>
+<H2>Architecture</H2>
+
+<P>The signal chain:</P>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR VALIGN="MIDDLE">
+<TD STYLE="background: #F8F8F4; border: 1px solid #D0D0CC; padding: 10px 14px;">
+<B>Ericsson MC218</B><BR>
+<FONT CLASS="subtle">EPOC R5, IrDA, OPX+OPL</FONT>
+</TD>
+<TD STYLE="padding: 0 8px; color: #999999;">&rarr; <FONT CLASS="subtle">IR</FONT> &rarr;</TD>
+<TD STYLE="background: #F8F8F4; border: 1px solid #D0D0CC; padding: 10px 14px;">
+<B>Flipper Zero</B><BR>
+<FONT CLASS="subtle">TSOP 38kHz, IR Bridge FAP</FONT>
+</TD>
+<TD STYLE="padding: 0 8px; color: #999999;">&rarr; <FONT CLASS="subtle">UART</FONT> &rarr;</TD>
+<TD STYLE="background: #F8F8F4; border: 1px solid #D0D0CC; padding: 10px 14px;">
+<B>ESP32-S2</B><BR>
+<FONT CLASS="subtle">WiFi devboard, GPIO header</FONT>
+</TD>
+<TD STYLE="padding: 0 8px; color: #999999;">&rarr; <FONT CLASS="subtle">WiFi / TLS</FONT> &rarr;</TD>
+<TD STYLE="background: #F8F8F4; border: 1px solid #D0D0CC; padding: 10px 14px;">
+<B>LLM</B><BR>
+<FONT CLASS="subtle">OpenRouter API</FONT>
+</TD>
+</TR>
+</TABLE>
+
+<BR>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+<TR VALIGN="TOP">
+<TD WIDTH="48%" STYLE="padding-right: 16px;">
+<P><B>Psion &rarr; Flipper.</B>&nbsp;
+SIR @ 38400 baud &rarr; 38&nbsp;kHz carrier.
+Ternary encoding: 3 digits per character.
+"HELLO" &asymp; 100&nbsp;ms total.</P>
+</TD>
+<TD WIDTH="4%"></TD>
+<TD WIDTH="48%">
+<P><B>Flipper &rarr; Psion.</B>&nbsp;
+Pulse-width IR @ 36&nbsp;kHz carrier.
+TTY:B @ 4800 baud.
+EOT = 0x04, max 200 chars. ~120&nbsp;ms per byte.</P>
+</TD>
+</TR>
+</TABLE>
+
+<P CLASS="subtle"><B>Key insight:</B> 38400 baud bit period (26&nbsp;&micro;s) &asymp;
+38&nbsp;kHz period (26.3&nbsp;&micro;s) &mdash; the TSOP locks on cleanly.</P>
+
+<P>The Psion transmits using a native OPX (C++ DLL) that drives the IrDA UART at
+38400 baud &mdash; a rate whose bit period (26&nbsp;&micro;s) matches the 38&nbsp;kHz
+carrier expected by the Flipper's TSOP receiver. Each byte <CODE>0x00</CODE>
+produces nine SIR pulses at ~38&nbsp;kHz (a "mark"), while <CODE>0xFF</CODE>
+produces silence (a "space"). An entire message is encoded as mark/space
+durations in a single buffer and transmitted in one SIR frame &mdash; "HELLO"
+takes roughly 100&nbsp;ms. The Flipper decodes the raw timing array, assembles
+the text, and forwards it over UART to the ESP32 WiFi devboard. The ESP32
+queries the LLM via WiFi; the Flipper then re-encodes the response as pulse-width
+IR at 36&nbsp;kHz carrier and transmits it back; the Psion reads this on its IrDA
+serial port (TTY:B) at 4800 baud.</P>
+
+<!-- PROTOCOL -->
+<A NAME="protocol"></A>
+<H2>Protocol</H2>
+
+<P><B>Psion &rarr; Flipper</B> (38&nbsp;kHz carrier, ternary).&nbsp;
+The entire message is transmitted in a single SIR frame at 38400 baud. At this
+rate, each bit period is ~26&nbsp;&micro;s &mdash; nearly identical to the
+38&nbsp;kHz period (26.3&nbsp;&micro;s) that the Flipper's TSOP infrared receiver
+is tuned to. A byte of <CODE>0x00</CODE> generates nine SIR pulses at ~38&nbsp;kHz
+(carrier "on"); a byte of <CODE>0xFF</CODE> generates no pulses (carrier "off").
+By alternating runs of these bytes the OPX constructs mark/space pairs whose
+durations encode ternary digits. Each character uses three digits (base-3: A=0,
+B=1, &hellip; Z=25, space=26). A header mark (~8&nbsp;ms) opens the frame; then
+for each digit a short mark (~1&nbsp;ms) is followed by a space whose length
+encodes the value.</P>
+
+<P><I>Why 38400 baud?</I> The Flipper's TSOP infrared receiver has a bandpass
+filter tuned to 38&nbsp;kHz. Ordinary IrDA at 4800 or 9600 baud produces SIR
+pulses at the wrong repetition rate; the TSOP detects them unreliably, if at all.
+At 38400 baud, the pulse repetition rate matches the TSOP's design frequency, so
+the receiver locks on cleanly &mdash; turning the IrDA port into a standard
+38&nbsp;kHz IR transmitter. This is <I>not</I> IrDA communication: the project
+uses only the IrDA transceiver <I>hardware</I> (LED and SIR pulse shaper), while
+the protocol above it is entirely custom.</P>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+<TR>
+<TH>Symbol</TH>
+<TH>Mark (0x00 bytes)</TH>
+<TH>Space (0xFF bytes)</TH>
+</TR>
+<TR><TD>Header</TD><TD>32 (~8.3&nbsp;ms)</TD><TD>16 (~4.2&nbsp;ms)</TD></TR>
+<TR><TD>Digit 0</TD><TD>4 (~1.0&nbsp;ms)</TD><TD>4 (~1.0&nbsp;ms)</TD></TR>
+<TR><TD>Digit 1</TD><TD>4 (~1.0&nbsp;ms)</TD><TD>8 (~2.1&nbsp;ms)</TD></TR>
+<TR><TD>Digit 2</TD><TD>4 (~1.0&nbsp;ms)</TD><TD>12 (~3.1&nbsp;ms)</TD></TR>
+<TR><TD>Trail</TD><TD>4 (~1.0&nbsp;ms)</TD><TD>&mdash;</TD></TR>
+</TABLE>
+
+<P CLASS="subtle">Flipper-side thresholds: digit&nbsp;1 &ge; 1.5&nbsp;ms,
+digit&nbsp;2 &ge; 2.5&nbsp;ms, header &ge; 4&nbsp;ms. One character = three
+ternary digits = ~5&nbsp;ms. A five-letter word transmits in roughly 100&nbsp;ms
+including SIR frame overhead.</P>
+
+<P><B>Flipper &rarr; Psion</B> (pulse-width IR + EOT).&nbsp;
+Each ASCII byte is encoded as eight mark/space pairs at 36&nbsp;kHz carrier. A
+start mark of 50&nbsp;ms, data marks of 8&nbsp;ms (for 0) or 16&nbsp;ms (for 1),
+and an end mark of 75&nbsp;ms, with 3&nbsp;ms spaces between all marks. The
+Psion's SIR decoder on TTY:B at 4800 baud interprets the resulting byte values:
+&ge;&nbsp;<CODE>$E0</CODE> = bit&nbsp;1, &le;&nbsp;<CODE>$90</CODE> = bit&nbsp;0,
+values between = marker.
+End of message is byte <CODE>0x04</CODE> (ASCII EOT). Maximum response length:
+200 characters. Transmission speed: ~120&nbsp;ms per byte, ~24 seconds for a
+full 200-character response.</P>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR><TH>Symbol</TH><TH>Mark duration</TH></TR>
+<TR><TD>Start</TD><TD>50&nbsp;ms</TD></TR>
+<TR><TD>Bit 0</TD><TD>8&nbsp;ms</TD></TR>
+<TR><TD>Bit 1</TD><TD>16&nbsp;ms</TD></TR>
+<TR><TD>End</TD><TD>75&nbsp;ms</TD></TR>
+<TR><TD>Space between marks</TD><TD>3&nbsp;ms</TD></TR>
+</TABLE>
+
+<P><B>Flipper &#8596; ESP32</B> (UART).&nbsp;
+115200 baud, 8N1, newline-terminated ASCII over the Flipper GPIO header.</P>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR><TH>Direction</TH><TH>Frame</TH><TH>Meaning</TH></TR>
+<TR><TD>Flipper &rarr; ESP32</TD><TD><CODE>Q:&lt;text&gt;\n</CODE></TD><TD>LLM query</TD></TR>
+<TR><TD>ESP32 &rarr; Flipper</TD><TD><CODE>R:&lt;text&gt;\n</CODE></TD><TD>LLM response</TD></TR>
+<TR><TD>ESP32 &rarr; Flipper</TD><TD><CODE>S:&lt;status&gt;\n</CODE></TD><TD>Status</TD></TR>
+<TR><TD>ESP32 &rarr; Flipper</TD><TD><CODE>E:&lt;reason&gt;\n</CODE></TD><TD>Error</TD></TR>
+</TABLE>
+
+<!-- HARDWARE -->
+<A NAME="hardware"></A>
+<H2>Hardware</H2>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="100%">
+<TR><TH>Component</TH><TH>Notes</TH></TR>
+<TR><TD><B>Ericsson MC218</B></TD><TD>EPOC Release 5, OPL + OPX. Built-in IrDA port.</TD></TR>
+<TR><TD><B>Flipper Zero</B></TD><TD>Stock firmware with IR subsystem.</TD></TR>
+<TR><TD><B>ESP32-S2 WiFi Devboard</B></TD><TD>Official Flipper devboard, plugs into GPIO header. No wires.</TD></TR>
+</TABLE>
+
+<P>No additional IR hardware is needed. The ESP32 devboard plugs directly
+into the Flipper &mdash; no soldering, no cables. Point the Psion's IrDA
+window at the Flipper's IR transceiver, ten to thirty centimetres apart.</P>
+
+<!-- BUILDING -->
+<A NAME="building"></A>
+<H2>Building</H2>
+
+<P><B>Flipper application.</B></P>
+<PRE>cd flipper/ir_bridge
+ufbt build
+# Copy ir_bridge.fap to
+# Flipper SD: /ext/apps/Infrared/</PRE>
+
+<P><B>ESP32 firmware.</B>&nbsp; Set your WiFi credentials and OpenRouter API key
+in <CODE>esp32/simple_bridge/simple_bridge.ino</CODE>, then:</P>
+<PRE>arduino-cli compile --fqbn esp32:esp32:esp32s2 \
+  esp32/simple_bridge/simple_bridge.ino
+arduino-cli upload --fqbn esp32:esp32:esp32s2 \
+  --port /dev/cu.usbmodem01 \
+  esp32/simple_bridge/simple_bridge.ino</PRE>
+
+<P><B>Psion OPX + OPL.</B>&nbsp; The OPX (native C++ DLL) is built with the
+EPOC Release 5 C++ SDK under Wine. A pre-built binary is available in
+<CODE>release/irflash.opx</CODE>. The OPL programme is compiled with
+OPLTRAN.EXE:</P>
+<PRE># OPX: built via GCC ARM cross-compiler
+# (see opx/ for source and build scripts)
+# Pre-built: release/irflash.opx
+
+# OPL:
+unix2dos psion/chat_a.opl
+wine path/to/OPLTRAN.EXE "C:\chat_a.opl"
+
+# Copy irflash.opx to MC218:
+#  D:\System\Opx\IRFLASH.OPX
+# Copy chat_a.opo to MC218
+# via CF card</PRE>
+
+<P>The OPX auto-loads via <CODE>DECLARE OPX</CODE> &mdash; no <CODE>LOADM</CODE>
+needed on EPOC R5.</P>
+
+<!-- USAGE -->
+<A NAME="usage"></A>
+<H2>Usage</H2>
+
+<P>Plug the ESP32 WiFi devboard into the Flipper GPIO header. Flash the IR Bridge
+FAP to the Flipper and launch it from the Infrared category. On the Psion, run
+<CODE>chat_a.opo</CODE>, type a message (A&ndash;Z and spaces), and press Enter.
+The OPX encodes and transmits the entire message in a single IR burst &mdash;
+typically under 100&nbsp;ms. The Flipper decodes the raw signal, forwards it to
+the ESP32, which queries the LLM via WiFi; the response arrives back on the
+Psion's screen.</P>
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
+<TR><TH>Button</TH><TH>Action</TH></TR>
+<TR><TD><B>Up</B></TD><TD>Send "ABC" to Psion (test)</TD></TR>
+<TR><TD><B>Down</B></TD><TD>Send "Hello" to Psion (test)</TD></TR>
+<TR><TD><B>OK</B></TD><TD>Send received message to LLM</TD></TR>
+<TR><TD><B>Left</B></TD><TD>Clear display / reset state</TD></TR>
+<TR><TD><B>Back</B></TD><TD>Exit application</TD></TR>
+</TABLE>
+
+<!-- LIMITATIONS -->
+<A NAME="limits"></A>
+<H2>Known Limitations</H2>
+
+<P>The Psion transmit alphabet is restricted to A&ndash;Z and space; there are
+no numerals or punctuation. LLM responses are capped at 200 characters by the IR
+transmit buffer constraint (<CODE>MAX_TIMINGS_AMOUNT=1024</CODE>).
+Flipper &rarr; Psion speed is approximately 24 seconds for 200 characters
+(4800 baud SIR limit). The OPX uses the IrDA UART hardware but does not implement
+the IrDA protocol. Port contention: the OPX must be closed before TTY:B can
+receive; <CODE>chat_a</CODE> handles this automatically.</P>
+
+<!-- REPOSITORY -->
+<A NAME="repo"></A>
+<H2>Repository</H2>
+
+<P>Source code and documentation at
+<A HREF="https://github.com/R2BPW/psion-flipper-bridge">github.com/R2BPW/psion-flipper-bridge</A>.</P>
+
+<PRE>psion/
+  chat_a.opl              OPL chat (OPX TX + TTY:B RX)
+  irchat_opx.opl          legacy chat (original version)
+
+opx/
+  irflash_sir.cpp         OPX source (38400 baud)
+  irflash.h               OPX C++ header
+  irflash.mmp             Symbian build file
+  IRFLASH.OXH             OPL interface header
+
+flipper/ir_bridge/
+  ir_bridge.c             Flipper Zero FAP source
+  application.fam         app manifest
+
+esp32/
+  simple_bridge/
+    simple_bridge.ino     ESP32 LLM bridge (WiFi, OpenRouter)
+  llm_bridge/
+    llm_bridge.ino        ESP32 LLM bridge with RPC opcodes
+
+release/
+  irflash.opx             compiled OPX for MC218
+  ir_bridge.fap           compiled Flipper FAP
+  IRFLASH.OXH             OPX header (copy to MC218)
+
+docs/
+  PROTOCOL.md             protocol specification
+  HARDWARE.md             hardware notes
+  OPL_NOTES.md            EPOC OPL compilation
+  SPEEDUP.org             speed optimization notes</PRE>
+
+<HR>
+
+<P CLASS="footer">
+&copy; 2026 <A HREF="https://r2bpw.works">R2BPW</A> &mdash; Artemy Urodovskikh.
+</P>
+
+</TD>
+</TR>
+</TABLE>
+
+</BODY>
+</HTML>
