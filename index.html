@@ -200,7 +200,7 @@ Remote or relocation.
 <H2>Professional experience</H2>
 
 <P><B>Backend Team Lead</B> &mdash; Bolshaya Troika, Moscow<BR>
-<SPAN CLASS="subtle">May 2018 &ndash; present &middot; 8+ years &middot; Junior &rarr; Middle &rarr; Senior Developer &rarr; Team Lead</SPAN></P>
+<SPAN CLASS="subtle">May 2018 &ndash; present &middot; 8+ years</SPAN></P>
 
 <P>Core product: regional-scale waste-management platform
 (Python/Django, PostgreSQL, ClickHouse) for government clients in Russia and Kazakhstan.
@@ -221,12 +221,6 @@ background task queue for route calculations, synchronous solver for 10&nbsp;000
 waypoints per district, 500+ per vehicle. Implemented a standalone TSP solver
 with graceful degradation. In production since early 2022.</P>
 
-<P CLASS="subsystem"><I>Billing engine</I> (core owner). Designed and developed from scratch.
-Tariff calculation, accruals, invoice generation for 1M+
-individual payers (municipal waste collection fees). Memory-optimized batch
-printing system. Also led the cross-cloud storage migration for the platform.
-In production since late 2022.</P>
-
 <P CLASS="subsystem"><I>Fleet telemetry</I> (contributor). Developed the data synchronization
 layer between the analytical database (ClickHouse) and the geospatial
 database (PostGIS). GPS on stationary waste trucks drifts by tens of metres,
@@ -234,21 +228,6 @@ producing false trips &mdash; designed and implemented filtering heuristics
 (track splitting, segment merging, outlier rejection) that recover the actual
 geometry of movement from raw GPS streams.
 Integrated S3 storage for onboard camera footage.</P>
-
-<P CLASS="subsystem"><I>Statistics and analytics</I> (core owner). Designed the analytical
-subsystem from domain model to operational dashboards: scheduled ETL
-processing, geospatial clustering (DBSCAN) for map aggregation, two-stage
-weighing reconciliation (pickup vs. delivery), ClickHouse for regional-scale
-analytical queries.</P>
-
-<P CLASS="subsystem"><I>Object versioning</I> (core owner). Designed a parallel versioning strategy
-for domain objects &mdash; multiple concurrent drafts with change-set merging
-on publish. Delta storage: versions can store only changed fields instead
-of full copies. Relationship copying logic (one-to-many, many-to-many)
-configurable through admin without code changes.</P>
-
-<P CLASS="subsystem"><I>Document workflow</I> (contributor). Environment-based remapping of document
-state transitions across deployments.</P>
 
 <P CLASS="subsystem"><I>Performance</I>. Non-blocking index creation on production tables
 with millions of rows. Eliminated N+1 queries in hot endpoints through
