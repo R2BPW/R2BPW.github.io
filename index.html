@@ -231,11 +231,9 @@ printing system. In production since late 2022.</P>
 
 <P CLASS="subsystem"><I>Fleet telemetry</I> (contributor). Developed the data synchronization
 layer between the analytical database (ClickHouse) and the geospatial
-database (PostGIS): latest GPS coordinates for every vehicle, with
-computed attributes (distance-to-waypoint, en-route status). Implemented
-GPS noise filtering: splitting tracks at anomalous gaps, merging nearby
-segments, rejecting outlier points. Integrated S3 storage for onboard
-camera footage.</P>
+database (PostGIS). Implemented GPS noise filtering: splitting tracks
+at anomalous gaps, merging nearby segments, rejecting outlier points.
+Integrated S3 storage for onboard camera footage.</P>
 
 <P CLASS="subsystem"><I>Document workflow</I> (contributor). Developed TransitionMapper &mdash; a utility for
 environment-based remapping of document state transitions across deployments.
