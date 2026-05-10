@@ -4,7 +4,7 @@
 <TITLE>Artemy Urodovskikh &mdash; Backend Engineer, open to work</TITLE>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="author" CONTENT="Artemy Urodovskikh">
-<META NAME="description" CONTENT="Backend team lead, 8+ years. Python, Django, PostgreSQL, route optimisation, GIS, telemetry, FPGA, SDR. Open to remote and relocation. MIPT MSc.">
+<META NAME="description" CONTENT="Backend team lead, 8+ years. Python, Django, PostgreSQL, ClickHouse. Billing engine from scratch for 1M+ users, route planning with custom TSP solver, fleet telemetry. MIPT MSc. Open to remote and relocation.">
 <META NAME="keywords" CONTENT="Artemy Urodovskikh, backend engineer, team lead, Python, Django, PostgreSQL, ClickHouse, route optimisation, GIS, telemetry, FPGA, Verilog, SDR, Common Lisp, MIPT, Moscow, open to work, available for hire, remote, Europe, relocation">
 <META NAME="robots" CONTENT="index, follow">
 <LINK REL="canonical" HREF="https://r2bpw.works/about/">
@@ -123,6 +123,14 @@ hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
   font-size: 11pt;
   margin-top: 2px;
 }
+.work-sep {
+  border: none;
+  border-top: 1px solid #262626;
+  margin: 20px 0;
+}
+.subsystem {
+  margin-top: 18px;
+}
 -->
 </STYLE>
 </HEAD>
@@ -143,7 +151,7 @@ hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
 <TR><TD CLASS="nav"><A HREF="#work">Experience</A></TD></TR>
 <TR><TD CLASS="nav"><A HREF="#teaching">Teaching</A></TD></TR>
 <TR><TD CLASS="nav"><A HREF="#projects">Projects</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="#looking">Looking&nbsp;for</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#looking">Availability</A></TD></TR>
 <TR><TD CLASS="nav"><A HREF="#contact">Contact</A></TD></TR>
 
 <TR><TD HEIGHT="20"></TD></TR>
@@ -184,8 +192,6 @@ Remote or relocation.
 
 <P>Engineer at the intersection of software and hardware.</P>
 
-<P>Eight years building the backend of a regional-scale waste-management platform (Python/Django, PostgreSQL, ClickHouse): billing for 1M+ users, vehicle routing across regions of Russia and Kazakhstan, fleet telemetry, and document workflow for government and international B2B clients.</P>
-
 <P>Side projects: a price-intelligence bot monitoring ham radio markets in 50 countries; an SDR receiver written from scratch in C and Verilog.</P>
 
 <P>MIPT, MSc in Computer Science. Thesis on visualization algorithms for large-scale route data on maps.</P>
@@ -196,16 +202,57 @@ Remote or relocation.
 <P><B>Backend Team Lead</B> &mdash; Bolshaya Troika, Moscow<BR>
 <SPAN CLASS="subtle">May 2018 &ndash; present &middot; 8+ years</SPAN></P>
 
-<P>Core product for waste management logistics at regional scale.</P>
+<P>Eight years building the backend of a regional-scale waste-management platform
+(Python/Django, PostgreSQL, ClickHouse) for government clients in Russia and Kazakhstan.
+Developed the billing engine and the route planning subsystem from scratch;
+implemented a standalone TSP solver as a reserve for the internal optimization service.
+Led a team of five engineers within a 40-developer codebase.
+Substantial involvement from architecture planning through to production.
+Introduced structured code review and increased test coverage.
+Owned releases and rollbacks for the core platform.</P>
 
-<P>Billing engine for 1M+ users. Route optimisation algorithm.</P>
+<HR CLASS="work-sep">
 
-<P>Configurable document workflow engine with programmable semantics and versioning,
-adopted by international B2B clients for regulatory reporting. Vehicle telemetry across the regional
-fleet. Frontend and backend i18n.</P>
+<P><B>2022&ndash;2026</B><BR>
+Cloud-hosted waste management system for government clients
+(Russia, Kazakhstan).</P>
 
-<P>Refactored shared codebase (40+&nbsp;developers), introduced code review,
-owned releases and rollbacks.</P>
+<P CLASS="subsystem"><I>Route planning</I> (core owner). Developed the subsystem from scratch:
+background task queue for route calculations, synchronous solver for 10&nbsp;000+
+waypoints per district, 500+ per vehicle. Implemented a standalone TSP solver
+(nearest-neighbour &rarr; 2-opt &rarr; or-opt &rarr; 2-opt polish, haversine distance
+matrix) as a local reserve when the internal optimization service is unavailable.
+In production since early 2022.</P>
+
+<P CLASS="subsystem"><I>Billing engine</I> (core owner). Designed and developed from scratch.
+Tariff calculation, accruals, invoice generation for 1M+
+individual payers (municipal waste collection fees). Memory-optimized batch
+printing system. In production since late 2022.</P>
+
+<P CLASS="subsystem"><I>Fleet telemetry</I> (contributor). Developed the data synchronization
+layer between the analytical database (ClickHouse) and the geospatial
+database (PostGIS): latest GPS coordinates for every vehicle, with
+computed attributes (distance-to-waypoint, en-route status). Implemented
+GPS noise filtering: splitting tracks at anomalous gaps, merging nearby
+segments, rejecting outlier points. Integrated S3 storage for onboard
+camera footage.</P>
+
+<P CLASS="subsystem"><I>Document workflow</I> (contributor). Developed TransitionMapper &mdash; a utility for
+environment-based remapping of document state transitions across deployments.
+Point contributions to contract reporting and admin integration.</P>
+
+<HR CLASS="work-sep">
+
+<P><B>2020&ndash;2021</B><BR>
+Logistics algorithms and visualization for large-scale
+geospatial data (vehicle tracks, nested territories, graph overlays) at regional
+scale.</P>
+
+<HR CLASS="work-sep">
+
+<P><B>2018&ndash;2019</B><BR>
+Hardware-software complex for automating municipal yard
+territory inventory. Still serving original clients.</P>
 
 <A NAME="teaching"></A>
 <H2>Teaching</H2>
@@ -259,7 +306,7 @@ CIC&nbsp;filter.
 </DIV>
 
 <A NAME="looking"></A>
-<H2>Looking for</H2>
+<H2>Availability</H2>
 
 <P>Work where I arrive at my own solutions rather than reproduce others&rsquo;.</P>
 
