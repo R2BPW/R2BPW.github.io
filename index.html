@@ -174,9 +174,14 @@ hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
 <TD VALIGN="TOP" STYLE="padding: 30px 40px 40px 36px;">
 
 <A NAME="about"></A>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0"><TR>
+<TD STYLE="padding-right: 16px;">
+<IMG SRC="photo.jpg" WIDTH="100" HEIGHT="100" STYLE="border-radius: 4px; border: 1px solid #333; object-fit: cover;" ALT="Artemy Urodovskikh">
+</TD>
+<TD VALIGN="MIDDLE">
 <H1>Artemy Urodovskikh</H1>
-<P CLASS="subtle">Backend engineer &middot; Moscow</P>
-
+</TD>
+</TR></TABLE>
 <HR>
 
 <DIV CLASS="status-box">
@@ -197,24 +202,18 @@ Remote or relocation.
 <P>Regional-scale waste-management platform (Python/Django, PostgreSQL, ClickHouse) for government clients.
 Deployed across Moscow region, Kazakhstan, and other Russian regions.
 Multi-tenant deployments with per-region data residency.
-Team of five engineers within a 40-developer codebase.
+Led a team of five engineers within a 40-developer codebase.
 Specifications, delegation to engineers and AI agents, code review, production integration.</P>
 
 <HR CLASS="work-sep">
 
-<P><B>2022&ndash;2026 &middot; Senior Developer &rarr; Team Lead</B></P>
-
 <P CLASS="subsystem"><I>Route planning</I> (core owner).
-Designed the system from scratch: async task queue, custom TSP solver for 10&nbsp;000+ waypoints per district.
+Designed the system from scratch: asynchronous task queue, custom TSP solver for 10&nbsp;000+ waypoints per district.
 In production since early 2022, ~1&nbsp;200 routes/day.</P>
 
 <P CLASS="subsystem"><I>Fleet telemetry</I>.
 ClickHouse &harr; PostGIS sync layer. GPS filtering heuristics (track splitting, segment merging, outlier rejection) recovering actual movement geometry from drifting streams.
 S3 integration for onboard camera footage.</P>
-
-<P CLASS="subsystem"><I>External integrations</I>.
-Migrated S3 file storage between providers with zero downtime via field-level routing.
-1C fleet management sync: schedule latency ~5&nbsp;s &rarr; ~1.5&nbsp;s.</P>
 
 <P CLASS="subsystem"><I>Performance</I>.
 Hot OLTP tables 500M+ rows; telemetry pipeline ingests ~370M GPS samples/month from 5.7k trackers into a 25B-record ClickHouse archive.
