@@ -204,11 +204,15 @@ Remote or relocation.
 
 <P>Core product: regional-scale waste-management platform
 (Python/Django, PostgreSQL, ClickHouse) for government clients.
+Deployed across Moscow region, Kazakhstan, and other Russian regions.
+Multi-tenant deployments with per-region data residency.
 Developed the billing engine and the route planning subsystem from scratch;
 implemented a standalone TSP solver as a reserve for the internal optimization service.
-As team lead of five engineers, provided architectural oversight, ensured timely
-releases, and coordinated work across a 40-developer codebase.
-Substantial involvement from architecture planning through to production.</P>
+As team lead of five engineers, owned the logistics domain architecturally:
+authored specifications, delegated implementation to engineers and in-house AI
+agents (B3 Sky corporate multi-agent system), reviewed outputs, and integrated
+them into production.
+Coordinated work across a 40-developer codebase.</P>
 
 <HR CLASS="work-sep">
 
@@ -220,7 +224,8 @@ route planning system from the ground up, featuring an asynchronous task queue
 and a high-performance optimisation algorithm handling 10&nbsp;000+ waypoints
 per district and 500+ per vehicle. Built a standalone TSP solver with graceful
 degradation, ensuring continuous operation during primary-algorithm failures.
-In production since early 2022.</P>
+In production since early 2022, currently dispatching roughly 1,200 routes per day
+across the deployment.</P>
 
 <P CLASS="subsystem"><I>Fleet telemetry</I> (contributor). Developed the data synchronization
 layer between the analytical database (ClickHouse) and the geospatial
@@ -230,12 +235,20 @@ producing false trips &mdash; designed and implemented filtering heuristics
 geometry of movement from raw GPS streams.
 Integrated S3 storage for onboard camera footage.</P>
 
-<P CLASS="subsystem"><I>Performance</I>. Optimised mission-critical database operations:
-implemented non-blocking index creation on production tables with millions of
-rows; eliminated redundant database calls in hot endpoints through ORM
-annotations; redesigned a cleanup query on a 280M-row table, replacing a
-nested-loop plan with a hash anti-join and fully eliminating statement
-timeouts.</P>
+<P CLASS="subsystem"><I>External integrations</I>. Migrated uploaded file storage
+between cloud S3 providers with zero downtime via per-field storage routing
+and a background path-rewrite job. Implemented multi-step ticketing protocols
+against external state systems with per-tenant credentials and per-region request
+routing.</P>
+
+<P CLASS="subsystem"><I>Performance</I>. Hot operational tables exceed 500M rows;
+the telemetry pipeline ingests roughly 370M GPS samples per month from 5.7k active
+trackers into a 25-billion-sample ClickHouse archive.
+Redesigned a cleanup query on a 280M-row table, replacing a nested-loop plan
+with a hash anti-join and fully eliminating statement timeouts.
+Audited cascade-driven query amplification across core delete paths.
+Implemented non-blocking index creation on production tables;
+eliminated redundant database calls in hot endpoints through ORM annotations.</P>
 
 <HR CLASS="work-sep">
 
