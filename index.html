@@ -235,7 +235,7 @@ hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
 Remote or relocation.
 </DIV>
 
-<P>Engineer at the intersection of software and hardware.</P>
+<P>Engineer at the intersection of software and hardware. I look for the shortest viable path between a business requirement and its implementation, and push to reduce the requirement count rather than grow it &mdash; the best sprint is the one that ends with fewer of them.</P>
 
 <P>MSc in Computer Science (MIPT). Thesis: route clustering algorithm, merging hundreds of overlapping routes into a metadata-preserving graph, data reduction at interactive speed.</P>
 
@@ -246,7 +246,7 @@ Remote or relocation.
 <SPAN CLASS="subtle">May 2018 &ndash; present &middot; 8+ years</SPAN></P>
 
 <P>Regional-scale waste-management platform (Python/Django, PostgreSQL, ClickHouse) for government clients.
-Deployed across Moscow region, Kazakhstan, and other Russian regions.
+Deployed across 12 federal subjects of Russia and Kazakhstan, serving 1M+ end-users.
 Multi-tenant deployments with per-region data residency.
 Led a team of five engineers within a 40-developer codebase.
 Specifications, delegation to engineers and AI agents, code review, production integration.</P>
@@ -254,7 +254,8 @@ Specifications, delegation to engineers and AI agents, code review, production i
 <HR CLASS="work-sep">
 
 <P CLASS="subsystem"><I>Route planning</I> (core owner).
-Designed the system from scratch: asynchronous task queue, custom TSP solver for 10&nbsp;000+ waypoints per district.
+Designed the system from scratch as a replacement for a third-party commercial solver, driven by deployment and licensing constraints from regional customers.
+Asynchronous task queue, custom TSP solver for 10&nbsp;000+ waypoints per district.
 In production since early 2022, ~1&nbsp;200 routes/day.</P>
 
 <P CLASS="subsystem"><I>Fleet telemetry</I>.
@@ -265,6 +266,9 @@ S3 integration for onboard camera footage.</P>
 Hot OLTP tables 500M+ rows; telemetry pipeline ingests ~370M GPS samples/month from 5.7k trackers into a 25B-record ClickHouse archive.
 Replaced nested-loop plan on a 280M-row table with hash anti-join, eliminating statement timeouts.
 Non-blocking index creation on production tables; N+1 elimination via ORM annotations.</P>
+
+<P CLASS="subsystem"><I>AI agents in the workflow</I>.
+Integrated Claude Code into the team's day-to-day work. One concrete case: integration with a customer-side controller in the Moscow region where the supplied documentation was incomplete and diverged from the actual device behaviour &mdash; the agent loop carried most of the reverse-engineering effort against live traffic.</P>
 
 <HR CLASS="work-sep">
 
