@@ -67,6 +67,11 @@ body {
   margin: 0;
   padding: 0;
 }
+.wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 40px 40px 40px;
+}
 a:link { color: #7aafee; }
 a:visited { color: #9a8ace; }
 a:hover { color: #ee6644; }
@@ -112,9 +117,6 @@ p { margin: 10px 0; }
   margin: 0;
 }
 
-.nav { font-size: 11pt; }
-.nav a { text-decoration: none; }
-.nav a:hover { text-decoration: underline; }
 .subtle { color: #888880; font-size: 11pt; }
 .footer { color: #666660; font-size: 10pt; }
 hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
@@ -197,44 +199,7 @@ hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
 </HEAD>
 <BODY>
 
-<TABLE WIDTH="100%" BORDER="0" CELLPADDING="0" CELLSPACING="0">
-<TR>
-<TD WIDTH="160" VALIGN="TOP" STYLE="padding: 30px 0 30px 24px;">
-
-<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
-<TR><TD CLASS="nav" STYLE="padding-bottom: 16px;">
-<B><A HREF="https://r2bpw.works" STYLE="color: #e0e0d8; font-size: 14pt;">R2BPW</A></B>
-</TD></TR>
-
-<TR><TD HEIGHT="8"></TD></TR>
-<TR><TD CLASS="nav" STYLE="color: #666660; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">THIS PAGE</TD></TR>
-<TR><TD CLASS="nav"><A HREF="#projects">Projects</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="#contact">Contact</A></TD></TR>
-
-<TR><TD HEIGHT="20"></TD></TR>
-<TR><TD CLASS="nav" STYLE="color: #666660; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">ABOUT</TD></TR>
-<TR><TD CLASS="nav"><A HREF="about/">CV &amp; Experience</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="resume_artemy_urodovskikh.pdf">CV (PDF)</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="resume_artemy_urodovskikh_ru.pdf">CV RU (PDF)</A></TD></TR>
-
-<TR><TD HEIGHT="20"></TD></TR>
-<TR><TD CLASS="nav" STYLE="color: #666660; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">PROJECTS</TD></TR>
-<TR><TD CLASS="nav"><A HREF="radio_bargain_bot_v2/">Radio Bargain</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="psion-flipper-bridge/">IR Bridge</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="qrss/">QRSS Beacons</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="https://github.com/R2BPW">GitHub</A></TD></TR>
-
-<TR><TD HEIGHT="20"></TD></TR>
-<TR><TD CLASS="nav" STYLE="color: #666660; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">ELSEWHERE</TD></TR>
-<TR><TD CLASS="nav"><A HREF="https://www.linkedin.com/in/rtmy/" REL="me">LinkedIn</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="https://t.me/R2BPW">Telegram</A></TD></TR>
-</TABLE>
-
-</TD>
-
-<TD WIDTH="1" BGCOLOR="#2a2a2a"><IMG SRC="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" WIDTH="1" HEIGHT="1"></TD>
-
-<TD VALIGN="TOP" STYLE="padding: 30px 40px 40px 36px;">
+<DIV CLASS="wrap">
 
 <H1>Artemy Urodovskikh</H1>
 <HR>
@@ -245,7 +210,7 @@ Backend / team lead, 8+ years. <A HREF="about/">Read the full CV and experience 
 </DIV>
 
 <DIV CLASS="lede-stage">
-<P CLASS="lede">Engineer at the intersection of software and hardware. I look for the shortest viable path between a business requirement and its implementation, and push to reduce the requirement count rather than grow it &mdash; the best sprint is the one that ends with fewer of them.</P>
+<P CLASS="lede">I look for the shortest viable path between a business requirement and its implementation, and push to reduce the requirement count rather than grow it &mdash; the best sprint is the one that ends with fewer of them.</P>
 </DIV>
 
 <A NAME="projects"></A>
@@ -303,9 +268,7 @@ Backend / team lead, 8+ years. <A HREF="about/">Read the full CV and experience 
 &copy; 2026 <A HREF="https://r2bpw.works">R2BPW</A> &mdash; Artemy Urodovskikh.
 </P>
 
-</TD>
-</TR>
-</TABLE>
+</DIV>
 
 </BODY>
 </HTML>
