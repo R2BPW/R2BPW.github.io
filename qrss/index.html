@@ -1,9 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML LANG="en">
 <HEAD>
-<TITLE>R2BPW &mdash; 30m Band: Identified QRSS Beacons</TITLE>
+<TITLE>QRSS Beacons &mdash; CNN decoder for Morse on the 30m band &mdash; R2BPW</TITLE>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
+<META NAME="viewport" CONTENT="width=device-width, initial-scale=1">
 <META NAME="author" CONTENT="Artemy Urodovskikh">
+<META NAME="description" CONTENT="An end-to-end ML system that reads QRSS Morse beacons off spectrograms with a convolutional neural network, routing each detection by model confidence into a live catalogue. Computer vision, distributed inference, human-in-the-loop review.">
+<META NAME="keywords" CONTENT="QRSS, CNN, convolutional neural network, computer vision, OCR, Morse decoding, spectrogram classification, model inference, confidence routing, KiwiSDR, SDR, machine learning, 30m band, R2BPW, Artemy Urodovskikh">
+<META NAME="color-scheme" CONTENT="dark">
+<META NAME="theme-color" CONTENT="#141414">
 <STYLE TYPE="text/css">
 <!--
 body{background:#141414;color:#c8c8c0;font-family:Georgia,"Times New Roman",serif;font-size:13pt;line-height:1.6;margin:0;padding:0}
@@ -65,6 +70,10 @@ svg a:hover .st-lbl{fill:#ee6644}
 .meta-line SPAN{margin:0 4px}
 .missing-box{border-left:3px solid #d4a842;background:#1a1a1a;padding:12px 18px;margin:22px 0 8px 0}
 .missing-box .tag{display:inline-block;color:#d4a842;font-family:"Trebuchet MS",Helvetica,sans-serif;font-size:9pt;letter-spacing:1.5px;margin-bottom:4px}
+.missing-box p{margin:4px 0 0 0;color:#b0b0a8;font-size:11pt}
+.hiw{max-width:42em;color:#c2c2ba}
+.ph{color:#d4a842;background:#241d10;padding:0 5px;border-radius:2px;font-family:"Trebuchet MS",Helvetica,sans-serif;font-size:9.5pt;white-space:nowrap}
+.c-green{color:#44bb77}.c-orange{color:#ee8833}.c-amber{color:#d4a842}
 -->
 
 </STYLE>
@@ -78,6 +87,7 @@ svg a:hover .st-lbl{fill:#ee6644}
 <TR><TD HEIGHT="8"></TD></TR>
 <TR><TD CLASS="nav" STYLE="color: #666660; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">THIS PROJECT</TD></TR>
 <TR><TD CLASS="nav"><A HREF="#map">Map</A></TD></TR>
+<TR><TD CLASS="nav"><A HREF="#how">How it works</A></TD></TR>
 <TR><TD CLASS="nav"><A HREF="#stations">Stations</A></TD></TR>
 <TR><TD HEIGHT="20"></TD></TR>
 <TR><TD CLASS="nav" STYLE="color: #666660; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">OTHER</TD></TR>
@@ -92,6 +102,12 @@ svg a:hover .st-lbl{fill:#ee6644}
 <A NAME="overview"></A>
 <H1>30m Band QRSS Signals</H1>
 <HR>
+
+<P STYLE="font-size:13.5pt;color:#c8c8c0;max-width:42em;">QRSS beacons send their call-signs in Morse so slow that a single character can take a minute &mdash; invisible to the ear, but a clear shape on a spectrogram. This project treats decoding them as a <B STYLE="color:#e0e0d8;font-weight:normal;">computer-vision problem</B>: a distributed receiver network turns the 30-metre band into a stream of spectrogram images, a convolutional neural network reads the call-signs out of them, and every detection is routed by the model&rsquo;s own confidence into a live catalogue. Optical character recognition, but for Morse code drawn in radio noise.</P>
+
+<DIV CLASS="meta-line">
+<SPAN>13 beacons tracked</SPAN> &middot; <SPAN>11 countries</SPAN> &middot; <SPAN>4 continents</SPAN> &middot; <SPAN STYLE="color:#44bb77;">4 confirmed</SPAN> &middot; <SPAN STYLE="color:#ee8833;">7 candidate</SPAN> &middot; <SPAN STYLE="color:#d4a842;">2 preliminary</SPAN>
+</DIV>
 
 <A NAME="map"></A>
 
@@ -548,6 +564,84 @@ svg a:hover .st-lbl{fill:#ee6644}
   </DIV>
   <SPAN>Equirectangular &middot; Natural Earth 110m</SPAN>
 </DIV>
+</DIV>
+
+<A NAME="how"></A>
+<H2>How it works</H2>
+
+<P CLASS="hiw">The whole thing is an image problem wearing a radio costume. A distributed receiver network turns the band into pictures; a neural net reads call-signs out of those pictures; and a confidence gate, not a human, decides what is trustworthy enough to publish.</P>
+
+<DIV STYLE="border:1px solid #2a2a2a;background:#0c1118;margin:16px 0 8px 0;padding:8px 0 4px 0;">
+<svg viewBox="0 0 1000 290" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto;" role="img" aria-label="Pipeline: KiwiSDR capture, spectrogram strips, a small CNN classifier, a mode-and-confidence gate, a live catalogue, and an active-learning loop that retrains the model from human-reviewed labels">
+  <defs>
+    <marker id="ah" markerWidth="8" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5a6678"/></marker>
+    <marker id="ahd" markerWidth="8" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#8a6820"/></marker>
+  </defs>
+
+  <text x="14" y="30" font-family="Trebuchet MS,Helvetica,sans-serif" font-size="9" fill="#666660" letter-spacing="2.5">CAPTURE &middot; DECODE &middot; ACTIVE LEARNING</text>
+
+  <!-- stage labels -->
+  <g font-family="Trebuchet MS,Helvetica,sans-serif" font-size="7.5" fill="#6a7a8a" text-anchor="middle" letter-spacing="0.5">
+    <text x="187" y="104">audio</text>
+    <text x="383" y="104">strips</text>
+    <text x="579" y="104">call-sign</text>
+    <text x="775" y="104">&ge; 0.80</text>
+  </g>
+  <!-- arrows -->
+  <g stroke="#5a6678" stroke-width="1.4">
+    <line x1="168" y1="113" x2="205" y2="113" marker-end="url(#ah)"/>
+    <line x1="364" y1="113" x2="401" y2="113" marker-end="url(#ah)"/>
+    <line x1="560" y1="113" x2="597" y2="113" marker-end="url(#ah)"/>
+    <line x1="756" y1="113" x2="793" y2="113" marker-end="url(#ah)"/>
+  </g>
+
+  <!-- cards -->
+  <g>
+    <rect x="12"  y="70" width="156" height="2" fill="#7aafee"/>
+    <rect x="208" y="70" width="156" height="2" fill="#7aafee"/>
+    <rect x="404" y="70" width="156" height="2" fill="#88dd55"/>
+    <rect x="600" y="70" width="156" height="2" fill="#ee8833"/>
+    <rect x="796" y="70" width="156" height="2" fill="#44bb77"/>
+  </g>
+  <g fill="#11171f" stroke="#2a3340" stroke-width="1">
+    <rect x="12"  y="70" width="156" height="86" rx="4"/>
+    <rect x="208" y="70" width="156" height="86" rx="4"/>
+    <rect x="404" y="70" width="156" height="86" rx="4"/>
+    <rect x="600" y="70" width="156" height="86" rx="4"/>
+    <rect x="796" y="70" width="156" height="86" rx="4"/>
+  </g>
+  <g font-family="Trebuchet MS,Helvetica,sans-serif" text-anchor="middle">
+    <text x="90"  y="116" font-size="11.5" fill="#e6e6dc" letter-spacing="0.6">RECEIVERS</text>
+    <text x="90"  y="134" font-size="8.5" fill="#8a8a80">KiwiSDR &middot; cron rotation</text>
+    <text x="286" y="116" font-size="11.5" fill="#e6e6dc" letter-spacing="0.6">SPECTROGRAMS</text>
+    <text x="286" y="134" font-size="8.5" fill="#8a8a80">peaks &rarr; 64&times;512 strips</text>
+    <text x="482" y="116" font-size="11.5" fill="#e6e6dc" letter-spacing="0.6">CNN CLASSIFIER</text>
+    <text x="482" y="134" font-size="8.5" fill="#8a8a80">callsign or &lsquo;unknown&rsquo;</text>
+    <text x="678" y="116" font-size="11.5" fill="#e6e6dc" letter-spacing="0.6">ROUTING</text>
+    <text x="678" y="134" font-size="8.5" fill="#8a8a80">mode + conf gate</text>
+    <text x="874" y="116" font-size="11.5" fill="#e6e6dc" letter-spacing="0.6">CATALOGUE</text>
+    <text x="874" y="134" font-size="8.5" fill="#8a8a80">live map + table</text>
+  </g>
+
+  <!-- active-learning loop: uncertain detections -> human review -> retrain -->
+  <line x1="678" y1="158" x2="678" y2="208" stroke="#8a6820" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#ahd)"/>
+  <text x="690" y="186" font-family="Trebuchet MS,Helvetica,sans-serif" font-size="7.5" fill="#80714a">uncertain</text>
+  <rect x="566" y="210" width="224" height="42" rx="21" fill="#181410" stroke="#8a6820" stroke-width="1"/>
+  <text x="678" y="231" font-family="Trebuchet MS,Helvetica,sans-serif" font-size="10" fill="#d4a842" text-anchor="middle" letter-spacing="1">HUMAN REVIEW</text>
+  <text x="678" y="244" font-family="Trebuchet MS,Helvetica,sans-serif" font-size="7.5" fill="#9a9a90" text-anchor="middle">label &lsquo;unknown&rsquo; strips</text>
+  <path d="M566,231 C 516,231 482,202 482,160" fill="none" stroke="#8a6820" stroke-width="1.2" stroke-dasharray="3 3" marker-end="url(#ahd)"/>
+  <text x="486" y="200" font-family="Trebuchet MS,Helvetica,sans-serif" font-size="7.5" fill="#80714a" text-anchor="middle">retrain</text>
+</svg>
+</DIV>
+
+<P CLASS="hiw">Public KiwiSDR receivers are sampled on a cron rotation balanced between day-side and night-side hosts for varied propagation. Each capture is decimated and rendered to a long spectrogram; the pipeline locates narrow-band energy peaks in the 1000&ndash;1700&thinsp;Hz beacon subband, cuts a 64&times;512 strip around each, and a heuristic stage labels the mode &mdash; CW, FSKCW, DFCW, WSPR, FT8. QRSS-like strips go to a small CNN that reads the call-sign straight off the image. The stack is PyTorch.</P>
+
+<P CLASS="hiw">The most useful result here is a negative one. A 2M-parameter CNN&thinsp;+&thinsp;BiLSTM trained with CTC loss on synthetic spectrograms decodes unseen synthetic call-signs almost perfectly &mdash; 97.5% full-call accuracy at 15&thinsp;dB SNR &mdash; and almost nothing on real recordings. No amount of augmentation, blur-matching, or per-capture speed estimation closed that synthetic-to-real gap while the real vocabulary was only a handful of call-signs. The fix was to right-size the model: a 60K-parameter closed-vocabulary classifier &mdash; the known call-signs plus an &lsquo;unknown&rsquo; class &mdash; reaches 85% honest, capture-held-out accuracy on real strips, the first model in the project that generalises across receivers and days.</P>
+
+<P CLASS="hiw">That small model runs inside a capture &rarr; triage &rarr; review &rarr; retrain loop. A detection is published only when the strip is a QRSS mode, the prediction is a known call-sign, and confidence clears 0.80; anything uncertain or &lsquo;unknown&rsquo; is queued for human review. Reviewed labels expand the vocabulary and retrain the classifier in minutes, with no code changes, so the catalogue grows itself. The map&rsquo;s <SPAN CLASS="c-green">confirmed</SPAN> / <SPAN CLASS="c-orange">candidate</SPAN> / <SPAN CLASS="c-amber">preliminary</SPAN> tiers are the visible end of that triage.</P>
+
+<DIV CLASS="meta-line" STYLE="border-top:1px solid #262626;border-bottom:1px solid #262626;padding:10px 0;">
+<SPAN>PyTorch</SPAN> &middot; <SPAN>64&times;512 strips</SPAN> &middot; <SPAN>synthetic hold-out 97.5% @ 15&thinsp;dB SNR</SPAN> &middot; <SPAN>real closed-vocab 85%</SPAN> &middot; <SPAN>0.80 confidence gate</SPAN> &middot; <SPAN>58 tests passing</SPAN>
 </DIV>
 
 <A NAME="stations"></A>
