@@ -5,8 +5,8 @@
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8">
 <META NAME="viewport" CONTENT="width=device-width, initial-scale=1">
 <META NAME="author" CONTENT="Artemy Urodovskikh">
-<META NAME="description" CONTENT="Artemy Urodovskikh &mdash; backend engineer at the intersection of software and hardware. Projects: ham radio price intelligence, infrared bridge to a 1999 palmtop, QRSS beacon catalogue, custom SDR receiver on FPGA.">
-<META NAME="keywords" CONTENT="Artemy Urodovskikh, R2BPW, backend engineer, projects, ham radio, QRSS, Flipper Zero, Ericsson MC218, SDR, FPGA, Telegram bot, KiwiSDR">
+<META NAME="description" CONTENT="Artemy Urodovskikh &mdash; backend / ML engineer. Projects: CNN-based signal recognition on distributed SDR network, multi-source price intelligence pipeline, infrared bridge to a 1999 palmtop.">
+<META NAME="keywords" CONTENT="Artemy Urodovskikh, R2BPW, backend engineer, ML, machine learning, computer vision, deep learning, CNN, data pipelines, Python, projects, QRSS, SDR, KiwiSDR, ham radio, Telegram bot">
 <META NAME="robots" CONTENT="index, follow, max-image-preview:large, max-snippet:-1">
 <META NAME="googlebot" CONTENT="index, follow">
 <META NAME="referrer" CONTENT="strict-origin-when-cross-origin">
@@ -20,7 +20,7 @@
 <!-- Open Graph -->
 <META PROPERTY="og:type" CONTENT="website">
 <META PROPERTY="og:title" CONTENT="Artemy Urodovskikh &mdash; R2BPW">
-<META PROPERTY="og:description" CONTENT="Backend engineer at the intersection of software and hardware. Open to work. Projects across price intelligence, vintage hardware, SDR and DSP.">
+<META PROPERTY="og:description" CONTENT="Backend / ML engineer. Open to work. Projects: CNN-based signal recognition, multi-source data pipelines, embedded protocol engineering.">
 <META PROPERTY="og:url" CONTENT="https://r2bpw.works/">
 <META PROPERTY="og:site_name" CONTENT="R2BPW">
 <META PROPERTY="og:locale" CONTENT="en_US">
@@ -30,7 +30,7 @@
 <!-- Twitter / X -->
 <META NAME="twitter:card" CONTENT="summary">
 <META NAME="twitter:title" CONTENT="Artemy Urodovskikh &mdash; R2BPW">
-<META NAME="twitter:description" CONTENT="Backend engineer at the intersection of software and hardware. Open to work.">
+<META NAME="twitter:description" CONTENT="Backend / ML engineer. Open to work. CNN-based signal recognition, multi-source data pipelines, embedded protocols.">
 <META NAME="twitter:image" CONTENT="https://r2bpw.works/about/photo.jpg">
 <META NAME="twitter:image:alt" CONTENT="Portrait of Artemy Urodovskikh">
 
@@ -45,8 +45,8 @@
   "name": "Artemy Urodovskikh",
   "givenName": "Artemy",
   "familyName": "Urodovskikh",
-  "jobTitle": "Backend Engineer",
-  "description": "Backend engineer at the intersection of software and hardware. Projects across ham radio price intelligence, vintage hardware bridges, QRSS signal cataloguing, and custom SDR firmware on FPGA.",
+  "jobTitle": "Backend / ML Engineer",
+  "description": "Backend and ML engineer. Projects: CNN-based signal recognition on a distributed SDR network, multi-source data ingestion pipelines, embedded protocol engineering.",
   "url": "https://r2bpw.works/",
   "mainEntityOfPage": "https://r2bpw.works/",
   "image": "https://r2bpw.works/about/photo.jpg",
@@ -57,9 +57,44 @@
   ],
   "email": "mailto:artemy.urodovskikh@yandex.com",
   "knowsLanguage": ["en", "ru"],
+  "alumniOf": {
+    "@type": "CollegeOrUniversity",
+    "name": "Moscow Institute of Physics and Technology",
+    "alternateName": "MIPT",
+    "sameAs": "https://en.wikipedia.org/wiki/Moscow_Institute_of_Physics_and_Technology"
+  },
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Bolshaya Troika"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Moscow",
+    "addressCountry": "RU"
+  },
+  "knowsAbout": [
+    "Python",
+    "Django",
+    "PostgreSQL",
+    "ClickHouse",
+    "PostGIS",
+    "machine learning",
+    "deep learning",
+    "convolutional neural networks",
+    "computer vision",
+    "data pipelines",
+    "route optimisation",
+    "Travelling Salesman Problem",
+    "geographic information systems",
+    "telemetry",
+    "FPGA",
+    "Verilog",
+    "software-defined radio",
+    "Bayesian methods"
+  ],
   "seeks": {
     "@type": "Demand",
-    "description": "Senior/lead backend engineer or technical manager. Remote, Europe, or relocation."
+    "description": "Senior/lead backend engineer, ML engineer, or technical manager. Remote, Europe, or relocation."
   }
 }
 </SCRIPT>
@@ -250,7 +285,7 @@ hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
 
 <DIV CLASS="status-box">
 <SPAN CLASS="status-label">OPEN TO WORK</SPAN>
-Backend / team lead, 8+ years. <A HREF="about/">Read the full CV and experience &rarr;</A>
+Backend / ML, team lead, 8+ years. <A HREF="about/">Read the full CV and experience &rarr;</A>
 </DIV>
 
 <DIV CLASS="lede-stage">
@@ -261,231 +296,7 @@ Backend / team lead, 8+ years. <A HREF="about/">Read the full CV and experience 
 <H2>Projects</H2>
 
 <!-- ============================================================
-     CASE 1 &mdash; Radio Bargain Bot
-     Thumbnail: simplified world silhouette with cluster markers
-     and a floating &laquo;deal&raquo; card in the corner.
-============================================================ -->
-<A CLASS="case" HREF="radio_bargain_bot_v2/">
-<DIV CLASS="case-thumb">
-<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Distributed network of regional ham radio channels across continents">
-  <!-- background -->
-  <rect width="320" height="200" fill="#0e0e10"/>
-  <!-- meridian grid (very subtle) -->
-  <g stroke="#1b1b1f" stroke-width="0.5" fill="NONE">
-    <line x1="0" y1="50" x2="320" y2="50"/>
-    <line x1="0" y1="100" x2="320" y2="100"/>
-    <line x1="0" y1="150" x2="320" y2="150"/>
-    <line x1="60" y1="0" x2="60" y2="200"/>
-    <line x1="120" y1="0" x2="120" y2="200"/>
-    <line x1="180" y1="0" x2="180" y2="200"/>
-    <line x1="240" y1="0" x2="240" y2="200"/>
-  </g>
-
-  <!-- continents: simplified silhouettes -->
-  <g fill="#1b2520" stroke="#2b3a30" stroke-width="0.7" stroke-linejoin="round">
-    <!-- North America -->
-    <path d="M 32 52 L 56 46 L 78 48 L 92 60 L 96 78 L 88 92 L 78 102 L 70 108 L 60 110 L 52 100 L 44 92 L 38 78 L 30 68 Z"/>
-    <!-- Central America hint -->
-    <path d="M 78 110 L 86 116 L 92 124 L 90 130 L 82 128 L 76 120 Z"/>
-    <!-- South America -->
-    <path d="M 90 132 L 102 134 L 110 142 L 112 156 L 106 170 L 98 178 L 92 174 L 88 160 L 86 146 Z"/>
-    <!-- Europe -->
-    <path d="M 148 56 L 168 52 L 180 56 L 184 64 L 178 72 L 168 76 L 158 74 L 150 70 L 146 64 Z"/>
-    <!-- Africa -->
-    <path d="M 160 84 L 178 82 L 192 90 L 196 104 L 192 122 L 186 138 L 178 152 L 170 152 L 164 142 L 158 128 L 156 112 L 158 98 Z"/>
-    <!-- Asia (broad) -->
-    <path d="M 186 50 L 220 44 L 250 48 L 272 56 L 282 68 L 278 80 L 268 88 L 252 92 L 238 96 L 222 94 L 208 90 L 196 84 L 188 76 L 184 66 Z"/>
-    <!-- India -->
-    <path d="M 214 92 L 226 94 L 232 104 L 228 114 L 220 116 L 214 108 Z"/>
-    <!-- SE Asia hint -->
-    <path d="M 248 96 L 260 100 L 264 108 L 258 116 L 250 112 Z"/>
-    <!-- Japan -->
-    <path d="M 278 78 L 286 82 L 286 92 L 280 92 Z"/>
-    <!-- Australia -->
-    <path d="M 250 138 L 274 136 L 288 144 L 290 156 L 280 162 L 262 160 L 252 152 Z"/>
-    <!-- UK / Ireland -->
-    <path d="M 140 58 L 144 56 L 146 64 L 142 68 L 138 64 Z"/>
-    <!-- Scandinavia -->
-    <path d="M 162 40 L 172 38 L 178 46 L 174 52 L 166 50 Z"/>
-  </g>
-
-  <!-- channel markers: 12 dots, colour-coded -->
-  <!-- blue = standard / oranges = newer or featured / green = active spike -->
-  <g>
-    <!-- Russia / CIS -->
-    <circle cx="200" cy="58" r="6" fill="NONE" stroke="#ee6644" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="200" cy="58" r="2.6" fill="#ee6644" stroke="#bb4422" stroke-width="0.7"/>
-    <!-- Western Europe / DE -->
-    <circle cx="166" cy="64" r="6" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="166" cy="64" r="2.6" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
-    <!-- UK -->
-    <circle cx="142" cy="62" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="142" cy="62" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
-    <!-- Scandinavia -->
-    <circle cx="171" cy="46" r="5" fill="NONE" stroke="#44bb77" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="171" cy="46" r="2.4" fill="#44bb77" stroke="#1a6a3a" stroke-width="0.7"/>
-    <!-- Central / Eastern Europe (PL) -->
-    <circle cx="176" cy="62" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="176" cy="62" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
-    <!-- USA / east -->
-    <circle cx="68" cy="78" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="68" cy="78" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
-    <!-- Latin Am / Spain -->
-    <circle cx="148" cy="76" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="148" cy="76" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
-    <!-- Brazil -->
-    <circle cx="102" cy="148" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="102" cy="148" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
-    <!-- Japan -->
-    <circle cx="282" cy="84" r="5" fill="NONE" stroke="#44bb77" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="282" cy="84" r="2.4" fill="#44bb77" stroke="#1a6a3a" stroke-width="0.7"/>
-    <!-- SE Asia -->
-    <circle cx="256" cy="108" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="256" cy="108" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
-    <!-- MENA -->
-    <circle cx="190" cy="98" r="5" fill="NONE" stroke="#ee6644" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="190" cy="98" r="2.4" fill="#ee6644" stroke="#bb4422" stroke-width="0.7"/>
-    <!-- Australia -->
-    <circle cx="270" cy="150" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
-    <circle cx="270" cy="150" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
-  </g>
-
-  <!-- subtle pull-line from DE dot to floating deal card -->
-  <path d="M 168 66 Q 200 100 218 138" fill="NONE" stroke="#7aafee" stroke-width="0.6" stroke-dasharray="2 2" opacity="0.55"/>
-
-  <!-- floating deal card (bottom-right) -->
-  <g transform="translate(186, 138)">
-    <rect x="0" y="0" width="120" height="42" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="0.8" rx="2"/>
-    <!-- DE flag bar -->
-    <rect x="6" y="6" width="4" height="30" fill="#000"/>
-    <rect x="6" y="16" width="4" height="10" fill="#dd0000"/>
-    <rect x="6" y="26" width="4" height="10" fill="#ffcc00"/>
-    <!-- texts -->
-    <text x="18" y="16" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="8" fill="#888880" letter-spacing="0.5">YAESU FTDX-101D</text>
-    <text x="18" y="28" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="10" font-weight="bold" fill="#e0e0d8">&#8364;2 350</text>
-    <text x="64" y="28" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="10" font-weight="bold" fill="#44bb77">&#8722;14%</text>
-    <text x="18" y="38" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="6.5" fill="#666660" letter-spacing="0.3">VS REGIONAL MEDIAN</text>
-  </g>
-
-  <!-- micro corner label -->
-  <text x="10" y="14" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="7" fill="#666660" letter-spacing="1.2">12 CHANNELS / 50+ COUNTRIES</text>
-</svg>
-</DIV>
-<DIV CLASS="case-body">
-<DIV CLASS="case-meta">Data Engineering &middot; Multi-Source ETL &middot; Entity Resolution</DIV>
-<DIV CLASS="case-title">Radio Bargain Bot</DIV>
-<DIV CLASS="case-sub">Ham radio deals from 50+ countries</DIV>
-<P CLASS="case-desc">A multi-source ingestion pipeline: 98 collectors scan classifieds across 15 geo-clusters worldwide, normalising listings into one currency-converted catalogue and resolving the same equipment across platforms and languages. Verified bargains post to 12 regional Telegram channels automatically, every two hours.</P>
-<SPAN CLASS="case-more">Open &rarr;</SPAN>
-</DIV>
-</A>
-
-<!-- ============================================================
-     CASE 2 &mdash; IR Bridge
-     Thumbnail: Psion MC218 on the left, Flipper Zero on the right,
-     three pulsing IR arcs between them.
-============================================================ -->
-<A CLASS="case" HREF="psion-flipper-bridge/">
-<DIV CLASS="case-thumb">
-<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Infrared bridge between a 1999 Psion palmtop and a Flipper Zero">
-  <!-- background -->
-  <rect width="320" height="200" fill="#0e0e10"/>
-
-  <!-- faint horizon line -->
-  <line x1="0" y1="170" x2="320" y2="170" stroke="#1c1c20" stroke-width="0.8"/>
-
-  <!-- micro corner label -->
-  <text x="10" y="14" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="7" fill="#666660" letter-spacing="1.2">IRDA / 9600 BPS / FRAME 0x7E</text>
-
-  <!-- =======  PSION MC218 (left) ======= -->
-  <g transform="translate(28, 64)">
-    <!-- main body (clamshell open, side-on hint) -->
-    <rect x="0" y="2" width="128" height="86" fill="#2c2c2e" stroke="#4a4a4c" stroke-width="1" rx="3"/>
-    <!-- hinge line in the middle -->
-    <line x1="0" y1="44" x2="128" y2="44" stroke="#1a1a1c" stroke-width="1"/>
-    <!-- screen (top half) -->
-    <rect x="6" y="8" width="116" height="32" fill="#1d2a18" stroke="#3a4a30" stroke-width="0.7"/>
-    <!-- LCD text -->
-    <text x="12" y="20" font-family="Courier New, monospace" font-size="7" fill="#7ad055" letter-spacing="0.4">PsiBridge v0.3</text>
-    <text x="12" y="30" font-family="Courier New, monospace" font-size="7" fill="#7ad055" letter-spacing="0.4">ask&gt;</text>
-    <!-- blinking cursor -->
-    <rect x="32" y="24" width="5" height="7" fill="#7ad055">
-      <animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/>
-    </rect>
-    <!-- keyboard (bottom half) -->
-    <g fill="#3a3a3c" stroke="#1a1a1c" stroke-width="0.4">
-      <!-- 4 rows of small keys -->
-      <rect x="8" y="50" width="9" height="5"/><rect x="19" y="50" width="9" height="5"/><rect x="30" y="50" width="9" height="5"/><rect x="41" y="50" width="9" height="5"/><rect x="52" y="50" width="9" height="5"/><rect x="63" y="50" width="9" height="5"/><rect x="74" y="50" width="9" height="5"/><rect x="85" y="50" width="9" height="5"/><rect x="96" y="50" width="9" height="5"/><rect x="107" y="50" width="9" height="5"/>
-      <rect x="8" y="58" width="9" height="5"/><rect x="19" y="58" width="9" height="5"/><rect x="30" y="58" width="9" height="5"/><rect x="41" y="58" width="9" height="5"/><rect x="52" y="58" width="9" height="5"/><rect x="63" y="58" width="9" height="5"/><rect x="74" y="58" width="9" height="5"/><rect x="85" y="58" width="9" height="5"/><rect x="96" y="58" width="9" height="5"/><rect x="107" y="58" width="9" height="5"/>
-      <rect x="10" y="66" width="9" height="5"/><rect x="21" y="66" width="9" height="5"/><rect x="32" y="66" width="9" height="5"/><rect x="43" y="66" width="9" height="5"/><rect x="54" y="66" width="9" height="5"/><rect x="65" y="66" width="9" height="5"/><rect x="76" y="66" width="9" height="5"/><rect x="87" y="66" width="9" height="5"/><rect x="98" y="66" width="9" height="5"/>
-      <rect x="12" y="74" width="9" height="5"/><rect x="23" y="74" width="9" height="5"/><rect x="34" y="74" width="9" height="5"/><rect x="45" y="74" width="40" height="5"/><rect x="87" y="74" width="9" height="5"/><rect x="98" y="74" width="9" height="5"/>
-    </g>
-    <!-- IR port hint on the right edge -->
-    <rect x="128" y="20" width="2" height="6" fill="#882222"/>
-  </g>
-  <!-- date stamp below Psion -->
-  <text x="68" y="166" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="8" fill="#666660" letter-spacing="1.4" text-anchor="middle">1999 &middot; EPOC R5</text>
-
-  <!-- =======  IR ARCS (centre) ======= -->
-  <g fill="NONE" stroke="#ee6644" stroke-linecap="ROUND">
-    <path d="M 162 96 Q 182 78 202 96" stroke-width="1.1" stroke-dasharray="2 3" opacity="0.85"/>
-    <path d="M 158 102 Q 182 70 206 102" stroke-width="1.0" stroke-dasharray="2 3" opacity="0.55"/>
-    <path d="M 154 108 Q 182 62 210 108" stroke-width="0.9" stroke-dasharray="2 3" opacity="0.30"/>
-  </g>
-  <!-- IR pulse dots -->
-  <circle cx="182" cy="78" r="1.8" fill="#ee6644" opacity="0.9"/>
-  <circle cx="172" cy="86" r="1.2" fill="#ee6644" opacity="0.55"/>
-  <circle cx="192" cy="86" r="1.2" fill="#ee6644" opacity="0.55"/>
-
-  <!-- =======  FLIPPER ZERO (right) ======= -->
-  <g transform="translate(218, 64)">
-    <!-- main body -->
-    <rect x="0" y="0" width="74" height="90" fill="#222226" stroke="#3a3a3e" stroke-width="1" rx="4"/>
-    <!-- top orange stripe -->
-    <rect x="0" y="0" width="74" height="10" fill="#e88a32" rx="4"/>
-    <rect x="0" y="6" width="74" height="4" fill="#e88a32"/>
-    <!-- screen -->
-    <rect x="8" y="16" width="58" height="34" fill="#c8e8a8" stroke="#5a7a3a" stroke-width="0.7"/>
-    <!-- dolphin pixel hint (super simplified) -->
-    <g fill="#3a4a2a">
-      <rect x="14" y="22" width="2" height="2"/><rect x="16" y="22" width="2" height="2"/>
-      <rect x="14" y="24" width="2" height="2"/><rect x="16" y="24" width="2" height="2"/><rect x="18" y="24" width="2" height="2"/>
-      <rect x="20" y="26" width="2" height="2"/><rect x="22" y="26" width="2" height="2"/><rect x="24" y="26" width="2" height="2"/>
-      <rect x="20" y="28" width="2" height="2"/><rect x="22" y="28" width="2" height="2"/>
-      <rect x="14" y="40" width="2" height="2"/><rect x="16" y="40" width="2" height="2"/><rect x="18" y="40" width="2" height="2"/>
-    </g>
-    <!-- screen mini-text -->
-    <text x="40" y="32" font-family="Courier New, monospace" font-size="5" fill="#3a4a2a">IR BRIDGE</text>
-    <text x="40" y="40" font-family="Courier New, monospace" font-size="5" fill="#3a4a2a">&gt; LISTEN</text>
-    <!-- IR LED on the side -->
-    <circle cx="-2" cy="32" r="2" fill="#882222"/>
-    <!-- D-pad ring -->
-    <circle cx="37" cy="68" r="11" fill="NONE" stroke="#3a3a3e" stroke-width="1"/>
-    <!-- D-pad cross -->
-    <rect x="35" y="60" width="4" height="16" fill="#3a3a3e"/>
-    <rect x="29" y="66" width="16" height="4" fill="#3a3a3e"/>
-    <circle cx="37" cy="68" r="2" fill="#222226"/>
-    <!-- back / ok buttons -->
-    <circle cx="18" cy="68" r="2.4" fill="#3a3a3e"/>
-    <circle cx="56" cy="68" r="2.4" fill="#3a3a3e"/>
-    <!-- bottom label -->
-    <text x="37" y="86" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="4.5" fill="#888880" text-anchor="middle" letter-spacing="0.6">FLIPPER ZERO</text>
-  </g>
-  <!-- date stamp below Flipper -->
-  <text x="255" y="166" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="8" fill="#666660" letter-spacing="1.4" text-anchor="middle">2026 &middot; LLM</text>
-</svg>
-</DIV>
-<DIV CLASS="case-body">
-<DIV CLASS="case-meta">Embedded &middot; Protocol Reverse Engineering &middot; LLM Integration</DIV>
-<DIV CLASS="case-title">IR Bridge</DIV>
-<DIV CLASS="case-sub">Ericsson MC218 &harr; Flipper Zero &harr; LLM</DIV>
-<P CLASS="case-desc">Bidirectional infrared bridge from a 1999 Ericsson palmtop to a modern LLM, by way of Flipper Zero and ESP32. A working dialogue between two devices separated by twenty-five years.</P>
-<SPAN CLASS="case-more">Open &rarr;</SPAN>
-</DIV>
-</A>
-
-<!-- ============================================================
-     CASE 3 &mdash; 30m QRSS Beacons
+     CASE 1 &mdash; 30m QRSS Beacons
      Thumbnail: a fragment of a waterfall plot with five
      morse-style traces and a frequency scale at the bottom.
 ============================================================ -->
@@ -718,6 +529,230 @@ Backend / team lead, 8+ years. <A HREF="about/">Read the full CV and experience 
 <SPAN CLASS="case-more">Open &rarr;</SPAN>
 </DIV>
 </A>
+<!-- ============================================================
+     CASE 2 &mdash; Radio Bargain Bot
+     Thumbnail: simplified world silhouette with cluster markers
+     and a floating &laquo;deal&raquo; card in the corner.
+============================================================ -->
+<A CLASS="case" HREF="radio_bargain_bot_v2/">
+<DIV CLASS="case-thumb">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Distributed network of regional ham radio channels across continents">
+  <!-- background -->
+  <rect width="320" height="200" fill="#0e0e10"/>
+  <!-- meridian grid (very subtle) -->
+  <g stroke="#1b1b1f" stroke-width="0.5" fill="NONE">
+    <line x1="0" y1="50" x2="320" y2="50"/>
+    <line x1="0" y1="100" x2="320" y2="100"/>
+    <line x1="0" y1="150" x2="320" y2="150"/>
+    <line x1="60" y1="0" x2="60" y2="200"/>
+    <line x1="120" y1="0" x2="120" y2="200"/>
+    <line x1="180" y1="0" x2="180" y2="200"/>
+    <line x1="240" y1="0" x2="240" y2="200"/>
+  </g>
+
+  <!-- continents: simplified silhouettes -->
+  <g fill="#1b2520" stroke="#2b3a30" stroke-width="0.7" stroke-linejoin="round">
+    <!-- North America -->
+    <path d="M 32 52 L 56 46 L 78 48 L 92 60 L 96 78 L 88 92 L 78 102 L 70 108 L 60 110 L 52 100 L 44 92 L 38 78 L 30 68 Z"/>
+    <!-- Central America hint -->
+    <path d="M 78 110 L 86 116 L 92 124 L 90 130 L 82 128 L 76 120 Z"/>
+    <!-- South America -->
+    <path d="M 90 132 L 102 134 L 110 142 L 112 156 L 106 170 L 98 178 L 92 174 L 88 160 L 86 146 Z"/>
+    <!-- Europe -->
+    <path d="M 148 56 L 168 52 L 180 56 L 184 64 L 178 72 L 168 76 L 158 74 L 150 70 L 146 64 Z"/>
+    <!-- Africa -->
+    <path d="M 160 84 L 178 82 L 192 90 L 196 104 L 192 122 L 186 138 L 178 152 L 170 152 L 164 142 L 158 128 L 156 112 L 158 98 Z"/>
+    <!-- Asia (broad) -->
+    <path d="M 186 50 L 220 44 L 250 48 L 272 56 L 282 68 L 278 80 L 268 88 L 252 92 L 238 96 L 222 94 L 208 90 L 196 84 L 188 76 L 184 66 Z"/>
+    <!-- India -->
+    <path d="M 214 92 L 226 94 L 232 104 L 228 114 L 220 116 L 214 108 Z"/>
+    <!-- SE Asia hint -->
+    <path d="M 248 96 L 260 100 L 264 108 L 258 116 L 250 112 Z"/>
+    <!-- Japan -->
+    <path d="M 278 78 L 286 82 L 286 92 L 280 92 Z"/>
+    <!-- Australia -->
+    <path d="M 250 138 L 274 136 L 288 144 L 290 156 L 280 162 L 262 160 L 252 152 Z"/>
+    <!-- UK / Ireland -->
+    <path d="M 140 58 L 144 56 L 146 64 L 142 68 L 138 64 Z"/>
+    <!-- Scandinavia -->
+    <path d="M 162 40 L 172 38 L 178 46 L 174 52 L 166 50 Z"/>
+  </g>
+
+  <!-- channel markers: 12 dots, colour-coded -->
+  <!-- blue = standard / oranges = newer or featured / green = active spike -->
+  <g>
+    <!-- Russia / CIS -->
+    <circle cx="200" cy="58" r="6" fill="NONE" stroke="#ee6644" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="200" cy="58" r="2.6" fill="#ee6644" stroke="#bb4422" stroke-width="0.7"/>
+    <!-- Western Europe / DE -->
+    <circle cx="166" cy="64" r="6" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="166" cy="64" r="2.6" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
+    <!-- UK -->
+    <circle cx="142" cy="62" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="142" cy="62" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
+    <!-- Scandinavia -->
+    <circle cx="171" cy="46" r="5" fill="NONE" stroke="#44bb77" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="171" cy="46" r="2.4" fill="#44bb77" stroke="#1a6a3a" stroke-width="0.7"/>
+    <!-- Central / Eastern Europe (PL) -->
+    <circle cx="176" cy="62" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="176" cy="62" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
+    <!-- USA / east -->
+    <circle cx="68" cy="78" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="68" cy="78" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
+    <!-- Latin Am / Spain -->
+    <circle cx="148" cy="76" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="148" cy="76" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
+    <!-- Brazil -->
+    <circle cx="102" cy="148" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="102" cy="148" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
+    <!-- Japan -->
+    <circle cx="282" cy="84" r="5" fill="NONE" stroke="#44bb77" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="282" cy="84" r="2.4" fill="#44bb77" stroke="#1a6a3a" stroke-width="0.7"/>
+    <!-- SE Asia -->
+    <circle cx="256" cy="108" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="256" cy="108" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
+    <!-- MENA -->
+    <circle cx="190" cy="98" r="5" fill="NONE" stroke="#ee6644" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="190" cy="98" r="2.4" fill="#ee6644" stroke="#bb4422" stroke-width="0.7"/>
+    <!-- Australia -->
+    <circle cx="270" cy="150" r="5" fill="NONE" stroke="#7aafee" stroke-width="0.8" opacity="0.35"/>
+    <circle cx="270" cy="150" r="2.4" fill="#7aafee" stroke="#3060a0" stroke-width="0.7"/>
+  </g>
+
+  <!-- subtle pull-line from DE dot to floating deal card -->
+  <path d="M 168 66 Q 200 100 218 138" fill="NONE" stroke="#7aafee" stroke-width="0.6" stroke-dasharray="2 2" opacity="0.55"/>
+
+  <!-- floating deal card (bottom-right) -->
+  <g transform="translate(186, 138)">
+    <rect x="0" y="0" width="120" height="42" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="0.8" rx="2"/>
+    <!-- DE flag bar -->
+    <rect x="6" y="6" width="4" height="30" fill="#000"/>
+    <rect x="6" y="16" width="4" height="10" fill="#dd0000"/>
+    <rect x="6" y="26" width="4" height="10" fill="#ffcc00"/>
+    <!-- texts -->
+    <text x="18" y="16" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="8" fill="#888880" letter-spacing="0.5">YAESU FTDX-101D</text>
+    <text x="18" y="28" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="10" font-weight="bold" fill="#e0e0d8">&#8364;2 350</text>
+    <text x="64" y="28" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="10" font-weight="bold" fill="#44bb77">&#8722;14%</text>
+    <text x="18" y="38" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="6.5" fill="#666660" letter-spacing="0.3">VS REGIONAL MEDIAN</text>
+  </g>
+
+  <!-- micro corner label -->
+  <text x="10" y="14" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="7" fill="#666660" letter-spacing="1.2">12 CHANNELS / 50+ COUNTRIES</text>
+</svg>
+</DIV>
+<DIV CLASS="case-body">
+<DIV CLASS="case-meta">Data Engineering &middot; Multi-Source ETL &middot; Entity Resolution</DIV>
+<DIV CLASS="case-title">Radio Bargain Bot</DIV>
+<DIV CLASS="case-sub">Ham radio deals from 50+ countries</DIV>
+<P CLASS="case-desc">A multi-source ingestion pipeline: 98 collectors scan classifieds across 15 geo-clusters worldwide, normalising listings into one currency-converted catalogue and resolving the same equipment across platforms and languages. Verified bargains post to 12 regional Telegram channels automatically, every two hours.</P>
+<SPAN CLASS="case-more">Open &rarr;</SPAN>
+</DIV>
+</A>
+
+<!-- ============================================================
+     CASE 3 &mdash; IR Bridge
+     Thumbnail: Psion MC218 on the left, Flipper Zero on the right,
+     three pulsing IR arcs between them.
+============================================================ -->
+<A CLASS="case" HREF="psion-flipper-bridge/">
+<DIV CLASS="case-thumb">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Infrared bridge between a 1999 Psion palmtop and a Flipper Zero">
+  <!-- background -->
+  <rect width="320" height="200" fill="#0e0e10"/>
+
+  <!-- faint horizon line -->
+  <line x1="0" y1="170" x2="320" y2="170" stroke="#1c1c20" stroke-width="0.8"/>
+
+  <!-- micro corner label -->
+  <text x="10" y="14" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="7" fill="#666660" letter-spacing="1.2">IRDA / 9600 BPS / FRAME 0x7E</text>
+
+  <!-- =======  PSION MC218 (left) ======= -->
+  <g transform="translate(28, 64)">
+    <!-- main body (clamshell open, side-on hint) -->
+    <rect x="0" y="2" width="128" height="86" fill="#2c2c2e" stroke="#4a4a4c" stroke-width="1" rx="3"/>
+    <!-- hinge line in the middle -->
+    <line x1="0" y1="44" x2="128" y2="44" stroke="#1a1a1c" stroke-width="1"/>
+    <!-- screen (top half) -->
+    <rect x="6" y="8" width="116" height="32" fill="#1d2a18" stroke="#3a4a30" stroke-width="0.7"/>
+    <!-- LCD text -->
+    <text x="12" y="20" font-family="Courier New, monospace" font-size="7" fill="#7ad055" letter-spacing="0.4">PsiBridge v0.3</text>
+    <text x="12" y="30" font-family="Courier New, monospace" font-size="7" fill="#7ad055" letter-spacing="0.4">ask&gt;</text>
+    <!-- blinking cursor -->
+    <rect x="32" y="24" width="5" height="7" fill="#7ad055">
+      <animate attributeName="opacity" values="1;0;1" dur="1.1s" repeatCount="indefinite"/>
+    </rect>
+    <!-- keyboard (bottom half) -->
+    <g fill="#3a3a3c" stroke="#1a1a1c" stroke-width="0.4">
+      <!-- 4 rows of small keys -->
+      <rect x="8" y="50" width="9" height="5"/><rect x="19" y="50" width="9" height="5"/><rect x="30" y="50" width="9" height="5"/><rect x="41" y="50" width="9" height="5"/><rect x="52" y="50" width="9" height="5"/><rect x="63" y="50" width="9" height="5"/><rect x="74" y="50" width="9" height="5"/><rect x="85" y="50" width="9" height="5"/><rect x="96" y="50" width="9" height="5"/><rect x="107" y="50" width="9" height="5"/>
+      <rect x="8" y="58" width="9" height="5"/><rect x="19" y="58" width="9" height="5"/><rect x="30" y="58" width="9" height="5"/><rect x="41" y="58" width="9" height="5"/><rect x="52" y="58" width="9" height="5"/><rect x="63" y="58" width="9" height="5"/><rect x="74" y="58" width="9" height="5"/><rect x="85" y="58" width="9" height="5"/><rect x="96" y="58" width="9" height="5"/><rect x="107" y="58" width="9" height="5"/>
+      <rect x="10" y="66" width="9" height="5"/><rect x="21" y="66" width="9" height="5"/><rect x="32" y="66" width="9" height="5"/><rect x="43" y="66" width="9" height="5"/><rect x="54" y="66" width="9" height="5"/><rect x="65" y="66" width="9" height="5"/><rect x="76" y="66" width="9" height="5"/><rect x="87" y="66" width="9" height="5"/><rect x="98" y="66" width="9" height="5"/>
+      <rect x="12" y="74" width="9" height="5"/><rect x="23" y="74" width="9" height="5"/><rect x="34" y="74" width="9" height="5"/><rect x="45" y="74" width="40" height="5"/><rect x="87" y="74" width="9" height="5"/><rect x="98" y="74" width="9" height="5"/>
+    </g>
+    <!-- IR port hint on the right edge -->
+    <rect x="128" y="20" width="2" height="6" fill="#882222"/>
+  </g>
+  <!-- date stamp below Psion -->
+  <text x="68" y="166" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="8" fill="#666660" letter-spacing="1.4" text-anchor="middle">1999 &middot; EPOC R5</text>
+
+  <!-- =======  IR ARCS (centre) ======= -->
+  <g fill="NONE" stroke="#ee6644" stroke-linecap="ROUND">
+    <path d="M 162 96 Q 182 78 202 96" stroke-width="1.1" stroke-dasharray="2 3" opacity="0.85"/>
+    <path d="M 158 102 Q 182 70 206 102" stroke-width="1.0" stroke-dasharray="2 3" opacity="0.55"/>
+    <path d="M 154 108 Q 182 62 210 108" stroke-width="0.9" stroke-dasharray="2 3" opacity="0.30"/>
+  </g>
+  <!-- IR pulse dots -->
+  <circle cx="182" cy="78" r="1.8" fill="#ee6644" opacity="0.9"/>
+  <circle cx="172" cy="86" r="1.2" fill="#ee6644" opacity="0.55"/>
+  <circle cx="192" cy="86" r="1.2" fill="#ee6644" opacity="0.55"/>
+
+  <!-- =======  FLIPPER ZERO (right) ======= -->
+  <g transform="translate(218, 64)">
+    <!-- main body -->
+    <rect x="0" y="0" width="74" height="90" fill="#222226" stroke="#3a3a3e" stroke-width="1" rx="4"/>
+    <!-- top orange stripe -->
+    <rect x="0" y="0" width="74" height="10" fill="#e88a32" rx="4"/>
+    <rect x="0" y="6" width="74" height="4" fill="#e88a32"/>
+    <!-- screen -->
+    <rect x="8" y="16" width="58" height="34" fill="#c8e8a8" stroke="#5a7a3a" stroke-width="0.7"/>
+    <!-- dolphin pixel hint (super simplified) -->
+    <g fill="#3a4a2a">
+      <rect x="14" y="22" width="2" height="2"/><rect x="16" y="22" width="2" height="2"/>
+      <rect x="14" y="24" width="2" height="2"/><rect x="16" y="24" width="2" height="2"/><rect x="18" y="24" width="2" height="2"/>
+      <rect x="20" y="26" width="2" height="2"/><rect x="22" y="26" width="2" height="2"/><rect x="24" y="26" width="2" height="2"/>
+      <rect x="20" y="28" width="2" height="2"/><rect x="22" y="28" width="2" height="2"/>
+      <rect x="14" y="40" width="2" height="2"/><rect x="16" y="40" width="2" height="2"/><rect x="18" y="40" width="2" height="2"/>
+    </g>
+    <!-- screen mini-text -->
+    <text x="40" y="32" font-family="Courier New, monospace" font-size="5" fill="#3a4a2a">IR BRIDGE</text>
+    <text x="40" y="40" font-family="Courier New, monospace" font-size="5" fill="#3a4a2a">&gt; LISTEN</text>
+    <!-- IR LED on the side -->
+    <circle cx="-2" cy="32" r="2" fill="#882222"/>
+    <!-- D-pad ring -->
+    <circle cx="37" cy="68" r="11" fill="NONE" stroke="#3a3a3e" stroke-width="1"/>
+    <!-- D-pad cross -->
+    <rect x="35" y="60" width="4" height="16" fill="#3a3a3e"/>
+    <rect x="29" y="66" width="16" height="4" fill="#3a3a3e"/>
+    <circle cx="37" cy="68" r="2" fill="#222226"/>
+    <!-- back / ok buttons -->
+    <circle cx="18" cy="68" r="2.4" fill="#3a3a3e"/>
+    <circle cx="56" cy="68" r="2.4" fill="#3a3a3e"/>
+    <!-- bottom label -->
+    <text x="37" y="86" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="4.5" fill="#888880" text-anchor="middle" letter-spacing="0.6">FLIPPER ZERO</text>
+  </g>
+  <!-- date stamp below Flipper -->
+  <text x="255" y="166" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="8" fill="#666660" letter-spacing="1.4" text-anchor="middle">2026 &middot; LLM</text>
+</svg>
+</DIV>
+<DIV CLASS="case-body">
+<DIV CLASS="case-meta">Embedded &middot; Protocol Reverse Engineering &middot; LLM Integration</DIV>
+<DIV CLASS="case-title">IR Bridge</DIV>
+<DIV CLASS="case-sub">Ericsson MC218 &harr; Flipper Zero &harr; LLM</DIV>
+<P CLASS="case-desc">Bidirectional infrared bridge from a 1999 Ericsson palmtop to a modern LLM, by way of Flipper Zero and ESP32. A working dialogue between two devices separated by twenty-five years.</P>
+<SPAN CLASS="case-more">Open &rarr;</SPAN>
+</DIV>
+</A>
+
 
 <A NAME="contact"></A>
 <H2>Contact</H2>
