@@ -685,6 +685,69 @@ hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
 </DIV>
 </A>
 
+<!-- ============================================================
+     CASE 4 &mdash; MXAT-DSS
+     Thumbnail: a theatre seat map with most seats sold (dim) and
+     a few free (green), plus a floating Telegram ticket alert.
+============================================================ -->
+<A CLASS="case" HREF="https://github.com/R2BPW/mxat-dss">
+<DIV CLASS="case-thumb">
+<svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Theatre seat map with a few free seats and a Telegram ticket alert">
+  <!-- background -->
+  <rect width="320" height="200" fill="#0e0e10"/>
+
+  <!-- corner label -->
+  <text x="10" y="14" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="7" fill="#666660" letter-spacing="1.2">MXAT / PROFTICKET API / TELEGRAM</text>
+
+  <!-- stage arc -->
+  <path d="M 88 48 Q 160 31 232 48" fill="NONE" stroke="#3a3a3e" stroke-width="1"/>
+  <text x="160" y="45" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="6.5" fill="#666660" text-anchor="middle" letter-spacing="2">СЦЕНА</text>
+
+  <!-- seat grid: most sold (dim) -->
+  <g fill="#26262c" stroke="#34343c" stroke-width="0.5">
+    <rect x="94" y="58" width="8" height="6" rx="1"/><rect x="105" y="58" width="8" height="6" rx="1"/><rect x="116" y="58" width="8" height="6" rx="1"/><rect x="127" y="58" width="8" height="6" rx="1"/><rect x="138" y="58" width="8" height="6" rx="1"/><rect x="149" y="58" width="8" height="6" rx="1"/><rect x="160" y="58" width="8" height="6" rx="1"/><rect x="171" y="58" width="8" height="6" rx="1"/><rect x="182" y="58" width="8" height="6" rx="1"/><rect x="193" y="58" width="8" height="6" rx="1"/><rect x="204" y="58" width="8" height="6" rx="1"/><rect x="215" y="58" width="8" height="6" rx="1"/>
+    <rect x="94" y="70" width="8" height="6" rx="1"/><rect x="105" y="70" width="8" height="6" rx="1"/><rect x="116" y="70" width="8" height="6" rx="1"/><rect x="127" y="70" width="8" height="6" rx="1"/><rect x="138" y="70" width="8" height="6" rx="1"/><rect x="149" y="70" width="8" height="6" rx="1"/><rect x="160" y="70" width="8" height="6" rx="1"/><rect x="171" y="70" width="8" height="6" rx="1"/><rect x="182" y="70" width="8" height="6" rx="1"/><rect x="193" y="70" width="8" height="6" rx="1"/><rect x="204" y="70" width="8" height="6" rx="1"/><rect x="215" y="70" width="8" height="6" rx="1"/>
+    <rect x="94" y="82" width="8" height="6" rx="1"/><rect x="105" y="82" width="8" height="6" rx="1"/><rect x="116" y="82" width="8" height="6" rx="1"/><rect x="127" y="82" width="8" height="6" rx="1"/><rect x="138" y="82" width="8" height="6" rx="1"/><rect x="149" y="82" width="8" height="6" rx="1"/><rect x="160" y="82" width="8" height="6" rx="1"/><rect x="171" y="82" width="8" height="6" rx="1"/><rect x="182" y="82" width="8" height="6" rx="1"/><rect x="193" y="82" width="8" height="6" rx="1"/><rect x="204" y="82" width="8" height="6" rx="1"/><rect x="215" y="82" width="8" height="6" rx="1"/>
+    <rect x="94" y="94" width="8" height="6" rx="1"/><rect x="105" y="94" width="8" height="6" rx="1"/><rect x="149" y="94" width="8" height="6" rx="1"/><rect x="160" y="94" width="8" height="6" rx="1"/><rect x="171" y="94" width="8" height="6" rx="1"/><rect x="182" y="94" width="8" height="6" rx="1"/><rect x="193" y="94" width="8" height="6" rx="1"/><rect x="204" y="94" width="8" height="6" rx="1"/><rect x="215" y="94" width="8" height="6" rx="1"/>
+    <rect x="94" y="106" width="8" height="6" rx="1"/><rect x="105" y="106" width="8" height="6" rx="1"/><rect x="116" y="106" width="8" height="6" rx="1"/><rect x="127" y="106" width="8" height="6" rx="1"/><rect x="138" y="106" width="8" height="6" rx="1"/><rect x="149" y="106" width="8" height="6" rx="1"/><rect x="160" y="106" width="8" height="6" rx="1"/><rect x="171" y="106" width="8" height="6" rx="1"/><rect x="182" y="106" width="8" height="6" rx="1"/><rect x="204" y="106" width="8" height="6" rx="1"/><rect x="215" y="106" width="8" height="6" rx="1"/>
+  </g>
+
+  <!-- free seats (green) -->
+  <g fill="#44bb77" stroke="#1a6a3a" stroke-width="0.6">
+    <rect x="204" y="58" width="8" height="6" rx="1"/>
+    <rect x="171" y="94" width="8" height="6" rx="1"/>
+    <rect x="116" y="94" width="8" height="6" rx="1"/>
+    <rect x="127" y="94" width="8" height="6" rx="1"/>
+    <rect x="138" y="94" width="8" height="6" rx="1"/>
+    <rect x="193" y="106" width="8" height="6" rx="1"/>
+  </g>
+  <!-- pulse ring on a freshly freed seat -->
+  <circle cx="142" cy="97" r="9" fill="NONE" stroke="#44bb77" stroke-width="0.8" opacity="0.3"/>
+
+  <!-- detection -> notification connector -->
+  <path d="M 142 97 Q 188 130 214 150" fill="NONE" stroke="#7aafee" stroke-width="0.6" stroke-dasharray="2 2" opacity="0.5"/>
+
+  <!-- floating telegram alert card (bottom-right) -->
+  <g transform="translate(196, 150)">
+    <rect x="0" y="0" width="116" height="40" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="0.8" rx="2"/>
+    <!-- message bubble glyph -->
+    <rect x="8" y="9" width="16" height="12" rx="2" fill="#7aafee" opacity="0.9"/>
+    <path d="M 12 21 L 12 25 L 17 21 Z" fill="#7aafee" opacity="0.9"/>
+    <!-- texts -->
+    <text x="32" y="14" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="8" fill="#888880" letter-spacing="0.3">МХТ им. Чехова</text>
+    <text x="32" y="26" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="9" font-weight="bold" fill="#e0e0d8">Билеты открылись</text>
+    <text x="32" y="35" font-family="Trebuchet MS, Helvetica, sans-serif" font-size="6.5" fill="#44bb77" letter-spacing="0.4">6 МЕСТ В ПРОДАЖЕ</text>
+  </g>
+</svg>
+</DIV>
+<DIV CLASS="case-body">
+<DIV CLASS="case-meta">Мониторинг &middot; API &middot; Telegram-оповещения</DIV>
+<DIV CLASS="case-title">Монитор билетов МХТ им. Чехова</DIV>
+<P CLASS="case-desc">Система оповещения о билетах в МХТ им. Чехова: опрашивает публичный API ProfTicket и шлёт уведомление в Telegram, как только открывается продажа или освобождаются места. Частота опроса подстраивается под фазу продаж (фон &rarr; окно перед стартом &rarr; финальный рывок) с учётом лимитов API; очередь уведомлений дедуплицируется и переживает перезапуски. Опциональный второй узел на Playwright открывает зал с доступными местами &mdash; выбор и оплату оставляет человеку.</P>
+<SPAN CLASS="case-more">GitHub &rarr;</SPAN>
+</DIV>
+</A>
+
 
 <P CLASS="footer" STYLE="margin-top: 30px;">
 <A HREF="https://github.com/R2BPW">GitHub</A> &middot;

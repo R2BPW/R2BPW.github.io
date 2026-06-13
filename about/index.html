@@ -118,9 +118,6 @@ h2 {
   border-bottom: 1px solid #333;
 }
 p { margin: 10px 0; }
-.subsystem {
-  margin-top: 18px;
-}
 td, th {
   font-family: Georgia, serif;
   font-size: 12pt;
@@ -132,23 +129,6 @@ td, th {
 .subtle { color: #888880; font-size: 11pt; }
 .footer { color: #666660; font-size: 10pt; }
 hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
-.project-item {
-  margin: 12px 0;
-}
-.project-title {
-  font-weight: bold;
-  color: #e0e0d8;
-}
-.project-desc {
-  color: #a0a098;
-  font-size: 11pt;
-  margin-top: 2px;
-}
-.work-sep {
-  border: none;
-  border-top: 1px solid #262626;
-  margin: 20px 0;
-}
 -->
 </STYLE>
 </HEAD>
@@ -164,23 +144,7 @@ hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
 </TD></TR>
 
 <TR><TD HEIGHT="8"></TD></TR>
-<TR><TD CLASS="nav"><A HREF="#about">Обо мне</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="#work">Опыт</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="#education">Образование</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="#projects">Проекты</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="#contact">Контакты</A></TD></TR>
-
-<TR><TD HEIGHT="20"></TD></TR>
-<TR><TD CLASS="nav" STYLE="color: #666660; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">ПРОЕКТЫ</TD></TR>
-<TR><TD CLASS="nav"><A HREF="https://r2bpw.works/qrss/">QRSS-маяки</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="https://r2bpw.works/psion-flipper-bridge/">Psion&harr;LLM</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="https://r2bpw.works/radio_bargain_bot_v2/">Radio Bargain</A></TD></TR>
-
-<TR><TD HEIGHT="20"></TD></TR>
-<TR><TD CLASS="nav" STYLE="color: #666660; font-size: 9pt; letter-spacing: 1px; padding-bottom: 6px;">ССЫЛКИ</TD></TR>
 <TR><TD CLASS="nav"><A HREF="https://www.linkedin.com/in/rtmy/" REL="me">LinkedIn</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="https://r2bpw.works/resume_artemy_urodovskikh.pdf">Резюме EN (PDF)</A></TD></TR>
-<TR><TD CLASS="nav"><A HREF="https://r2bpw.works/resume_artemy_urodovskikh_ru.pdf">Резюме RU (PDF)</A></TD></TR>
 </TABLE>
 
 </TD>
@@ -211,91 +175,10 @@ hr { border: none; border-top: 1px solid #333; margin: 24px 0; }
 Руковожу командой backend-разработки из 5 инженеров в общей кодовой базе на 40+ разработчиков.
 Постановка задач, делегирование инженерам и AI-агентам, обязательное код-ревью, вывод в продакшен. Скрам-гибрид с двухнедельными спринтами, ~24 релиза в год.</P>
 
-<P CLASS="subsystem"><I>Стек</I>.
-Python, Django, DRF, FastAPI, Celery, PostgreSQL, PostGIS, ClickHouse, Redis, RabbitMQ, Kafka, S3, Docker, Kubernetes, Terraform, Nginx, Grafana, CI/CD, Linux (вкл. Astra Linux).</P>
-
-<HR CLASS="work-sep">
-
-<P CLASS="subsystem"><I>Система планирования маршрутов</I> (владелец направления).
-Замена внешнего коммерческого солвера на собственный TSP-солвер с graceful degradation; решение принято исходя из стоимостной модели и требований заказчиков к развёртыванию.
-В продакшене с 2022, ~1&nbsp;200 маршрутов в сутки по всем регионам.</P>
-
-<P CLASS="subsystem"><I>Телематика автопарка</I>.
-Слой синхронизации ClickHouse &harr; PostGIS с эвристиками фильтрации GPS-дрейфа (разрыв треков, склейка сегментов, отсечка выбросов) — восстановление геометрии движения из шумных потоков.
-Интеграция с S3 для видеозаписей бортовых камер.</P>
-
-<P CLASS="subsystem"><I>Производительность</I>.
-OLTP-таблицы 500М+ строк; поток телеметрии — ~370М GPS-отсчётов/мес от 5 700 трекеров в архив ClickHouse на 25 млрд записей.
-Переписал ключевой запрос на таблице 280М строк: nested loop → hash anti-join, ускорение на порядок, ушли таймауты.
-Неблокирующая раскатка индексов на боевых таблицах; устранение N+1.</P>
-
-<HR CLASS="work-sep">
-
-<P><B>Алгоритмы логистики и визуализация</B><BR>
-<SPAN CLASS="subtle">2020&ndash;2021</SPAN></P>
-
-<HR CLASS="work-sep">
-
-<P><B>ПАК инвентаризации дворовых территорий</B><BR>
-<SPAN CLASS="subtle">2018&ndash;2019</SPAN></P>
-
 <A NAME="education"></A>
 <H2>Образование</H2>
 
 <P>Магистр. Диплом — алгоритм кластеризации маршрутов: сотни перекрывающихся маршрутов сводятся в граф с сохранением метаданных, сокращение объёма данных на интерактивной скорости. Московский физико-технический институт.</P>
-
-<A NAME="projects"></A>
-<H2>Проекты</H2>
-
-<DIV CLASS="project-item">
-<SPAN CLASS="project-title"><A HREF="https://r2bpw.works/radio_bargain_bot_v2/">Radio Bargain Bot</A></SPAN>
-<DIV CLASS="project-desc">
-Поиск и сравнение цен на вторичном рынке радиооборудования: 98 источников, 50+ стран, 12 региональных Telegram-каналов.
-</DIV>
-</DIV>
-
-<DIV CLASS="project-item">
-<SPAN CLASS="project-title"><A HREF="https://r2bpw.works/psion-flipper-bridge/">Psion&harr;LLM</A></SPAN>
-<DIV CLASS="project-desc">
-Инфракрасный мост от наладонника Ericsson MC218 (1999) к LLM через Flipper Zero и ESP32.
-</DIV>
-</DIV>
-
-<DIV CLASS="project-item">
-<SPAN CLASS="project-title"><A HREF="https://r2bpw.works/qrss/">QRSS-маяки на 30 м</A></SPAN>
-<DIV CLASS="project-desc">
-Каталог QRSS-маяков на 30-метровом диапазоне на распределённой сети KiwiSDR.
-</DIV>
-</DIV>
-
-<DIV CLASS="project-item">
-<SPAN CLASS="project-title">SDR-приёмник на FPGA</SPAN>
-<DIV CLASS="project-desc">
-Прошивка приёмника для Xilinx Spartan-6 на Verilog: NCO, смеситель на аппаратном умножителе, CIC-фильтр.
-</DIV>
-</DIV>
-
-<A NAME="contact"></A>
-<H2>Контакты</H2>
-
-<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0">
-<TR>
-<TD STYLE="padding: 4px 16px 4px 0; color: #666660; font-size: 11pt; border-bottom: none;">Почта</TD>
-<TD STYLE="padding: 4px 0; border-bottom: none;"><A HREF="mailto:artemy.urodovskikh@yandex.com">artemy.urodovskikh@yandex.com</A></TD>
-</TR>
-<TR>
-<TD STYLE="padding: 4px 16px 4px 0; color: #666660; font-size: 11pt; border-bottom: none;">Telegram</TD>
-<TD STYLE="padding: 4px 0; border-bottom: none;"><A HREF="https://t.me/R2BPW">@R2BPW</A></TD>
-</TR>
-<TR>
-<TD STYLE="padding: 4px 16px 4px 0; color: #666660; font-size: 11pt; border-bottom: none;">GitHub</TD>
-<TD STYLE="padding: 4px 0; border-bottom: none;"><A HREF="https://github.com/R2BPW">github.com/R2BPW</A></TD>
-</TR>
-<TR>
-<TD STYLE="padding: 4px 16px 4px 0; color: #666660; font-size: 11pt; border-bottom: none;">Город</TD>
-<TD STYLE="padding: 4px 0; border-bottom: none;">Москва (UTC+3).</TD>
-</TR>
-</TABLE>
 
 <HR>
 
